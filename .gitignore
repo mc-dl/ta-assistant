@@ -1,0 +1,45 @@
+# Claude Code local config (contains secrets)
+.claude/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Data (generated at runtime)
+data/logs/
+data/index/
+
+# OS
+.DS_Store
+Thumbs.db
+~$*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Office temp files
+~$*

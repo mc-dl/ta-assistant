@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>系统设计文档</title>
-<meta name="description" content="flowchart LR">
+<meta name="description" content="flowchart TD">
 <meta name="generator" content="scripts/md2html.py">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
 <style>
@@ -68,6 +68,18 @@ hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
 h2:hover .anchor,h3:hover .anchor{opacity:1}
 .anchor:hover{color:var(--accent)}
 
+/* ---- 每页顶部的 hero ---- */
+.hero{background:linear-gradient(135deg,#0969da14,#0969da04 62%,rgba(255,255,255,0));
+      border:1px solid var(--border);border-radius:12px;padding:22px 26px 18px;
+      margin:0 0 1.5em}
+.hero .kicker{color:var(--accent);font-size:.78em;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase}
+.hero h1{border:0;margin:.1em 0 .3em;font-size:1.72em;padding:0;line-height:1.3}
+.hero .lead{color:var(--muted);margin:0;font-size:1.02em}
+.hero .meta{margin-top:.85em;padding-top:.7em;border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:.3em 1.5em;color:var(--muted);font-size:.84em}
+.hero .meta b{color:var(--fg);font-variant-numeric:tabular-nums}
+
 /* ---- 表格:横向滚动 + 表头吸顶 ---- */
 .table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
@@ -87,16 +99,96 @@ blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color
 blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
 blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
 
-/* ---- 图:mermaid 与图片 ---- */
+/* ---- 图:构建期画好的 svg ---- */
 figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
                           border-radius:8px;background:#fcfcfd}
-figure.diagram .mermaid{overflow-x:auto;text-align:center}
-figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
-     margin-top:.6em;text-align:center}
+figure.diagram img{max-width:100%;height:auto;display:block;margin:0 auto}
+/* 宽图**按原尺寸横向滚动,不缩放**。
+   缩到版心宽度的后果是字号一起缩:一张 1655px 宽的图塞进 1050px 的版心,
+   图里 13px 的字只剩 8px —— 一屏是放下了,但没人读得下去。
+   宁可让读者横向拉一下,也不能把字缩没。
+   窄图(≤860px)照旧居中自适应,那种情况下缩放比例 ≥1,不存在缩字问题。 */
+figure.diagram.wide{overflow-x:auto}
+figure.diagram.wide img{max-width:none;margin:0}
+figure.diagram figcaption{color:var(--fg);font-size:.9em;margin-bottom:.7em;
+     text-align:center;font-weight:600}
+figure.diagram.wide figcaption{text-align:left}
+/* 滚动提示贴在框外:它不该跟着图一起滚走 */
+figure.diagram .wide-hint{position:sticky;left:0;margin:.6em 0 0;color:var(--muted);
+     font-size:.84em}
+figure.pic figcaption{color:var(--muted);font-size:.88em;margin-top:.6em;text-align:center}
 figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
-details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src{margin-top:.8em;font-size:.85em;border-top:1px dashed var(--border);
+     padding-top:.5em}
 details.mermaid-src summary{cursor:pointer;color:var(--muted)}
 details.mermaid-src pre{margin:.5em 0 0}
+/* 图表框**贴着图**走:图是固定 620px 宽的,框撑满版心的话右边会空一大块,
+   看着像图没画完 */
+figure.chart{margin:1.4em auto;padding:10px 12px;border:1px solid var(--border);
+     border-radius:8px;background:#fcfcfd;overflow-x:auto;width:fit-content;max-width:100%}
+figure.chart svg{max-width:100%;height:auto;display:block}
+
+/* ---- :::stats 数字卡 ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+       gap:12px;margin:1.3em 0}
+.stat{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:8px;padding:13px 16px;background:var(--bg)}
+.stat .v{font-size:1.6em;font-weight:700;line-height:1.15;color:var(--accent);
+      font-variant-numeric:tabular-nums}
+.stat .l{font-weight:600;margin-top:.15em;font-size:.95em}
+.stat .n{color:var(--muted);font-size:.84em;margin-top:.15em;line-height:1.55}
+
+/* ---- :::compare 并排对比 ---- */
+.cmp{display:grid;gap:14px;margin:1.3em 0}
+.cmp.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cmp.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cmp.c2,.cmp.c3{grid-template-columns:1fr}}
+.cmp .col{border:1px solid var(--border);border-top:3px solid var(--accent);
+      border-radius:8px;padding:6px 18px 10px;background:var(--bg);min-width:0}
+.cmp .col.tone1{border-top-color:#1a7f37}
+.cmp .col.tone2{border-top-color:#9a6700}
+.cmp .col > :first-child{margin-top:.6em}
+.cmp .col h3{margin:.4em 0 .5em;font-size:1.03em}
+.cmp .col ul,.cmp .col ol{padding-left:1.25em}
+
+/* ---- :::steps 步骤条 ---- */
+.steps{counter-reset:st;display:grid;gap:10px;margin:1.3em 0}
+.step{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      padding:11px 16px 11px 54px;position:relative}
+.step:before{counter-increment:st;content:counter(st);
+      position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:50%;
+      background:var(--accent);color:#fff;font-weight:700;font-size:.82em;
+      display:flex;align-items:center;justify-content:center}
+.step .t{font-weight:600}
+.step .d{color:var(--muted);font-size:.91em;margin-top:.1em}
+
+/* ---- :::timeline 时间线 ---- */
+.timeline{margin:1.3em 0 1.3em 6px;padding-left:22px;border-left:2px solid var(--border)}
+.tl{position:relative;padding:0 0 1.05em 18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-30px;top:.5em;width:11px;height:11px;
+      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl .when{color:var(--muted);font-size:.8em;font-variant-numeric:tabular-nums}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.91em}
+
+/* ---- :::cards 小卡片墙 ---- */
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));
+      gap:12px;margin:1.3em 0}
+.mini > div{border:1px solid var(--border);border-radius:8px;padding:12px 15px;
+      background:var(--bg)}
+.mini .t{font-weight:600;margin-bottom:.15em}
+.mini .d{color:var(--muted);font-size:.89em;line-height:1.6}
+
+/* ---- :::note 提示框 / :::fold 折叠 ---- */
+.note{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;background:#fbfcfd;padding:.75em 1.2em;margin:1.2em 0}
+.note .nt{font-weight:600;margin-bottom:.15em;color:var(--accent)}
+.note > :last-child{margin-bottom:.35em}
+details.fold{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      margin:1.1em 0;padding:0 16px}
+details.fold > summary{cursor:pointer;padding:11px 0;font-weight:600;color:var(--accent)}
+details.fold[open] > summary{border-bottom:1px solid var(--border);margin-bottom:.6em}
 
 /* ---- 本页速览胶囊 ---- */
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
@@ -128,7 +220,9 @@ details.mermaid-src pre{margin:.5em 0 0}
 
 @media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
   .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
-  .table-wrap{overflow:visible}th{position:static}}
+  .table-wrap{overflow:visible}th{position:static}
+  details.fold{border:0;padding:0}details.fold > summary{color:var(--fg)}
+  details.fold > *{display:revert!important}}
 </style>
 </head>
 <body>
@@ -176,8 +270,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html" class="here">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
 </aside>
 <main>
+<header class="hero"><div class="kicker">design</div><h1>系统设计文档</h1><div class="meta"><span><b>9</b> 个小节</span><span><b>3</b> 张图</span><span><b>5</b> 张表</span></div></header>
 <nav class="quick"><a href="#1-总体架构">1. 总体架构</a><a href="#2-调用时序">2. 调用时序</a><a href="#21-补交场景">2.1 补交场景</a><a href="#22-答疑场景">2.2 答疑场景</a><a href="#23-rag-场景概念题">2.3 RAG 场景(概念题)</a><a href="#3-模块设计">3. 模块设计</a><a href="#31-srcconfigpy">3.1 src/config.py</a><a href="#32-srchandlersclassifierpy">3.2 src/handlers/classifier.py</a><a href="#33-srchandlerssubmissionpy">3.3 src/handlers/submission.py</a><a href="#34-srchandlersqapy">3.4 src/handlers/qa.py</a><a href="#35-srcragindexerpy">3.5 src/rag/indexer.py</a><a href="#36-srcragretrieverpy">3.6 src/rag/retriever.py</a><a href="#37-srcllm大模型通道">3.7 src/llm/(大模型通道)</a><a href="#38-srcutilsdoc_parserpy">3.8 src/utils/doc_parser.py</a></nav>
-<h1 id="系统设计文档">系统设计文档</h1>
 <blockquote>
 <p>对应需求文档 <code>requirements.md</code>,描述<strong>怎么实现</strong>。</p>
 <p>⚠️ <strong>时效性(2026-09-20 校订)</strong>
@@ -189,9 +283,11 @@ details.mermaid-src pre{margin:.5em 0 0}
 两条召回通路、重建步骤、已知限制);本文只讲"怎么实现、为什么这么分层"。
 两者冲突时,<strong>以代码和 <code>knowledge_base.md</code> 为准</strong>。</p>
 </blockquote>
-<2 id="1-总体架构">1. 总体架构<a class="anchor" href="#1-总体架构" title="链接到这一节">#</a></2>
+<h2 id="1-总体架构">1. 总体架构<a class="anchor" href="#1-总体架构" title="链接到这一节">#</a></h2>
 <figure class="diagram">
-<div class="mermaid">flowchart LR
+<figcaption>上半段 —— 一条消息进来,被路由到哪个 Handler。竖着读,分岔口就是判断</figcaption><img src="diagrams/design-0.svg" alt="上半段 —— 一条消息进来,被路由到哪个 Handler。竖着读,分岔口就是判断" loading="lazy">
+<details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>flowchart TD
+  %% caption: 上半段 —— 一条消息进来,被路由到哪个 Handler。竖着读,分岔口就是判断
   W[&quot;微信&lt;br/&gt;学生提问 / 助教【记录】&quot;] --&gt; OC[&quot;OpenClaw&lt;br/&gt;(WSL,TS Bot)&quot;]
   OC --&gt;|&quot;子进程 bridge&lt;br/&gt;stdout 只写一行 JSON&quot;| MAIN[&quot;src/main.py&lt;br/&gt;process()&quot;]
 
@@ -201,54 +297,33 @@ details.mermaid-src pre{margin:.5em 0 0}
   GATE --&gt;|&quot;【转发学生提问】&quot;| CLS[&quot;分类器&lt;br/&gt;规则优先 + LLM 兜底&quot;]
 
   CLS --&gt;|&quot;submission&quot;| SUB[&quot;补交 Handler&lt;br/&gt;抽学号/姓名/次数&quot;]
-  CLS --&gt;|&quot;question&quot;| QA[&quot;答疑 Handler&quot;]
+  CLS --&gt;|&quot;question&quot;| QA[&quot;答疑 Handler&lt;br/&gt;详见下一张图&quot;]
 
-  QA --&gt; KIND{&quot;分档 _classify()&quot;}
-  KIND --&gt;|&quot;事务 admin&quot;| FACTS[&quot;课程事务事实表&lt;br/&gt;(带生效期,高于 FAQ)&quot;]
-  KIND --&gt;|&quot;事务 admin&quot;| FAQ[&quot;FAQ 检索&lt;br/&gt;阈值 + 实词闸门&quot;]
+  SUB --&gt; XLS[&quot;补交表.xlsx&lt;br/&gt;(花名册校验)&quot;]
+  REC --&gt; TXT[&quot;常问问题.txt&lt;br/&gt;追加 + 回读校验&quot;]
+  XLS --&gt; REPLY[&quot;reply&lt;br/&gt;回微信&quot;]
+  TXT -.-&gt;|&quot;下一条提问即可命中&quot;| CLS</code></pre></details>
+</figure>
+<figure class="diagram">
+<figcaption>下半段 —— 答疑 Handler 内部:先分档,再决定查不查 FAQ、查不查资料</figcaption><img src="diagrams/design-1.svg" alt="下半段 —— 答疑 Handler 内部:先分档,再决定查不查 FAQ、查不查资料" loading="lazy">
+<details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>flowchart TD
+  %% caption: 下半段 —— 答疑 Handler 内部:先分档,再决定查不查 FAQ、查不查资料
+  QA[&quot;答疑 Handler&quot;] --&gt; KIND{&quot;分档 _classify()&quot;}
+  KIND --&gt;|&quot;事务 admin&quot;| FACTS[&quot;课程事务事实表&lt;br/&gt;带生效期,压过 FAQ&quot;]
+  KIND --&gt;|&quot;事务 admin&quot;| FAQ[&quot;FAQ 检索&lt;br/&gt;阈值 4.0 + 实词闸门&quot;]
   KIND --&gt;|&quot;概念 concept&quot;| FAQ
   KIND --&gt;|&quot;概念 concept&quot;| RAG[&quot;BM25 RAG&lt;br/&gt;materials/ 分块 top-7&quot;]
   KIND --&gt;|&quot;题号 problem&quot;| RAG
 
-  SUB --&gt; XLS[&quot;补交表.xlsx&lt;br/&gt;(花名册校验)&quot;]
-  REC --&gt; TXT[&quot;常问问题.txt&lt;br/&gt;追加 + 回读校验&quot;]
-
-  FAQ --&gt; LLM[&quot;LLM 通道&lt;br/&gt;默认 OpenCode Go&lt;br/&gt;MinMax 回滚&quot;]
+  FACTS --&gt; LLM[&quot;LLM 通道&lt;br/&gt;默认 OpenCode Go&lt;br/&gt;MinMax 回滚&quot;]
+  FAQ --&gt; LLM
   RAG --&gt; LLM
-  FACTS --&gt; LLM
-  LLM --&gt;|&quot;reply&quot;| OC
-  XLS --&gt;|&quot;reply&quot;| OC
-  TXT --&gt;|&quot;下一条提问即可命中&quot;| FAQ</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart LR
-  W[&quot;微信&lt;br/&gt;学生提问 / 助教【记录】&quot;] --&gt; OC[&quot;OpenClaw&lt;br/&gt;(WSL,TS Bot)&quot;]
-  OC --&gt;|&quot;子进程 bridge&lt;br/&gt;stdout 只写一行 JSON&quot;| MAIN[&quot;src/main.py&lt;br/&gt;process()&quot;]
-
-  MAIN --&gt; GATE{&quot;前缀路由&lt;br/&gt;(闸门顺序有讲究)&quot;}
-  GATE --&gt;|&quot;没有前缀&quot;| SKIP[&quot;skip&lt;br/&gt;闲聊不处理&quot;]
-  GATE --&gt;|&quot;【记录】&quot;| REC[&quot;record Handler&lt;br/&gt;闸门在学生转发之前&quot;]
-  GATE --&gt;|&quot;【转发学生提问】&quot;| CLS[&quot;分类器&lt;br/&gt;规则优先 + LLM 兜底&quot;]
-
-  CLS --&gt;|&quot;submission&quot;| SUB[&quot;补交 Handler&lt;br/&gt;抽学号/姓名/次数&quot;]
-  CLS --&gt;|&quot;question&quot;| QA[&quot;答疑 Handler&quot;]
-
-  QA --&gt; KIND{&quot;分档 _classify()&quot;}
-  KIND --&gt;|&quot;事务 admin&quot;| FACTS[&quot;课程事务事实表&lt;br/&gt;(带生效期,高于 FAQ)&quot;]
-  KIND --&gt;|&quot;事务 admin&quot;| FAQ[&quot;FAQ 检索&lt;br/&gt;阈值 + 实词闸门&quot;]
-  KIND --&gt;|&quot;概念 concept&quot;| FAQ
-  KIND --&gt;|&quot;概念 concept&quot;| RAG[&quot;BM25 RAG&lt;br/&gt;materials/ 分块 top-7&quot;]
-  KIND --&gt;|&quot;题号 problem&quot;| RAG
-
-  SUB --&gt; XLS[&quot;补交表.xlsx&lt;br/&gt;(花名册校验)&quot;]
-  REC --&gt; TXT[&quot;常问问题.txt&lt;br/&gt;追加 + 回读校验&quot;]
-
-  FAQ --&gt; LLM[&quot;LLM 通道&lt;br/&gt;默认 OpenCode Go&lt;br/&gt;MinMax 回滚&quot;]
-  RAG --&gt; LLM
-  FACTS --&gt; LLM
-  LLM --&gt;|&quot;reply&quot;| OC
-  XLS --&gt;|&quot;reply&quot;| OC
-  TXT --&gt;|&quot;下一条提问即可命中&quot;| FAQ</code></pre></details>
+  LLM --&gt; REPLY[&quot;reply&lt;br/&gt;回微信&quot;]</code></pre></details>
 </figure>
 <blockquote>
+<p>原来这一整条链是一张 <code>flowchart LR</code> —— 14 级横着排,画出来 2577px 宽,
+塞进正文栏就得缩到 0.33 倍,图里的字只剩 4px,等于没画。
+拆成上下两张<strong>竖着排</strong>,每张都在 1080px 以内,字保持原大小。</p>
 <p>同一张图的 <strong>ASCII 版</strong>留在下面 —— 终端里、<code>git diff</code> 里、以及不渲染 mermaid 的地方看这份。</p>
 </blockquote>
 <pre><code>┌───────────┐  微信转发   ┌──────────────┐
@@ -286,42 +361,11 @@ details.mermaid-src pre{margin:.5em 0 0}
 放在上图里是因为它<strong>绕开了分类器</strong>:<code>main.process()</code> 里它是<strong>学生转发闸门之前</strong>的一个独立分支,
 顺序不能反(见 §3.11)。设计细节和四条拒收规则见 <code>knowledge_base.md</code> §5.5。</p>
 </blockquote>
-<2 id="2-调用时序">2. 调用时序<a class="anchor" href="#2-调用时序" title="链接到这一节">#</a></2>
+<h2 id="2-调用时序">2. 调用时序<a class="anchor" href="#2-调用时序" title="链接到这一节">#</a></h2>
 <p>先看整体时序(三条通路并排),再逐场景看<strong>带真实日志值的调用链</strong>:</p>
-<figure class="diagram">
-<div class="mermaid">sequenceDiagram
-  autonumber
-  participant T as 助教(微信)
-  participant O as OpenClaw
-  participant B as bridge(子进程)
-  participant P as main.process()
-  participant H as Handler
-  participant D as 数据(Excel / FAQ / 索引)
-  participant L as LLM
-
-  T-&gt;&gt;O: 转发消息(必须带前缀)
-  O-&gt;&gt;B: python openclaw_bridge.py --message &quot;…&quot;
-  B-&gt;&gt;P: process(msg)
-  P-&gt;&gt;P: 前缀路由 → 记录 / 学生转发 / skip
-  alt 补交
-    P-&gt;&gt;H: submission.handle()
-    H-&gt;&gt;D: 读花名册校验 + 追加补交表一行
-    H--&gt;&gt;P: {type: submission, reply: &quot;✅ 已登记…&quot;}
-  else 答疑(事务 + FAQ 命中)
-    P-&gt;&gt;H: qa.handle()
-    H-&gt;&gt;D: FAQ 检索(阈值 4.0 + 实词闸门)
-    H-&gt;&gt;L: 拿 FAQ 原文润色成一句人话
-    L--&gt;&gt;H: reply
-  else 答疑(概念 / 题号)
-    P-&gt;&gt;H: qa.handle()
-    H-&gt;&gt;D: BM25 取 top-7 分块
-    H-&gt;&gt;L: 分块 + 分档规则塞进 prompt
-    L--&gt;&gt;H: reply
-  end
-  P--&gt;&gt;B: 一行 JSON
-  B--&gt;&gt;O: stdout(必须只有这一行)
-  O--&gt;&gt;T: 微信回复</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>sequenceDiagram
+<figure class="diagram wide">
+<img src="diagrams/design-2.svg" alt="结构图" loading="lazy">
+<p class="wide-hint">↔ 这张图比正文宽:右边还有内容,把鼠标放在图上横向滚动(或按住 Shift 滚滚轮)就能看完。</p><details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>sequenceDiagram
   autonumber
   participant T as 助教(微信)
   participant O as OpenClaw
@@ -354,7 +398,7 @@ details.mermaid-src pre{margin:.5em 0 0}
   B--&gt;&gt;O: stdout(必须只有这一行)
   O--&gt;&gt;T: 微信回复</code></pre></details>
 </figure>
-<3 id="21-补交场景">2.1 补交场景<a class="anchor" href="#21-补交场景" title="链接到这一节">#</a></3>
+<h3 id="21-补交场景">2.1 补交场景<a class="anchor" href="#21-补交场景" title="链接到这一节">#</a></h3>
 <pre><code>助教:转发&quot;张三 20230001 昨天数电作业没交&quot;
   │
   └──▶ OpenClaw 调 openclaw_bridge.py --message &quot;...&quot;
@@ -368,7 +412,7 @@ details.mermaid-src pre{margin:.5em 0 0}
                 │    └─ 写日志
                 └─ 返回 {type:&quot;submission&quot;, reply:&quot;✅ 已登记:张三(20230001)第 X 次补交&quot;}
 </code></pre>
-<3 id="22-答疑场景">2.2 答疑场景<a class="anchor" href="#22-答疑场景" title="链接到这一节">#</a></3>
+<h3 id="22-答疑场景">2.2 答疑场景<a class="anchor" href="#22-答疑场景" title="链接到这一节">#</a></h3>
 <p><strong>【当前】答疑先分档,再决定走哪条通路</strong>(<code>_classify()</code>),因为"补交/截止/成绩"这类
 <strong>事务题</strong>可以照 FAQ 原文答,而"什么是叠加原理"这类<strong>概念题</strong>必须展开讲 ——
 用同一条通路会互相伤害。详见 <code>knowledge_base.md</code> 第 1、5、6 节。</p>
@@ -395,7 +439,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 即<strong>不丢信息,但会增补</strong>。完整分类见 <code>knowledge_base.md</code> §5.4。
 <strong>结论:保留调用,只把文档和注释改对。</strong> 复核:<code>scripts/eval_admin_fidelity.py</code>(会真调 API,不进单测)。</p>
 </blockquote>
-<3 id="23-rag-场景概念题">2.3 RAG 场景(概念题)<a class="anchor" href="#23-rag-场景概念题" title="链接到这一节">#</a></3>
+<h3 id="23-rag-场景概念题">2.3 RAG 场景(概念题)<a class="anchor" href="#23-rag-场景概念题" title="链接到这一节">#</a></h3>
 <pre><code>助教:转发&quot;什么是叠加原理?&quot;
   │
   └──▶ qa.handle(msg)
@@ -411,8 +455,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <p><strong>带题号的提问走第三档</strong>:<code>1.36 怎么做</code> 先被 <code>_PROBLEM_REF</code> 认出题号,
 <strong>只查资料、FAQ 连补充都不加</strong>(问 1.36 时 FAQ 里那条"作业怎么提交"纯属噪声),
 而且要求模型<strong>只讲资料里那道题、不许自己解</strong>(版次不同题号会串)。</p>
-<2 id="3-模块设计">3. 模块设计<a class="anchor" href="#3-模块设计" title="链接到这一节">#</a></2>
-<3 id="31-srcconfigpy">3.1 <code>src/config.py</code><a class="anchor" href="#31-srcconfigpy" title="链接到这一节">#</a></3>
+<h2 id="3-模块设计">3. 模块设计<a class="anchor" href="#3-模块设计" title="链接到这一节">#</a></h2>
+<h3 id="31-srcconfigpy">3.1 <code>src/config.py</code><a class="anchor" href="#31-srcconfigpy" title="链接到这一节">#</a></h3>
 <p>集中所有配置,支持 <code>.env</code> 覆盖。</p>
 <pre><code class="language-python"># 伪代码要点
 # 【当前】默认 root 是 ~/ykt_questions(跨平台),不再是 /mnt/c/... 下的中文目录。
@@ -431,7 +475,12 @@ GRADEBOOK_PATH = ROSTER_DIR / &quot;电路基础理论课_学生名单.xlsx&quot
 # **安静地读成空名单** —— 那正是这个 bug 藏了几个月的形状。见 §3.3 与 §5。
 # 打开方式也必须 read_only=False:那份记分册里写着 `&lt;dimension ref=&quot;A1&quot;/&gt;`(错的范围声明),
 # openpyxl 的只读模式只信它、也不校验,会把整份工作簿读成 1 行 1 列。
-SUBMISSION_TABLE_PATH = WINDOWS_ROOT / &quot;数字电路与逻辑设计实验（一）补交表.xlsx&quot;
+# 补交表**由花名册路径推导**(同目录、同课名、后缀换成「补交表」):
+# 本学期的名单是 `电路基础理论课_学生名单.xlsx`,于是补交表是 `花名册/电路基础理论课_补交表.xlsx`。
+# 原来这里写死的是 `WINDOWS_ROOT / &quot;数字电路与逻辑设计实验（一）补交表.xlsx&quot;` —— 那是
+# 数电时期的名字,换成电路基础之后成了一条**不存在的路径**,而它坏得安静:补交照样&quot;成功&quot;,
+# 只是走进 ensure_submission_table 新建的另一张表里,助教那份真表一直空着。
+SUBMISSION_TABLE_PATH = submission_table_for(GRADEBOOK_PATH)
 FAQ_PATH = WINDOWS_ROOT / &quot;常问问题.txt&quot;
 MATERIALS_DIR = WINDOWS_ROOT / &quot;materials&quot;        # 【当前】原先是 &quot;数电资料&quot;
 
@@ -460,13 +509,13 @@ CHUNK_OVERLAP = 50
 OpenCode Go 强制要求 <code>x-opencode-session</code> 请求头,缺了直接 400 MissingSessionID
 (2026-09-17 实测),所以它也在配置里。</p>
 </blockquote>
-<3 id="32-srchandlersclassifierpy">3.2 <code>src/handlers/classifier.py</code><a class="anchor" href="#32-srchandlersclassifierpy" title="链接到这一节">#</a></3>
+<h3 id="32-srchandlersclassifierpy">3.2 <code>src/handlers/classifier.py</code><a class="anchor" href="#32-srchandlersclassifierpy" title="链接到这一节">#</a></h3>
 <pre><code>def classify(msg: str) -&gt; Literal[&quot;submission&quot;, &quot;question&quot;, &quot;unknown&quot;]:
     # 1) 规则:含&quot;补交/漏交/没交/忘了交&quot; 且 含 8位学号 → submission
     # 2) 规则:含 &quot;?/?/怎么/为什么/在哪/吗/可以&quot; → question
     # 3) 两者都不满足 → LLM 兜底(prompt: 分类为 submission/question/other, 只输出 JSON)
 </code></pre>
-<3 id="33-srchandlerssubmissionpy">3.3 <code>src/handlers/submission.py</code><a class="anchor" href="#33-srchandlerssubmissionpy" title="链接到这一节">#</a></3>
+<h3 id="33-srchandlerssubmissionpy">3.3 <code>src/handlers/submission.py</code><a class="anchor" href="#33-srchandlerssubmissionpy" title="链接到这一节">#</a></h3>
 <pre><code>def handle(msg: str) -&gt; dict:
     student_id = extract_student_id(msg)      # re.search(r&quot;\b\d{8}\b&quot;, msg)
     name = extract_name(msg) or lookup_name_by_id(student_id)
@@ -483,7 +532,7 @@ OpenCode Go 强制要求 <code>x-opencode-session</code> 请求头,缺了直接 
     })
     return {&quot;type&quot;: &quot;submission&quot;, &quot;reply&quot;: format_reply(...)}
 </code></pre>
-<3 id="34-srchandlersqapy">3.4 <code>src/handlers/qa.py</code><a class="anchor" href="#34-srchandlersqapy" title="链接到这一节">#</a></3>
+<h3 id="34-srchandlersqapy">3.4 <code>src/handlers/qa.py</code><a class="anchor" href="#34-srchandlersqapy" title="链接到这一节">#</a></h3>
 <pre><code>def handle(msg: str) -&gt; dict:
     kind = _classify(msg)            # 【当前】concept / admin / problem
 
@@ -536,7 +585,7 @@ OpenCode Go 强制要求 <code>x-opencode-session</code> 请求头,缺了直接 
 所以停用词只当<strong>闸门</strong>用,不参与打分。停用词表见 <code>src/rag/retriever.py</code> 的
 <code>_FAQ_STOPWORDS</code>,回归测试 <code>test/test_faq.py</code>。</p>
 </blockquote>
-<3 id="35-srcragindexerpy">3.5 <code>src/rag/indexer.py</code><a class="anchor" href="#35-srcragindexerpy" title="链接到这一节">#</a></3>
+<h3 id="35-srcragindexerpy">3.5 <code>src/rag/indexer.py</code><a class="anchor" href="#35-srcragindexerpy" title="链接到这一节">#</a></h3>
 <p>职责:一次性扫描 <code>materials/</code> 目录,分块,建 BM25 索引,存盘。</p>
 <pre><code>def build_index():
     chunks = []   # List[{&quot;text&quot;: ..., &quot;source&quot;: ..., &quot;section&quot;: ...}]
@@ -554,7 +603,7 @@ OpenCode Go 强制要求 <code>x-opencode-session</code> 请求头,缺了直接 
     apply_lucene_idf(bm25)        # 【当前】换掉库的 IDF 兜底,见 §3.6
     pickle.dump({&quot;bm25&quot;: bm25, &quot;chunks&quot;: chunks}, INDEX_DIR / &quot;bm25_index.pkl&quot;)
 </code></pre>
-<3 id="36-srcragretrieverpy">3.6 <code>src/rag/retriever.py</code><a class="anchor" href="#36-srcragretrieverpy" title="链接到这一节">#</a></3>
+<h3 id="36-srcragretrieverpy">3.6 <code>src/rag/retriever.py</code><a class="anchor" href="#36-srcragretrieverpy" title="链接到这一节">#</a></h3>
 <pre><code>class BM25Retriever:
     @classmethod
     def load(cls, path): ...          # 【当前】装载时也调一次 apply_lucene_idf
@@ -575,10 +624,21 @@ OpenCode Go 强制要求 <code>x-opencode-session</code> 请求头,缺了直接 
 <p>⚠️ <strong>只用于资料检索,不许用到 <code>FAQRetriever</code></strong> —— FAQ 的 4.0 阈值就是按旧 IDF 标定的,
 换公式等于偷偷改阈值(实测真命中会掉到阈值以下)。那边靠实词闸门解决同一个问题。
 细节与实测数字见 <code>knowledge_base.md</code> §3.6,回归测试 <code>test/test_idf.py</code>。</p>
-<3 id="37-srcllm大模型通道">3.7 <code>src/llm/</code>(大模型通道)<a class="anchor" href="#37-srcllm大模型通道" title="链接到这一节">#</a></3>
+<h3 id="37-srcllm大模型通道">3.7 <code>src/llm/</code>(大模型通道)<a class="anchor" href="#37-srcllm大模型通道" title="链接到这一节">#</a></h3>
 <p><strong>【当前】</strong> 拆成两层:<code>src/llm/__init__.py</code> 是<strong>对外的统一入口</strong>(业务代码只 import 它),
 <code>src/llm/minmax.py</code> 里装着各家供应商的实现。默认走 OpenCode Go(OpenAI 兼容),
 <code>LLM_API_KEY</code> 留空时自动退回旧的 MinMax —— 这条退路是<strong>回滚用</strong>的。</p>
+<div class="cmp c2"><div class="col"><h3>默认:OpenCode Go</h3><ul>
+<li>OpenAI 兼容协议,<code>POST /v1/chat/completions</code></li>
+<li><strong>必须</strong>带 <code>x-opencode-session</code> 头,缺了直接 400</li>
+<li>还要伪装浏览器 UA —— 部分网关会拦 <code>python-requests</code> 的默认 UA</li>
+<li>✅ <strong>[当前]</strong> <code>.env</code> 里 <code>LLM_API_KEY</code> 有值就走这条</li>
+</ul></div><div class="col tone1"><h3>回滚:MinMax(旧通道)</h3><ul>
+<li>端点 <code>api.minimax.chat/v1/text/chatcompletion_v2</code>,<strong>协议不一样</strong>,单独一套 payload</li>
+<li>用途只有一个:新通道出事时<strong>能立刻退回去</strong></li>
+<li><code>.env</code> 里 <code>LLM_API_KEY</code> 留空时自动走这条</li>
+<li>2026-09-17 就是它额度用尽(<code>status_code: 2056</code>)才换的通道</li>
+</ul></div></div>
 <pre><code># src/llm/__init__.py —— 业务代码只认这个
 def chat(system: str, user: str, temperature=0.3) -&gt; str: ...
 
@@ -601,7 +661,7 @@ headers = {
 UA 伪装是因为部分网关会拦掉 <code>python-requests</code> 的默认 UA。
 回归测试 <code>test/test_llm_client.py</code>(离线跑,不发真实请求)。</p>
 </blockquote>
-<3 id="38-srcutilsdoc_parserpy">3.8 <code>src/utils/doc_parser.py</code><a class="anchor" href="#38-srcutilsdoc_parserpy" title="链接到这一节">#</a></3>
+<h3 id="38-srcutilsdoc_parserpy">3.8 <code>src/utils/doc_parser.py</code><a class="anchor" href="#38-srcutilsdoc_parserpy" title="链接到这一节">#</a></h3>
 <pre><code>def parse_document(path: Path) -&gt; str:
     ext = path.suffix.lower()
     if ext == &quot;.pdf&quot;: return _parse_pdf(path)       # pdfplumber
@@ -611,7 +671,7 @@ UA 伪装是因为部分网关会拦掉 <code>python-requests</code> 的默认 U
     elif ext == &quot;.txt&quot;: return path.read_text(&quot;utf-8&quot;)
     else: return &quot;&quot;
 </code></pre>
-<3 id="39-srcutilsexcel_opspy">3.9 <code>src/utils/excel_ops.py</code><a class="anchor" href="#39-srcutilsexcel_opspy" title="链接到这一节">#</a></3>
+<h3 id="39-srcutilsexcel_opspy">3.9 <code>src/utils/excel_ops.py</code><a class="anchor" href="#39-srcutilsexcel_opspy" title="链接到这一节">#</a></h3>
 <pre><code>def ensure_submission_table(path: Path):
     if not path.exists():
         create_with_header(path, [&quot;登记时间&quot;,&quot;学号&quot;,&quot;姓名&quot;,&quot;作业次数&quot;,&quot;原始消息&quot;,&quot;校验状态&quot;])
@@ -625,7 +685,7 @@ def append_row(path: Path, row_dict: dict):
 def load_roster() -&gt; dict[str, str]:
     # 返回 {学号: 姓名}
 </code></pre>
-<3 id="310-srcmainpy">3.10 <code>src/main.py</code><a class="anchor" href="#310-srcmainpy" title="链接到这一节">#</a></3>
+<h3 id="310-srcmainpy">3.10 <code>src/main.py</code><a class="anchor" href="#310-srcmainpy" title="链接到这一节">#</a></h3>
 <p>提供两种入口:</p>
 <ul>
 <li><strong>CLI</strong>:<code>python -m src.main --message "..."</code> → 打印 JSON</li>
@@ -642,7 +702,7 @@ def load_roster() -&gt; dict[str, str]:
     matched, msg = _strip_forward_prefix(message)
     ...
 </code></pre>
-<3 id="311-srchandlersrecordpy助教的-记录-入口">3.11 <code>src/handlers/record.py</code>(助教的 <code>【记录】</code> 入口)<a class="anchor" href="#311-srchandlersrecordpy助教的-记录-入口" title="链接到这一节">#</a></3>
+<h3 id="311-srchandlersrecordpy助教的-记录-入口">3.11 <code>src/handlers/record.py</code>(助教的 <code>【记录】</code> 入口)<a class="anchor" href="#311-srchandlersrecordpy助教的-记录-入口" title="链接到这一节">#</a></h3>
 <p>一条<strong>助教→系统</strong>的写通路:把「学生这么问 / 该这么答」直接写进 <code>常问问题.txt</code>。
 它存在的原因是<strong>在此之前 FAQ 只能手改 txt</strong>(没版本库、没校验、写错了没人知道)。</p>
 <pre><code>handle(msg) →
@@ -700,18 +760,18 @@ def load_roster() -&gt; dict[str, str]:
 三条目的小样本里自命中只有 1.02 分(阈值 4.0),会让"记完能不能立刻检索到"这条测试假红。
 实测真文件(37 条):自命中最低 10.75、中位 25.44。</p>
 </blockquote>
-<2 id="4-数据流示例">4. 数据流示例<a class="anchor" href="#4-数据流示例" title="链接到这一节">#</a></2>
-<3 id="输入">输入<a class="anchor" href="#输入" title="链接到这一节">#</a></3>
+<h2 id="4-数据流示例">4. 数据流示例<a class="anchor" href="#4-数据流示例" title="链接到这一节">#</a></h2>
+<h3 id="输入">输入<a class="anchor" href="#输入" title="链接到这一节">#</a></h3>
 <pre><code>学生A同学通过雨课堂补交了第一次作业,学号20230001,姓名张三
 </code></pre>
-<3 id="分类器输出">分类器输出<a class="anchor" href="#分类器输出" title="链接到这一节">#</a></3>
+<h3 id="分类器输出">分类器输出<a class="anchor" href="#分类器输出" title="链接到这一节">#</a></h3>
 <pre><code class="language-json">{&quot;type&quot;: &quot;submission&quot;}
 </code></pre>
-<3 id="补交-handler-抽取">补交 Handler 抽取<a class="anchor" href="#补交-handler-抽取" title="链接到这一节">#</a></3>
+<h3 id="补交-handler-抽取">补交 Handler 抽取<a class="anchor" href="#补交-handler-抽取" title="链接到这一节">#</a></h3>
 <pre><code class="language-python">{&quot;student_id&quot;: &quot;20230001&quot;, &quot;name&quot;: &quot;张三&quot;, &quot;hw_no&quot;: &quot;第 1 次&quot;, 
  &quot;status&quot;: &quot;OK&quot;, &quot;raw&quot;: &quot;...&quot;,  &quot;time&quot;: &quot;2026-04-19 14:32&quot;}
 </code></pre>
-<3 id="补交表新增一行">补交表新增一行<a class="anchor" href="#补交表新增一行" title="链接到这一节">#</a></3>
+<h3 id="补交表新增一行">补交表新增一行<a class="anchor" href="#补交表新增一行" title="链接到这一节">#</a></h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -734,10 +794,10 @@ def load_roster() -&gt; dict[str, str]:
 </tr>
 </tbody>
 </table></div>
-<3 id="返回">返回<a class="anchor" href="#返回" title="链接到这一节">#</a></3>
+<h3 id="返回">返回<a class="anchor" href="#返回" title="链接到这一节">#</a></h3>
 <pre><code class="language-json">{&quot;type&quot;:&quot;submission&quot;,&quot;reply&quot;:&quot;✅ 已登记:张三(20230001)第 1 次补交,校验状态 OK&quot;}
 </code></pre>
-<2 id="5-错误处理策略">5. 错误处理策略<a class="anchor" href="#5-错误处理策略" title="链接到这一节">#</a></2>
+<h2 id="5-错误处理策略">5. 错误处理策略<a class="anchor" href="#5-错误处理策略" title="链接到这一节">#</a></h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -768,7 +828,7 @@ def load_roster() -&gt; dict[str, str]:
 </tr>
 </tbody>
 </table></div>
-<2 id="6-目录与路径约定">6. 目录与路径约定<a class="anchor" href="#6-目录与路径约定" title="链接到这一节">#</a></2>
+<h2 id="6-目录与路径约定">6. 目录与路径约定<a class="anchor" href="#6-目录与路径约定" title="链接到这一节">#</a></h2>
 <ul>
 <li><strong>【当前】数据(<code>~/ykt_questions/</code>)和代码(<code>~/ta-assistant/</code>)分开</strong>:
   代码在项目内,数据在 <code>WINDOWS_ROOT</code> 下,由 <code>config.py</code> 一处派生。
@@ -779,7 +839,7 @@ def load_roster() -&gt; dict[str, str]:
 <li><strong>哪些东西不进版本库</strong>(见 <code>.gitignore</code>):<code>data/logs/</code>、<code>data/index/</code>、<code>.env</code>。
   但 <strong><code>data/eval/</code> 是故意要提交的</strong> —— 检索评测基线是"随代码走的黄金文件"。</li>
 </ul>
-<2 id="7-依赖清单requirementstxt">7. 依赖清单(<code>requirements.txt</code>)<a class="anchor" href="#7-依赖清单requirementstxt" title="链接到这一节">#</a></2>
+<h2 id="7-依赖清单requirementstxt">7. 依赖清单(<code>requirements.txt</code>)<a class="anchor" href="#7-依赖清单requirementstxt" title="链接到这一节">#</a></h2>
 <pre><code>openpyxl&gt;=3.1
 pdfplumber&gt;=0.10
 python-docx&gt;=1.1
@@ -798,11 +858,12 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
 这一件事,装在<strong>独立的 <code>/home/jj/ocr-venv</code></strong>,装进项目 venv 会让部署变重、
 还和 <code>pip install -r requirements.txt</code> 打架(见 <code>knowledge_base.md</code> §7)。</p>
 </blockquote>
-<2 id="8-测试策略">8. 测试策略<a class="anchor" href="#8-测试策略" title="链接到这一节">#</a></2>
-<p><strong>【当前】离线全量 338 个测试,5 秒左右跑完</strong>(<code>pytest test/ -q</code>)。
+<h2 id="8-测试策略">8. 测试策略<a class="anchor" href="#8-测试策略" title="链接到这一节">#</a></h2>
+<p><strong>【当前】离线全量 389 个测试,5 秒左右跑完</strong>(<code>pytest test/ -q</code>)。
 <strong>默认不发真实 API 请求</strong> —— <code>test/conftest.py</code> 把网络调用兜住了,所以没网、
 没配 key 也能跑。</p>
-<p>分七类:</p>
+<div class="stats"><div class="stat"><div class="v"><strong>389</strong></div><div class="l">测试总数</div><div class="n"><code>pytest test/ -q</code>,约 5 秒跑完</div></div><div class="stat"><div class="v"><strong>0</strong></div><div class="l">需要联网的测试</div><div class="n"><code>conftest.py</code> 把网络调用兜住了,没网没 key 也能跑</div></div><div class="stat"><div class="v"><strong>17</strong></div><div class="l">检索评测用例</div><div class="n"><code>eval_retrieval.py --compare</code>,退化就退出码 1</div></div><div class="stat"><div class="v"><strong>8</strong></div><div class="l">测试分类</div><div class="n">每类守的东西完全不同,见下表</div></div></div>
+<p>分八类:</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -844,8 +905,13 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
 </tr>
 <tr>
 <td><strong>文档渲染</strong></td>
-<td><code>test_md2html.py</code>(13 例)</td>
-<td>mermaid 转图后<strong>不留 <code>MERMAIDBLOCK</code> 占位符</strong>、表格/图题/提示块构件齐全 —— 它坏了不会让系统答错话,但会静默产出"看起来正常、其实图没出来"的 HTML</td>
+<td><code>test_md2html.py</code>(16 例)</td>
+<td>mermaid 转图后<strong>不留 <code>MERMAIDBLOCK</code> 占位符</strong>、表格/图题/提示块构件齐全、<strong>重复生成同一个 md 必须字节不变</strong> —— 它坏了不会让系统答错话,但会静默产出"看起来正常、其实图没出来"的 HTML</td>
+</tr>
+<tr>
+<td><strong>仓库卫生</strong></td>
+<td><code>test_repo_hygiene.py</code>(3 例)</td>
+<td>全仓文本文件<strong>不许有 CRLF</strong>,<code>.gitattributes</code> 必须钉住 <code>eol=lf</code>。见下方「行尾」一段</td>
 </tr>
 </tbody>
 </table></div>
@@ -862,6 +928,17 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
 又加了 <code>test_submission_table_isolation.py</code>:它比的是<strong>真实文件的字节快照</strong>,
 并且同时证明"补交登记本身照常落盘"——否则靠功能整个坏掉也能通过。
 <strong>同一个 bug 会在你没检查的每一种资源上各长一遍。</strong></p>
+</blockquote>
+<p><strong>行尾(CRLF)为什么也算一"类"。</strong> 测试跑在 WSL、代码写在 Windows,中间靠 rsync
+<strong>原样搬字节</strong> —— 所以行尾是跨越那条边界的<strong>载体</strong>,和上面"会被写的东西"是同一类问题:
+两边不一致,坏在另一边。实测 <code>scripts/setup.sh</code>(Windows 侧被存成 CRLF)搬到 WSL 后
+<code>bash -n</code> 直接报 <code>syntax error: unexpected end of file</code>,报错还指向文件末尾,极易被误读成
+括号没配对。另外 <code>docs/*.html</code> 若被检出成 CRLF,"网页层是否与 md 同步"就没法用
+<code>md2html --all docs/ --hub &amp;&amp; git diff --stat docs/</code> 判断。两道防线:
+<code>.gitattributes</code> 的 <code>* text=auto eol=lf</code> 管 git 检出的那一路,
+<code>test_repo_hygiene.py</code> 管"有人用别的编辑器把 CRLF 写回工作树"那一路。
+详见 <code>deployment.md</code>「行尾必须是 LF」。</p>
+<blockquote>
 <p><strong>最后一类是这个项目最该被看重的一类。</strong> 前三类测的是"索引里有没有那块内容",
 最后一类测的是<strong>"学生问出来,能不能召回到"</strong> —— 两者中间隔着 BM25 的打分与排序,
 而 2026-09-20 抓到的问题恰恰就在那一层(见 §3.6)。
@@ -876,7 +953,7 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
 <li><strong>端到端抽查</strong>:改完提示词后按 <code>knowledge_base.md</code> §7 的 ⑧ 步跑几个真实提问
   (那一步慢、要调 API、得人眼看,但能抓到评测表覆盖不到的东西:措辞、档位、格式)</li>
 </ul>
-<2 id="9-上线-checklist">9. 上线 checklist<a class="anchor" href="#9-上线-checklist" title="链接到这一节">#</a></2>
+<h2 id="9-上线-checklist">9. 上线 checklist<a class="anchor" href="#9-上线-checklist" title="链接到这一节">#</a></h2>
 <ul>
 <li>[ ] WSL 里能运行 <code>python -m src.main --message "test"</code> 不报错</li>
 <li>[ ] <strong>数据目录 <code>WINDOWS_ROOT</code>(默认 <code>~/ykt_questions</code>)下的花名册、补交表、
@@ -887,15 +964,15 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
 <li>[ ] <code>scripts/build_index.py</code> 成功生成 <code>data/index/bm25_index.pkl</code></li>
 <li>[ ] <strong><code>.env</code> 里的 <code>LLM_API_KEY</code> 配好</strong>(留空会退回 MinMax 旧通道),
       调一次 <code>llm.chat("你好", "你是谁")</code> 能返回内容</li>
-<li>[ ] <strong><code>pytest test/ -q</code> 全绿</strong>(离线,约 5 秒,当前 338 例)</li>
+<li>[ ] <strong><code>pytest test/ -q</code> 全绿</strong>(离线,约 5 秒,当前 389 例)</li>
 <li>[ ] <strong><code>python scripts/eval_retrieval.py --compare</code> 退出码 0</strong>(检索没有退化)</li>
 <li>[ ] OpenClaw 配置好调用脚本,端到端跑通一次补交、一次 FAQ、一次 RAG</li>
 <li>[ ] <strong><code>【记录】</code> 通路验一次</strong>(发一条<strong>会被拒收</strong>的,例如带个假学号 ——
       拒收也证明它路由到了后端,而且<strong>不会</strong>往手写的 FAQ 里写坏数据)</li>
 </ul>
 <div class="foot">
-  <span>源文件 <code>docs/design.md</code> · 生成于 2026-09-20 21:09</span>
-  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+  <span>源文件 <code>docs/design.md</code> · 内容指纹 <code>013ee88c</code></span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是构建期渲染出来的</span>
 </div>
 </main>
 </div>
@@ -923,12 +1000,6 @@ markdown&gt;=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML �
   }
   document.addEventListener('scroll',spy,{passive:true});spy();
 })();
-</script>
-<script type="module">
-  // startOnLoad 关掉,只跑一次 run():两者同时开会重复渲染同一张图
-  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
-    .then(function(m){var M=m.default||m;M.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});return M.run({nodes:document.querySelectorAll('.mermaid')});})
-    .catch(function(){/* 没网:图保持源码原样,折叠区里也有一份 */});
 </script>
 </body>
 </html>

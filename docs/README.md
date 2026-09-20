@@ -13,12 +13,30 @@
 > | LLM:MinMax API(已配置) | 默认通道已换成 **OpenCode Go**;MinMax 降为**回滚通道**;见 [`design.md`](design.md) §3.7 |
 > | 检索:"BM25 + 可选 sentence-transformers 升级" | 就是 BM25(不需要向量模型),但 **IDF 换成了 Lucene 写法**;见 [`knowledge_base.md`](knowledge_base.md) §3.6 |
 > | 脚本树里没有 `md2html.py`(把文档转成 HTML 那个) | 完整清单**以根 README 的树为准** —— 这两棵树对不上时,信根目录那份 |
-> | 没有「测试」一节 | 现在有 **338 个测试** + 检索评测基线,见根 README 的「测试」 |
+> | 没有「测试」一节 | 现在有 **389 个测试** + 检索评测基线,见根 README 的「测试」 |
 > | 没有 `src/handlers/record.py`、`src/utils/course_facts.py` | 后来加的:`【记录】`(助教在微信里写 FAQ)与课程事务事实表,见 [`knowledge_base.md`](knowledge_base.md) §5.5 / §6.6 |
 > | LLM 只有 MinMax | 默认通道是 **OpenCode Go**,MinMax 降为回滚通道,见 [`design.md`](design.md) §3.7 |
 > | 目录树只列了 5 个 md | 还有 `wechat_end_to_end.md` / `knowledge_base.md`,且**每篇都有网页版 `docs/*.html`** —— 见 [`index.html`](index.html) |
+> | 没提行尾要求 | 全仓文本文件必须是 **LF**(`.gitattributes` 钉住)。CRLF 会被 rsync 原样带到 WSL,`setup.sh` 会直接跑不起来(报错还指向文件末尾),见 [`deployment.md`](deployment.md) §7「行尾必须是 LF」 |
 >
 > (目录树里的 `data/samples/` 之类的**仍然准确**,不用疑心。)
+
+:::stats
+- **169** | 在册学生 | 电路基础理论,8 个行政班
+- **3165** | 索引块 | 服务两门课:数电实验 + 电路基础理论
+- **389** | 测试 | `pytest test/` 全绿才允许提交
+- **17/17** | 检索命中 | 评测闸门,MRR 0.956;退化就退出码 1
+:::
+
+> 上面这些数字是**现状**;下面正文是**当时**。两者冲突时,以根目录
+> [`../README.md`](../README.md) 和 [`knowledge_base.md`](knowledge_base.md) 为准。
+
+:::timeline
+- 2026-04-19 | 项目启动 | 只有数电实验一门课,需求 / 设计 / 部署三份文档 + 骨架代码
+- 2026-09-01 | 加第二门课 | 电路基础理论进语料库,答疑要能分得清是哪门课
+- 2026-09-20 | 校订 + 换学期 | 八份文档逐处改成本文的实际值;同一天踩到"花名册读不出来"
+- 2026-09-21 | 补交表按课推导 | 换名单这一处动作,同时换掉花名册和补交表
+:::
 
 ## 项目目标
 
@@ -31,11 +49,17 @@
 
 ## 快速上手(5 步)
 
-1. **阅读文档**:`docs/requirements.md` 和 `docs/design.md`
-2. **放置项目**:将整个 `ta-assistant/` 文件夹移动到 `C:\Users\YOUR_USERNAME\Downloads\`
-3. **交给 Claude Code**:打开 Claude Code,粘贴 `docs/claude_code_prompt.md` 里的内容,让它自动完成剩余实现和环境配置
-4. **WSL 首次部署**:在 WSL Ubuntu 里运行 `bash /mnt/c/Users/YOUR_USERNAME/Downloads/ta-assistant/scripts/deploy.sh`
-5. **接入 OpenClaw(微信端到端)**:`bash scripts/install_openclaw_skill.sh`,完整链路与排障见 `docs/wechat_end_to_end.md`(也见 `docs/deployment.md` 的接入章节)
+:::steps
+- 阅读文档 | `docs/requirements.md` 和 `docs/design.md`
+- 放置项目 | 把整个 `ta-assistant/` 文件夹移到 `C:\Users\YOUR_USERNAME\Downloads\`
+- 交给 Claude Code | 打开 Claude Code,粘贴 `docs/claude_code_prompt.md` 里的内容,让它自动完成剩余实现和环境配置
+- WSL 首次部署 | 在 WSL Ubuntu 里跑 `bash /mnt/c/Users/YOUR_USERNAME/Downloads/ta-assistant/scripts/deploy.sh`
+- 接入 OpenClaw | `bash scripts/install_openclaw_skill.sh`;完整链路与排障见 [`wechat_end_to_end.md`](wechat_end_to_end.md)
+:::
+
+> ⚠️ 这 5 步是**当时**的交付步骤,现在照做会装错(第 2 步的路径、第 4 步的脚本都变了)。
+> 真实的快速开始看根目录 [`../README.md`](../README.md);这里原样保留,
+> 是为了留下"当时打算怎么交付"这份记录。
 
 ## 目录结构
 

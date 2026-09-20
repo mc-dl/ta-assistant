@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520.89 318"
+     width="520.89" height="318" role="img"
+     aria-label="索引 3165 块的来源">
+  <title>索引 3165 块的来源</title>
+  <desc>pie showData title 索引 3165 块的来源
+  &quot;电路基础·教材&quot; : 2105
+  &quot;电路基础·各章作业答案&quot; : 491
+  &quot;电路基础·课堂讲义&quot; : 288
+  &quot;数电实验&quot; : 231
+  &quot;电路基础·参考答案&quot; : 44
+  &quot;电路基础·错误集锦&quot; : 6</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="520.89" height="318" fill="#ffffff"/>
+<text x="26" y="26" font-size="15" fill="#1f2328" font-weight="600">索引 3165 块的来源</text>
+<path d="M 136,173 L 136,63 A 110,110 0 1 1 41.29,228.94 Z" stroke="#ffffff" stroke-width="1.6" fill="#0969da" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="195.23" y="206.81" font-size="12.5" fill="#ffffff" text-anchor="middle" font-weight="600">67%</text>
+<path d="M 136,173 L 41.29,228.94 A 110,110 0 0 1 36.53,126.03 Z" stroke="#ffffff" stroke-width="1.6" fill="#1a7f37" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="67.87" y="176.15" font-size="12.5" fill="#ffffff" text-anchor="middle" font-weight="600">16%</text>
+<path d="M 136,173 L 36.53,126.03 A 110,110 0 0 1 77.77,79.68 Z" stroke="#ffffff" stroke-width="1.6" fill="#9a6700" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="85.05" y="127.67" font-size="12.5" fill="#ffffff" text-anchor="middle" font-weight="600">9%</text>
+<path d="M 136,173 L 77.77,79.68 A 110,110 0 0 1 125.1,63.54 Z" stroke="#ffffff" stroke-width="1.6" fill="#8250df" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="113.99" y="108.45" font-size="12.5" fill="#ffffff" text-anchor="middle" font-weight="600">7%</text>
+<path d="M 136,173 L 125.1,63.54 A 110,110 0 0 1 134.69,63.01 Z" stroke="#ffffff" stroke-width="1.6" fill="#cf222e" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 136,173 L 134.69,63.01 A 110,110 0 0 1 136,63 Z" stroke="#ffffff" stroke-width="1.6" fill="#0d9488" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="276" y="107" width="12" height="12" rx="3" fill="#0969da"/>
+<text x="296" y="113" font-size="13" fill="#1f2328">电路基础·教材</text>
+<text x="508.89" y="113" font-size="13" fill="#59636e" text-anchor="end">2105  (66.5%)</text>
+<rect x="276" y="131" width="12" height="12" rx="3" fill="#1a7f37"/>
+<text x="296" y="137" font-size="13" fill="#1f2328">电路基础·各章作业答案</text>
+<text x="508.89" y="137" font-size="13" fill="#59636e" text-anchor="end">491  (15.5%)</text>
+<rect x="276" y="155" width="12" height="12" rx="3" fill="#9a6700"/>
+<text x="296" y="161" font-size="13" fill="#1f2328">电路基础·课堂讲义</text>
+<text x="508.89" y="161" font-size="13" fill="#59636e" text-anchor="end">288  (9.1%)</text>
+<rect x="276" y="179" width="12" height="12" rx="3" fill="#8250df"/>
+<text x="296" y="185" font-size="13" fill="#1f2328">数电实验</text>
+<text x="508.89" y="185" font-size="13" fill="#59636e" text-anchor="end">231  (7.3%)</text>
+<rect x="276" y="203" width="12" height="12" rx="3" fill="#cf222e"/>
+<text x="296" y="209" font-size="13" fill="#1f2328">电路基础·参考答案</text>
+<text x="508.89" y="209" font-size="13" fill="#59636e" text-anchor="end">44  (1.4%)</text>
+<rect x="276" y="227" width="12" height="12" rx="3" fill="#0d9488"/>
+<text x="296" y="233" font-size="13" fill="#1f2328">电路基础·错误集锦</text>
+<text x="508.89" y="233" font-size="13" fill="#59636e" text-anchor="end">6  (0.2%)</text>
+</svg>

@@ -13,13 +13,36 @@
 > | 2.3 LLM 层只做 MinMax | 默认通道换成 **OpenCode Go**,MinMax 留作回滚 | 见 `design.md` §3.7 |
 > | 2.6 `search(query, top_k=5)` | 改成 **7**(`RAG_TOP_K`) | 一份语料的中位分块数是 5、最长 11,取 5 会把同一条解答的后面几块切掉 |
 > | 2.8 "FAQ 命中就短路" | 只有**事务题**短路;概念题把 FAQ 当**补充材料** | 一刀切会让概念题被"作业怎么提交"那条 FAQ 截胡 |
-> | 第三步 `pytest tests/ -v` | 目录是 **`test/`**(单数),现在 **338 个测试** | 见根 `README.md` 的「测试」 |
+> | 第三步 `pytest tests/ -v` | 目录是 **`test/`**(单数),现在 **389 个测试** | 见根 `README.md` 的「测试」 |
 > | 最后一条:中文路径 + `mklink` 软链接 | 数据已搬到 **WSL 原生目录** `~/ykt_questions/`,不再需要软链接 | 见 `deployment.md` §0 / §5 |
 > | "FAQ 命中就短路" 隐含"不调大模型" | 只是**不查资料**,答复**仍由大模型润色** | 四份文档曾同时把这句话写反,实测见 `knowledge_base.md` §5.4 |
 >
 > 另外:本文从头到尾**没有提向量检索**("可选 sentence-transformers 升级"那句是
 > [`README.md`](README.md) 技术栈里的旧设想),那个升级**没有做**,也不需要 ——
 > 检索就是 BM25,只是 IDF 换成了 Lucene 写法(见 `knowledge_base.md` §3.6)。
+
+:::stats
+- **18** | 第一步要读的文件 | 4 份 md + 14 个源码/脚本
+- **11** | 第二步的小节 | 从配置层一路排到脚本,顺序不能换
+- **6** | 被实测推翻的要求 | 就是上面那张表,现状以 `knowledge_base.md` 为准
+- **389** | 最终测试数 | prompt 里写的是 `pytest tests/`,实际目录是 `test/`
+:::
+
+```mermaid
+flowchart TD
+  %% caption: 这份 prompt 期望 Claude Code 走完的四步 —— 第四步的 HANDOFF.md 至今还在仓库里
+  P["把整份 prompt<br/>粘进 Claude Code"] --> S1["① 读完 18 个文件<br/>(不许跳)"]
+  S1 --> S2["② 按 2.1 → 2.11 补代码<br/>每步跑通再下一步"]
+  S2 --> S3["③ 三条消息端到端试<br/>补交 / Proteus / 竞争冒险"]
+  S3 -->|"不过就继续调"| S2
+  S3 -->|"过了"| S4["④ 写 HANDOFF.md<br/>改了啥 / 还缺啥 / 风险"]
+```
+
+:::note 为什么这份 prompt 现在还能读
+它记录的**不是**"系统长什么样",而是"一个零上下文的 Claude Code 需要被告知什么
+才能动手"。这个信息今天依然有用 —— 需求文档该写到什么颗粒度、
+哪些决定必须写死、哪些要留给实现者,全在这份 prompt 的取舍里。
+::: 
 
 ---
 
@@ -60,6 +83,20 @@
 ### 第二步:按以下顺序完善代码
 
 **顺序很重要,每一步跑通再下一步。**
+
+:::steps
+- 2.1 配置层 | 路径 / 参数 / 模型名全集中到 `config.py`,`.env` 可覆盖
+- 2.2 工具层 | 文档解析(pdf/docx/doc/xlsx)+ Excel 的读-改-存
+- 2.3 LLM 层 | MinMax 客户端,3 次重试 + 指数退避,调用记日志
+- 2.4 分类器 | 规则优先(关键词 ∧ 8 位学号),LLM 兜底
+- 2.5 补交 Handler | 抽学号 / 姓名 / 次数 → 花名册校验 → 写补交表
+- 2.6 RAG 模块 | 按段切块 + BM25 建索引,pickle 落盘
+- 2.7 FAQ 检索 | `常问问题.txt` 单独建索引,不持久化(它很小)
+- 2.8 答疑 Handler | 先 FAQ 后 RAG,拼 prompt 交给大模型
+- 2.9 主入口 | CLI `--message` + 可选 HTTP `POST /process`
+- 2.10 OpenClaw Bridge | stdout **只许有一行** JSON
+- 2.11 脚本 | `build_index.py` + `setup.sh`
+:::
 
 #### 2.1 配置层 (`src/config.py`)
 - 把所有路径、参数、模型名集中在这里

@@ -192,11 +192,12 @@ ta-assistant/
 .venv/bin/python -m pytest test/test_retrieval_recall.py -v
 ```
 
-共 **338 个测试**,覆盖:分类器规则、姓名抽取(含反例)、FAQ 解析与实词闸门、
+共 **389 个测试**,覆盖:分类器规则、姓名抽取(含反例)、FAQ 解析与实词闸门、
 文本分块与页码标记、bridge IPC 契约、提问分档、题号识别、中文版作业答案切题边界、
 PPTX 解析(含组合形状与表格)、扫描版教材装配、BM25 的 IDF、检索召回、评测基线、
-课程事务事实表(生效期)、花名册换版式后的读取韧性、文档渲染(图/表/目录构件),
-以及 `【记录】` 的解析 / 拒收 / 原子写 / 回读回滚。
+课程事务事实表(生效期)、花名册换版式后的读取韧性、**补交表路径(跟着花名册走)**、
+文档渲染(图/表/目录构件)、**已生成 HTML 的完整性(锚点/链接/标题标签名)**、
+仓库行尾卫生(不许有 CRLF),以及 `【记录】` 的解析 / 拒收 / 原子写 / 回读回滚。
 
 其中几项是**表驱动**的 —— 要加新问法,往表里加一行就行,不用写新测试:
 
@@ -204,11 +205,14 @@ PPTX 解析(含组合形状与表格)、扫描版教材装配、BM25 的 IDF、�
 |---|---|---|
 | 提问分档(概念/事务/题号) | 29 条问法 | `test/test_query_kind.py` |
 | 题号识别(该不该走资料通路) | 22 条问法 | `test/test_problem_ref.py` |
-| 教材章表与页码不变量 | 25 个测试 | `test/test_import_textbook.py` |
+| 教材装配与章表/页码不变量 | 53 个测试(26 个用例 + 参数化) | `test/test_import_textbook.py` |
 | 检索召回(每问期望命中哪些资料) | 17 条提问 | `scripts/eval_retrieval.py` 的 `CASES`,与 `test/test_retrieval_recall.py` **共用** |
 | `【记录】` 的正例/反例 | 49 个测试 | `test/test_record.py` |
 | 花名册版式(雨课堂导出 / 旧记分册 / 坏 `<dimension>`) | 11 个测试 | `test/test_roster.py` |
-| 文档渲染(mermaid 转图 / 表格包裹 / 图题 / 提示块上色 / 导航页) | 13 个测试 | `test/test_md2html.py` |
+| 文档渲染(mermaid 转图 / 表格包裹 / 图题 / 提示块上色 / 导航页 / **重复生成字节不变**) | 17 个测试 | `test/test_md2html.py` |
+| **已生成的 HTML 本身**(标题标签名 / 锚点 / 链接 / 图片 / 有图才引 CDN) | 33 个测试 | `test/test_html_integrity.py` |
+| 补交表路径(跟着花名册走 / 写不进去时不许回"已登记") | 11 个测试 | `test/test_submission_table_path.py` |
+| 仓库卫生(**全仓不许有 CRLF** / `.gitattributes` 钉住 `eol=lf`) | 3 个测试 | `test/test_repo_hygiene.py` |
 
 **测试绝不写生产数据**:`test/conftest.py` 里的 `isolated_logs` / `isolated_faq` /
 `isolated_course_facts` / `isolated_submission_table` 都是 autouse 的 ——

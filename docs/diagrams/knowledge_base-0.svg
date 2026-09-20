@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610.33 819"
+     width="610.33" height="819" role="img"
+     aria-label="知识库说明(FAQ + 资料库) · 图 1">
+  <title>知识库说明(FAQ + 资料库) · 图 1</title>
+  <desc>flowchart TD
+  Q[&quot;学生提问&quot;] --&gt; K{&quot;_classify() 分档&quot;}
+
+  K --&gt;|&quot;problem&lt;br/&gt;带题号 1.36 / 第5题&quot;| RAGONLY[&quot;只走②资料通路&lt;br/&gt;FAQ 连补充都不加&quot;]
+  K --&gt;|&quot;admin&lt;br/&gt;提交/截止/成绩/考试&quot;| FAQHIT{&quot;① FAQ 命中?&lt;br/&gt;阈值 4.0 + 实词闸门&quot;}
+  K --&gt;|&quot;concept&lt;br/&gt;概念/原理,以及没命中任何关键词的默认档&quot;| BOTH
+
+  FAQHIT --&gt;|&quot;命中&quot;| FAST[&quot;① FAQ 当依据&lt;br/&gt;不查资料,交给大模型润色&quot;]
+  F</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="610.33" height="819" fill="#ffffff"/>
+<path d="M 305.17,66.72 L 305.17,97.72 L 305.17,97.72 L 305.17,128.72" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="305.17,128.72 302.24,120.21 308.1,120.21" fill="#8c959f"/>
+<path d="M 305.17,181.44 L 305.17,208.39 L 108.47,208.39 L 108.47,273.24" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="108.47,273.24 105.54,264.73 111.4,264.73" fill="#8c959f"/>
+<rect x="149.72" y="190.44" width="114.19" height="35.9" rx="4" fill="#ffffff"/>
+<text x="185.89" y="200.91" font-size="11.5" fill="#1f2328">problem</text>
+<text x="154.72" y="215.86" font-size="11.5" fill="#1f2328">带题号 1.36 / 第5题</text>
+<path d="M 108.47,283.24 L 108.47,344.96 L 94.04,344.96 L 94.04,406.68" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="94.04,406.68 91.11,398.17 96.97,398.17" fill="#8c959f"/>
+<path d="M 305.17,181.44 L 305.17,246.29 L 263.19,246.29 L 263.19,273.24" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="263.19,273.24 260.26,264.73 266.12,264.73" fill="#8c959f"/>
+<rect x="227.31" y="228.34" width="113.73" height="35.9" rx="4" fill="#ffffff"/>
+<text x="269.57" y="238.82" font-size="11.5" fill="#1f2328">admin</text>
+<text x="232.31" y="253.77" font-size="11.5" fill="#1f2328">提交/截止/成绩/考试</text>
+<path d="M 305.17,181.44 L 305.17,208.39 L 459.88,208.39 L 459.88,273.24" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="459.88,273.24 456.95,264.73 462.81,264.73" fill="#8c959f"/>
+<rect x="270.11" y="190.44" width="224.82" height="35.9" rx="4" fill="#ffffff"/>
+<text x="360.39" y="200.91" font-size="11.5" fill="#1f2328">concept</text>
+<text x="275.11" y="215.86" font-size="11.5" fill="#1f2328">概念/原理,以及没命中任何关键词的默认档</text>
+<path d="M 263.19,344.68 L 263.19,375.68 L 280.79,375.68 L 280.79,406.68" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="280.79,406.68 277.86,398.17 283.72,398.17" fill="#8c959f"/>
+<rect x="255.49" y="365.2" width="33" height="20.95" rx="4" fill="#ffffff"/>
+<text x="260.49" y="375.68" font-size="11.5" fill="#1f2328">命中</text>
+<path d="M 263.19,344.68 L 263.19,375.68 L 94.04,375.68 L 94.04,406.68" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="94.04,406.68 91.11,398.17 96.97,398.17" fill="#8c959f"/>
+<rect x="156.36" y="365.2" width="44.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="161.36" y="375.68" font-size="11.5" fill="#1f2328">未命中</text>
+<path d="M 459.88,313.96 L 459.88,360.32 L 491.92,360.32 L 491.92,406.68" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="491.92,406.68 488.99,398.17 494.85,398.17" fill="#8c959f"/>
+<path d="M 491.92,459.4 L 491.92,497.12 L 289.17,497.12 L 289.17,528.12" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="289.17,528.12 286.24,519.61 292.1,519.61" fill="#8c959f"/>
+<rect x="374.04" y="486.64" width="33" height="20.95" rx="4" fill="#ffffff"/>
+<text x="379.04" y="497.12" font-size="11.5" fill="#1f2328">命中</text>
+<path d="M 491.92,459.4 L 491.92,497.12 L 454.21,497.12 L 454.21,528.12" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="454.21,528.12 451.28,519.61 457.14,519.61" fill="#8c959f"/>
+<rect x="450.81" y="486.64" width="44.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="455.81" y="497.12" font-size="11.5" fill="#1f2328">没命中</text>
+<path d="M 94.04,466.12 L 94.04,497.12 L 120.13,497.12 L 120.13,528.12" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="120.13,528.12 117.2,519.61 123.06,519.61" fill="#8c959f"/>
+<path d="M 120.13,538.12 L 120.13,584.48 L 325.17,584.48 L 325.17,630.84" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="325.17,630.84 322.24,622.33 328.1,622.33" fill="#8c959f"/>
+<path d="M 289.17,568.84 L 289.17,599.84 L 325.17,599.84 L 325.17,630.84" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="325.17,630.84 322.24,622.33 328.1,622.33" fill="#8c959f"/>
+<path d="M 454.21,568.84 L 454.21,599.84 L 325.17,599.84 L 325.17,630.84" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="325.17,630.84 322.24,622.33 328.1,622.33" fill="#8c959f"/>
+<path d="M 325.17,690.28 L 325.17,721.28 L 305.17,721.28 L 305.17,752.28" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="305.17,752.28 302.24,743.77 308.1,743.77" fill="#8c959f"/>
+<path d="M 280.79,466.12 L 280.79,497.12 L 160.13,497.12 L 160.13,528.12" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="160.13,528.12 157.2,519.61 163.06,519.61" fill="#8c959f"/>
+<path d="M 160.13,538.12 L 160.13,584.48 L 156.09,584.48 L 156.09,630.84" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="156.09,630.84 153.16,622.33 159.02,622.33" fill="#8c959f"/>
+<path d="M 156.09,640.84 L 156.09,696.56 L 305.17,696.56 L 305.17,752.28" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="305.17,752.28 302.24,743.77 308.1,743.77" fill="#8c959f"/>
+<rect x="264.17" y="26" width="82" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="279.17" y="47.36" font-size="13" fill="#1f2328">学</text>
+<text x="292.17" y="47.36" font-size="13" fill="#1f2328">生</text>
+<text x="305.17" y="47.36" font-size="13" fill="#1f2328">提</text>
+<text x="318.17" y="47.36" font-size="13" fill="#1f2328">问</text>
+<polygon points="305.17,128.72 407.59,155.08 305.17,181.44 202.74,155.08" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="256.35" y="156.08" font-size="13" fill="#1f2328">_classify()</text>
+<text x="324.08" y="156.08" font-size="13" fill="#1f2328"> </text>
+<text x="327.98" y="156.08" font-size="13" fill="#1f2328">分</text>
+<text x="340.98" y="156.08" font-size="13" fill="#1f2328">档</text>
+<rect x="26" y="406.68" width="136.08" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="51.01" y="428.04" font-size="13" fill="#1f2328">只</text>
+<text x="64.01" y="428.04" font-size="13" fill="#1f2328">走</text>
+<text x="77.01" y="428.04" font-size="13" fill="#1f2328">②</text>
+<text x="85.07" y="428.04" font-size="13" fill="#1f2328">资</text>
+<text x="98.07" y="428.04" font-size="13" fill="#1f2328">料</text>
+<text x="111.07" y="428.04" font-size="13" fill="#1f2328">通</text>
+<text x="124.07" y="428.04" font-size="13" fill="#1f2328">路</text>
+<text x="41" y="446.76" font-size="13" fill="#1f2328">FAQ</text>
+<text x="65.18" y="446.76" font-size="13" fill="#1f2328"> </text>
+<text x="69.08" y="446.76" font-size="13" fill="#1f2328">连</text>
+<text x="82.08" y="446.76" font-size="13" fill="#1f2328">补</text>
+<text x="95.08" y="446.76" font-size="13" fill="#1f2328">充</text>
+<text x="108.08" y="446.76" font-size="13" fill="#1f2328">都</text>
+<text x="121.08" y="446.76" font-size="13" fill="#1f2328">不</text>
+<text x="134.08" y="446.76" font-size="13" fill="#1f2328">加</text>
+<polygon points="263.19,273.24 382.9,308.96 263.19,344.68 143.47,308.96" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="226.59" y="300.6" font-size="13" fill="#1f2328">①</text>
+<text x="234.65" y="300.6" font-size="13" fill="#1f2328"> </text>
+<text x="238.55" y="300.6" font-size="13" fill="#1f2328">FAQ</text>
+<text x="262.73" y="300.6" font-size="13" fill="#1f2328"> </text>
+<text x="266.63" y="300.6" font-size="13" fill="#1f2328">命</text>
+<text x="279.63" y="300.6" font-size="13" fill="#1f2328">中</text>
+<text x="292.63" y="300.6" font-size="13" fill="#1f2328">?</text>
+<text x="204.49" y="319.32" font-size="13" fill="#1f2328">阈</text>
+<text x="217.49" y="319.32" font-size="13" fill="#1f2328">值</text>
+<text x="230.49" y="319.32" font-size="13" fill="#1f2328"> </text>
+<text x="234.39" y="319.32" font-size="13" fill="#1f2328">4.0</text>
+<text x="254.93" y="319.32" font-size="13" fill="#1f2328"> </text>
+<text x="258.83" y="319.32" font-size="13" fill="#1f2328">+</text>
+<text x="265.98" y="319.32" font-size="13" fill="#1f2328"> </text>
+<text x="269.88" y="319.32" font-size="13" fill="#1f2328">实</text>
+<text x="282.88" y="319.32" font-size="13" fill="#1f2328">词</text>
+<text x="295.88" y="319.32" font-size="13" fill="#1f2328">闸</text>
+<text x="308.88" y="319.32" font-size="13" fill="#1f2328">门</text>
+<rect x="412.9" y="273.24" width="93.96" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="427.9" y="294.6" font-size="13" fill="#1f2328">②</text>
+<text x="435.96" y="294.6" font-size="13" fill="#1f2328"> </text>
+<text x="439.86" y="294.6" font-size="13" fill="#1f2328">资</text>
+<text x="452.86" y="294.6" font-size="13" fill="#1f2328">料</text>
+<text x="465.86" y="294.6" font-size="13" fill="#1f2328">通</text>
+<text x="478.86" y="294.6" font-size="13" fill="#1f2328">路</text>
+<rect x="192.08" y="406.68" width="177.42" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="241.27" y="428.04" font-size="13" fill="#1f2328">①</text>
+<text x="249.33" y="428.04" font-size="13" fill="#1f2328"> </text>
+<text x="253.23" y="428.04" font-size="13" fill="#1f2328">FAQ</text>
+<text x="277.41" y="428.04" font-size="13" fill="#1f2328"> </text>
+<text x="281.31" y="428.04" font-size="13" fill="#1f2328">当</text>
+<text x="294.31" y="428.04" font-size="13" fill="#1f2328">依</text>
+<text x="307.31" y="428.04" font-size="13" fill="#1f2328">据</text>
+<text x="207.08" y="446.76" font-size="13" fill="#1f2328">不</text>
+<text x="220.08" y="446.76" font-size="13" fill="#1f2328">查</text>
+<text x="233.08" y="446.76" font-size="13" fill="#1f2328">资</text>
+<text x="246.08" y="446.76" font-size="13" fill="#1f2328">料</text>
+<text x="259.08" y="446.76" font-size="13" fill="#1f2328">,</text>
+<text x="263.5" y="446.76" font-size="13" fill="#1f2328">交</text>
+<text x="276.5" y="446.76" font-size="13" fill="#1f2328">给</text>
+<text x="289.5" y="446.76" font-size="13" fill="#1f2328">大</text>
+<text x="302.5" y="446.76" font-size="13" fill="#1f2328">模</text>
+<text x="315.5" y="446.76" font-size="13" fill="#1f2328">型</text>
+<text x="328.5" y="446.76" font-size="13" fill="#1f2328">润</text>
+<text x="341.5" y="446.76" font-size="13" fill="#1f2328">色</text>
+<polygon points="491.92,406.68 584.33,433.04 491.92,459.4 399.5,433.04" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="448.82" y="434.04" font-size="13" fill="#1f2328">①</text>
+<text x="456.88" y="434.04" font-size="13" fill="#1f2328"> </text>
+<text x="460.78" y="434.04" font-size="13" fill="#1f2328">FAQ</text>
+<text x="484.96" y="434.04" font-size="13" fill="#1f2328"> </text>
+<text x="488.86" y="434.04" font-size="13" fill="#1f2328">也</text>
+<text x="501.86" y="434.04" font-size="13" fill="#1f2328">命</text>
+<text x="514.86" y="434.04" font-size="13" fill="#1f2328">中</text>
+<text x="527.86" y="434.04" font-size="13" fill="#1f2328">?</text>
+<rect x="195.13" y="528.12" width="188.08" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="210.13" y="549.48" font-size="13" fill="#1f2328">FAQ</text>
+<text x="234.31" y="549.48" font-size="13" fill="#1f2328"> </text>
+<text x="238.21" y="549.48" font-size="13" fill="#1f2328">一</text>
+<text x="251.21" y="549.48" font-size="13" fill="#1f2328">并</text>
+<text x="264.21" y="549.48" font-size="13" fill="#1f2328">当</text>
+<text x="277.21" y="549.48" font-size="13" fill="#1f2328">补</text>
+<text x="290.21" y="549.48" font-size="13" fill="#1f2328">充</text>
+<text x="303.21" y="549.48" font-size="13" fill="#1f2328">材</text>
+<text x="316.21" y="549.48" font-size="13" fill="#1f2328">料</text>
+<text x="329.21" y="549.48" font-size="13" fill="#1f2328">喂</text>
+<text x="342.21" y="549.48" font-size="13" fill="#1f2328">进</text>
+<text x="355.21" y="549.48" font-size="13" fill="#1f2328">去</text>
+<rect x="413.21" y="528.12" width="82" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="428.21" y="549.48" font-size="13" fill="#1f2328">只</text>
+<text x="441.21" y="549.48" font-size="13" fill="#1f2328">喂</text>
+<text x="454.21" y="549.48" font-size="13" fill="#1f2328">资</text>
+<text x="467.21" y="549.48" font-size="13" fill="#1f2328">料</text>
+<rect x="191.09" y="630.84" width="268.16" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="206.09" y="652.2" font-size="13" fill="#1f2328">BM25</text>
+<text x="238.33" y="652.2" font-size="13" fill="#1f2328"> </text>
+<text x="242.23" y="652.2" font-size="13" fill="#1f2328">over</text>
+<text x="270.83" y="652.2" font-size="13" fill="#1f2328"> </text>
+<text x="274.73" y="652.2" font-size="13" fill="#1f2328">~/ykt_questions/materials/</text>
+<text x="237.16" y="670.92" font-size="13" fill="#1f2328">取</text>
+<text x="250.16" y="670.92" font-size="13" fill="#1f2328"> </text>
+<text x="254.06" y="670.92" font-size="13" fill="#1f2328">top-RAG_TOP_K(</text>
+<text x="357.8" y="670.92" font-size="13" fill="#1f2328">默</text>
+<text x="370.8" y="670.92" font-size="13" fill="#1f2328">认</text>
+<text x="383.8" y="670.92" font-size="13" fill="#1f2328"> </text>
+<text x="387.7" y="670.92" font-size="13" fill="#1f2328">7)</text>
+<text x="400.18" y="670.92" font-size="13" fill="#1f2328">块</text>
+<rect x="257.67" y="752.28" width="95" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="272.67" y="773.64" font-size="13" fill="#1f2328">大</text>
+<text x="285.67" y="773.64" font-size="13" fill="#1f2328">模</text>
+<text x="298.67" y="773.64" font-size="13" fill="#1f2328">型</text>
+<text x="311.67" y="773.64" font-size="13" fill="#1f2328">作</text>
+<text x="324.67" y="773.64" font-size="13" fill="#1f2328">答</text>
+</svg>

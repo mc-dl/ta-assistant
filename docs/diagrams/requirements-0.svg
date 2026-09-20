@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 817.59 578.48"
+     width="817.59" height="578.48" role="img"
+     aria-label="功能需求总览 —— F-1 收口,分类器分三路,写通路落两个文件">
+  <title>功能需求总览 —— F-1 收口,分类器分三路,写通路落两个文件</title>
+  <desc>flowchart TD
+  %% caption: 功能需求总览 —— F-1 收口,分类器分三路,写通路落两个文件
+  F6[&quot;&lt;b&gt;F-6&lt;/b&gt; OpenClaw 接入&lt;br/&gt;子进程 + 一行 JSON&quot;]
+  F1[&quot;&lt;b&gt;F-1&lt;/b&gt;【准入】消息前缀过滤&lt;br/&gt;没有 【转发学生提问】 前缀 → skip&quot;]
+  F2[&quot;&lt;b&gt;F-2&lt;/b&gt;【路由】消息分类器&lt;br/&gt;规则优先 + LLM 兜底&quot;]
+  F3[&quot;&lt;b&gt;F-3&lt;/b&gt;【写通路】补交登记&lt;br/&gt;抽学号/姓名/次数 → 写 Excel&quot;]
+  F7[&quot;&lt;b&gt;F-7&lt;/b&gt;【写通路】助教写 FAQ&lt;br/&gt;四道检查 </desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="817.59" height="578.48" fill="#ffffff"/>
+<path d="M 408.79,85.44 L 408.79,116.44 L 408.79,116.44 L 408.79,147.44" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="408.79,147.44 405.86,138.93 411.72,138.93" fill="#8c959f"/>
+<path d="M 408.79,206.88 L 408.79,237.88 L 300.77,237.88 L 300.77,268.88" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="300.77,268.88 297.84,260.37 303.7,260.37" fill="#8c959f"/>
+<path d="M 300.77,328.32 L 300.77,359.32 L 123.81,359.32 L 123.81,390.32" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="123.81,390.32 120.88,381.81 126.74,381.81" fill="#8c959f"/>
+<rect x="178.08" y="348.84" width="68.42" height="20.95" rx="4" fill="#ffffff"/>
+<text x="183.08" y="359.32" font-size="11.5" fill="#1f2328">submission</text>
+<path d="M 300.77,328.32 L 300.77,359.32 L 338.14,359.32 L 338.14,390.32" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="338.14,390.32 335.21,381.81 341.07,381.81" fill="#8c959f"/>
+<rect x="290.36" y="348.84" width="58.19" height="20.95" rx="4" fill="#ffffff"/>
+<text x="295.36" y="359.32" font-size="11.5" fill="#1f2328">question</text>
+<path d="M 300.77,328.32 L 300.77,359.32 L 554.19,359.32 L 554.19,390.32" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="554.19,390.32 551.26,381.81 557.12,381.81" fill="#8c959f"/>
+<rect x="398.39" y="348.84" width="58.19" height="20.95" rx="4" fill="#ffffff"/>
+<text x="403.39" y="359.32" font-size="11.5" fill="#1f2328">question</text>
+<path d="M 408.79,206.88 L 408.79,237.88 L 509.28,237.88 L 509.28,268.88" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="509.28,268.88 506.35,260.37 512.21,260.37" fill="#8c959f"/>
+<rect x="402.29" y="227.41" width="113.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="407.29" y="237.88" font-size="11.5" fill="#1f2328">【记录】绕开分类器</text>
+<path d="M 123.81,449.76 L 123.81,480.76 L 346.29,480.76 L 346.29,511.76" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="346.29,511.76 343.36,503.25 349.22,503.25" fill="#8c959f"/>
+<path d="M 509.28,328.32 L 509.28,359.32 L 737.65,359.32 L 737.65,390.32" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="737.65,390.32 734.72,381.81 740.58,381.81" fill="#8c959f"/>
+<path d="M 338.14,449.76 L 338.14,480.76 L 473.44,480.76 L 473.44,511.76" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="473.44,511.76 470.51,503.25 476.37,503.25" fill="#8c959f"/>
+<path d="M 554.19,449.76 L 554.19,480.76 L 473.44,480.76 L 473.44,511.76" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="473.44,511.76 470.51,503.25 476.37,503.25" fill="#8c959f"/>
+<rect x="335.75" y="26" width="146.09" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="351.76" y="47.36" font-size="13" fill="#1f2328" font-weight="600">F-6</text>
+<text x="375.73" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="379.63" y="47.36" font-size="13" fill="#1f2328">OpenClaw</text>
+<text x="435.92" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="439.82" y="47.36" font-size="13" fill="#1f2328">接</text>
+<text x="452.82" y="47.36" font-size="13" fill="#1f2328">入</text>
+<text x="350.75" y="66.08" font-size="13" fill="#1f2328">子</text>
+<text x="363.75" y="66.08" font-size="13" fill="#1f2328">进</text>
+<text x="376.75" y="66.08" font-size="13" fill="#1f2328">程</text>
+<text x="389.75" y="66.08" font-size="13" fill="#1f2328"> </text>
+<text x="393.65" y="66.08" font-size="13" fill="#1f2328">+</text>
+<text x="400.8" y="66.08" font-size="13" fill="#1f2328"> </text>
+<text x="404.7" y="66.08" font-size="13" fill="#1f2328">一</text>
+<text x="417.7" y="66.08" font-size="13" fill="#1f2328">行</text>
+<text x="430.7" y="66.08" font-size="13" fill="#1f2328"> </text>
+<text x="434.6" y="66.08" font-size="13" fill="#1f2328">JSON</text>
+<rect x="291.48" y="147.44" width="234.62" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="331.81" y="168.8" font-size="13" fill="#1f2328" font-weight="600">F-1</text>
+<text x="355.78" y="168.8" font-size="13" fill="#1f2328">【</text>
+<text x="368.78" y="168.8" font-size="13" fill="#1f2328">准</text>
+<text x="381.78" y="168.8" font-size="13" fill="#1f2328">入</text>
+<text x="394.78" y="168.8" font-size="13" fill="#1f2328">】</text>
+<text x="407.78" y="168.8" font-size="13" fill="#1f2328">消</text>
+<text x="420.78" y="168.8" font-size="13" fill="#1f2328">息</text>
+<text x="433.78" y="168.8" font-size="13" fill="#1f2328">前</text>
+<text x="446.78" y="168.8" font-size="13" fill="#1f2328">缀</text>
+<text x="459.78" y="168.8" font-size="13" fill="#1f2328">过</text>
+<text x="472.78" y="168.8" font-size="13" fill="#1f2328">滤</text>
+<text x="306.48" y="187.52" font-size="13" fill="#1f2328">没</text>
+<text x="319.48" y="187.52" font-size="13" fill="#1f2328">有</text>
+<text x="332.48" y="187.52" font-size="13" fill="#1f2328"> </text>
+<text x="336.38" y="187.52" font-size="13" fill="#1f2328">【</text>
+<text x="349.38" y="187.52" font-size="13" fill="#1f2328">转</text>
+<text x="362.38" y="187.52" font-size="13" fill="#1f2328">发</text>
+<text x="375.38" y="187.52" font-size="13" fill="#1f2328">学</text>
+<text x="388.38" y="187.52" font-size="13" fill="#1f2328">生</text>
+<text x="401.38" y="187.52" font-size="13" fill="#1f2328">提</text>
+<text x="414.38" y="187.52" font-size="13" fill="#1f2328">问</text>
+<text x="427.38" y="187.52" font-size="13" fill="#1f2328">】</text>
+<text x="440.38" y="187.52" font-size="13" fill="#1f2328"> </text>
+<text x="444.28" y="187.52" font-size="13" fill="#1f2328">前</text>
+<text x="457.28" y="187.52" font-size="13" fill="#1f2328">缀</text>
+<text x="470.28" y="187.52" font-size="13" fill="#1f2328"> </text>
+<text x="474.18" y="187.52" font-size="13" fill="#1f2328">→</text>
+<text x="481.33" y="187.52" font-size="13" fill="#1f2328"> </text>
+<text x="485.23" y="187.52" font-size="13" fill="#1f2328">skip</text>
+<rect x="215.28" y="268.88" width="170.97" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="230.28" y="290.24" font-size="13" fill="#1f2328" font-weight="600">F-2</text>
+<text x="254.25" y="290.24" font-size="13" fill="#1f2328">【</text>
+<text x="267.25" y="290.24" font-size="13" fill="#1f2328">路</text>
+<text x="280.25" y="290.24" font-size="13" fill="#1f2328">由</text>
+<text x="293.25" y="290.24" font-size="13" fill="#1f2328">】</text>
+<text x="306.25" y="290.24" font-size="13" fill="#1f2328">消</text>
+<text x="319.25" y="290.24" font-size="13" fill="#1f2328">息</text>
+<text x="332.25" y="290.24" font-size="13" fill="#1f2328">分</text>
+<text x="345.25" y="290.24" font-size="13" fill="#1f2328">类</text>
+<text x="358.25" y="290.24" font-size="13" fill="#1f2328">器</text>
+<text x="240.25" y="308.96" font-size="13" fill="#1f2328">规</text>
+<text x="253.25" y="308.96" font-size="13" fill="#1f2328">则</text>
+<text x="266.25" y="308.96" font-size="13" fill="#1f2328">优</text>
+<text x="279.25" y="308.96" font-size="13" fill="#1f2328">先</text>
+<text x="292.25" y="308.96" font-size="13" fill="#1f2328"> </text>
+<text x="296.15" y="308.96" font-size="13" fill="#1f2328">+</text>
+<text x="303.3" y="308.96" font-size="13" fill="#1f2328"> </text>
+<text x="307.2" y="308.96" font-size="13" fill="#1f2328">LLM</text>
+<text x="331.38" y="308.96" font-size="13" fill="#1f2328"> </text>
+<text x="335.28" y="308.96" font-size="13" fill="#1f2328">兜</text>
+<text x="348.28" y="308.96" font-size="13" fill="#1f2328">底</text>
+<rect x="26" y="390.32" width="195.62" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="53.33" y="411.68" font-size="13" fill="#1f2328" font-weight="600">F-3</text>
+<text x="77.29" y="411.68" font-size="13" fill="#1f2328">【</text>
+<text x="90.29" y="411.68" font-size="13" fill="#1f2328">写</text>
+<text x="103.29" y="411.68" font-size="13" fill="#1f2328">通</text>
+<text x="116.29" y="411.68" font-size="13" fill="#1f2328">路</text>
+<text x="129.29" y="411.68" font-size="13" fill="#1f2328">】</text>
+<text x="142.29" y="411.68" font-size="13" fill="#1f2328">补</text>
+<text x="155.29" y="411.68" font-size="13" fill="#1f2328">交</text>
+<text x="168.29" y="411.68" font-size="13" fill="#1f2328">登</text>
+<text x="181.29" y="411.68" font-size="13" fill="#1f2328">记</text>
+<text x="41" y="430.4" font-size="13" fill="#1f2328">抽</text>
+<text x="54" y="430.4" font-size="13" fill="#1f2328">学</text>
+<text x="67" y="430.4" font-size="13" fill="#1f2328">号</text>
+<text x="80" y="430.4" font-size="13" fill="#1f2328">/</text>
+<text x="84.42" y="430.4" font-size="13" fill="#1f2328">姓</text>
+<text x="97.42" y="430.4" font-size="13" fill="#1f2328">名</text>
+<text x="110.42" y="430.4" font-size="13" fill="#1f2328">/</text>
+<text x="114.84" y="430.4" font-size="13" fill="#1f2328">次</text>
+<text x="127.84" y="430.4" font-size="13" fill="#1f2328">数</text>
+<text x="140.84" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="144.74" y="430.4" font-size="13" fill="#1f2328">→</text>
+<text x="151.89" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="155.79" y="430.4" font-size="13" fill="#1f2328">写</text>
+<text x="168.79" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="172.69" y="430.4" font-size="13" fill="#1f2328">Excel</text>
+<rect x="416.25" y="268.88" width="186.05" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="431.25" y="290.24" font-size="13" fill="#1f2328" font-weight="600">F-7</text>
+<text x="455.22" y="290.24" font-size="13" fill="#1f2328">【</text>
+<text x="468.22" y="290.24" font-size="13" fill="#1f2328">写</text>
+<text x="481.22" y="290.24" font-size="13" fill="#1f2328">通</text>
+<text x="494.22" y="290.24" font-size="13" fill="#1f2328">路</text>
+<text x="507.22" y="290.24" font-size="13" fill="#1f2328">】</text>
+<text x="520.22" y="290.24" font-size="13" fill="#1f2328">助</text>
+<text x="533.22" y="290.24" font-size="13" fill="#1f2328">教</text>
+<text x="546.22" y="290.24" font-size="13" fill="#1f2328">写</text>
+<text x="559.22" y="290.24" font-size="13" fill="#1f2328"> </text>
+<text x="563.12" y="290.24" font-size="13" fill="#1f2328">FAQ</text>
+<text x="449.8" y="308.96" font-size="13" fill="#1f2328">四</text>
+<text x="462.8" y="308.96" font-size="13" fill="#1f2328">道</text>
+<text x="475.8" y="308.96" font-size="13" fill="#1f2328">检</text>
+<text x="488.8" y="308.96" font-size="13" fill="#1f2328">查</text>
+<text x="501.8" y="308.96" font-size="13" fill="#1f2328"> </text>
+<text x="505.7" y="308.96" font-size="13" fill="#1f2328">→</text>
+<text x="512.85" y="308.96" font-size="13" fill="#1f2328"> </text>
+<text x="516.75" y="308.96" font-size="13" fill="#1f2328">原</text>
+<text x="529.75" y="308.96" font-size="13" fill="#1f2328">子</text>
+<text x="542.75" y="308.96" font-size="13" fill="#1f2328">追</text>
+<text x="555.75" y="308.96" font-size="13" fill="#1f2328">加</text>
+<rect x="251.62" y="390.32" width="173.05" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="266.62" y="411.68" font-size="13" fill="#1f2328" font-weight="600">F-4</text>
+<text x="290.59" y="411.68" font-size="13" fill="#1f2328">【</text>
+<text x="303.59" y="411.68" font-size="13" fill="#1f2328">答</text>
+<text x="316.59" y="411.68" font-size="13" fill="#1f2328">通</text>
+<text x="329.59" y="411.68" font-size="13" fill="#1f2328">路</text>
+<text x="342.59" y="411.68" font-size="13" fill="#1f2328">】</text>
+<text x="355.59" y="411.68" font-size="13" fill="#1f2328">FAQ</text>
+<text x="379.77" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="383.67" y="411.68" font-size="13" fill="#1f2328">检</text>
+<text x="396.67" y="411.68" font-size="13" fill="#1f2328">索</text>
+<text x="279.45" y="430.4" font-size="13" fill="#1f2328">阈</text>
+<text x="292.45" y="430.4" font-size="13" fill="#1f2328">值</text>
+<text x="305.45" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="309.35" y="430.4" font-size="13" fill="#1f2328">4.0</text>
+<text x="329.89" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="333.79" y="430.4" font-size="13" fill="#1f2328">+</text>
+<text x="340.94" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="344.84" y="430.4" font-size="13" fill="#1f2328">实</text>
+<text x="357.84" y="430.4" font-size="13" fill="#1f2328">词</text>
+<text x="370.84" y="430.4" font-size="13" fill="#1f2328">闸</text>
+<text x="383.84" y="430.4" font-size="13" fill="#1f2328">门</text>
+<rect x="454.67" y="390.32" width="199.05" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="469.67" y="411.68" font-size="13" fill="#1f2328" font-weight="600">F-5</text>
+<text x="493.64" y="411.68" font-size="13" fill="#1f2328">【</text>
+<text x="506.64" y="411.68" font-size="13" fill="#1f2328">答</text>
+<text x="519.64" y="411.68" font-size="13" fill="#1f2328">通</text>
+<text x="532.64" y="411.68" font-size="13" fill="#1f2328">路</text>
+<text x="545.64" y="411.68" font-size="13" fill="#1f2328">】</text>
+<text x="558.64" y="411.68" font-size="13" fill="#1f2328">课</text>
+<text x="571.64" y="411.68" font-size="13" fill="#1f2328">程</text>
+<text x="584.64" y="411.68" font-size="13" fill="#1f2328">知</text>
+<text x="597.64" y="411.68" font-size="13" fill="#1f2328">识</text>
+<text x="610.64" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="614.54" y="411.68" font-size="13" fill="#1f2328">RAG</text>
+<text x="484.32" y="430.4" font-size="13" fill="#1f2328">BM25</text>
+<text x="516.56" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="520.46" y="430.4" font-size="13" fill="#1f2328">top-7</text>
+<text x="557.12" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="561.02" y="430.4" font-size="13" fill="#1f2328">+</text>
+<text x="568.17" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="572.07" y="430.4" font-size="13" fill="#1f2328">三</text>
+<text x="585.07" y="430.4" font-size="13" fill="#1f2328">档</text>
+<text x="598.07" y="430.4" font-size="13" fill="#1f2328">口</text>
+<text x="611.07" y="430.4" font-size="13" fill="#1f2328">径</text>
+<rect x="296.65" y="511.76" width="99.29" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="311.65" y="533.12" font-size="13" fill="#1f2328">补</text>
+<text x="324.65" y="533.12" font-size="13" fill="#1f2328">交</text>
+<text x="337.65" y="533.12" font-size="13" fill="#1f2328">表</text>
+<text x="350.65" y="533.12" font-size="13" fill="#1f2328">.xlsx</text>
+<rect x="683.72" y="390.32" width="107.87" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="698.72" y="411.68" font-size="13" fill="#1f2328">常</text>
+<text x="711.72" y="411.68" font-size="13" fill="#1f2328">问</text>
+<text x="724.72" y="411.68" font-size="13" fill="#1f2328">问</text>
+<text x="737.72" y="411.68" font-size="13" fill="#1f2328">题</text>
+<text x="750.72" y="411.68" font-size="13" fill="#1f2328">.txt</text>
+<rect x="425.94" y="511.76" width="95" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="440.94" y="533.12" font-size="13" fill="#1f2328">大</text>
+<text x="453.94" y="533.12" font-size="13" fill="#1f2328">模</text>
+<text x="466.94" y="533.12" font-size="13" fill="#1f2328">型</text>
+<text x="479.94" y="533.12" font-size="13" fill="#1f2328">润</text>
+<text x="492.94" y="533.12" font-size="13" fill="#1f2328">色</text>
+</svg>

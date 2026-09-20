@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 734.03 475.76"
+     width="734.03" height="475.76" role="img"
+     aria-label="代码放在哪、数据放在哪、同步只能往哪个方向走">
+  <title>代码放在哪、数据放在哪、同步只能往哪个方向走</title>
+  <desc>flowchart TD
+  %% caption: 代码放在哪、数据放在哪、同步只能往哪个方向走
+  WX[&quot;学生 / 助教的微信&quot;]
+
+  WS[&quot;Windows 11 —— 只编辑,不跑&lt;br/&gt;ta-assistant 源码工作副本&quot;]
+  OCL[&quot;WSL Ubuntu —— 真正在跑&lt;br/&gt;OpenClaw(TS Bot,微信网关)&quot;]
+  CODE[&quot;WSL Ubuntu —— 真正在跑&lt;br/&gt;~/ta-assistant/ 代码 + .venv&quot;]
+  DATA[&quot;~/ykt_questions/ —— 数据,不进版本库&lt;br/&gt;materials/ · 花名册/ · 常问</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="734.03" height="475.76" fill="#ffffff"/>
+<path d="M 274.45,66.72 L 274.45,97.72 L 274.45,97.72 L 274.45,128.72" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="274.45,66.72 277.38,75.23 271.52,75.23" fill="#8c959f"/>
+<path d="M 274.45,188.16 L 274.45,219.16 L 274.45,219.16 L 274.45,250.16" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="274.45,250.16 271.52,241.65 277.38,241.65" fill="#8c959f"/>
+<rect x="218.1" y="208.69" width="112.69" height="20.95" rx="4" fill="#ffffff"/>
+<text x="223.1" y="219.16" font-size="11.5" fill="#1f2328">子进程 + 一行 JSON</text>
+<path d="M 274.45,309.6 L 274.45,340.6 L 390.19,340.6 L 390.19,371.6" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="390.19,371.6 387.25,363.09 393.12,363.09" fill="#8c959f"/>
+<path d="M 274.45,309.6 L 274.45,340.6 L 126.73,340.6 L 126.73,371.6" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4"/>
+<polygon points="126.73,371.6 123.8,363.09 129.67,363.09" fill="#8c959f"/>
+<rect x="60.47" y="330.12" width="280.25" height="20.95" rx="4" fill="#ffffff"/>
+<text x="65.47" y="340.6" font-size="11.5" fill="#1f2328">❌ 不要反向覆盖:会拿 Windows 的旧数据盖掉补交记录</text>
+<path d="M 227.47,401.32 L 708.03,401.32 L 708.03,279.88 L 377.91,279.88" stroke="#cf222e" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4"/>
+<polygon points="377.91,279.88 386.42,276.95 386.42,282.81" fill="#cf222e"/>
+<rect x="626.03" y="330.12" width="163.99" height="20.95" rx="4" fill="#ffffff"/>
+<text x="631.03" y="340.6" font-size="11.5" fill="#cf222e">rsync 单向同步,改完就传一次</text>
+<rect x="207.84" y="26" width="133.22" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="222.84" y="47.36" font-size="13" fill="#1f2328">学</text>
+<text x="235.84" y="47.36" font-size="13" fill="#1f2328">生</text>
+<text x="248.84" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="252.74" y="47.36" font-size="13" fill="#1f2328">/</text>
+<text x="257.16" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="261.06" y="47.36" font-size="13" fill="#1f2328">助</text>
+<text x="274.06" y="47.36" font-size="13" fill="#1f2328">教</text>
+<text x="287.06" y="47.36" font-size="13" fill="#1f2328">的</text>
+<text x="300.06" y="47.36" font-size="13" fill="#1f2328">微</text>
+<text x="313.06" y="47.36" font-size="13" fill="#1f2328">信</text>
+<rect x="26" y="371.6" width="201.47" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="41" y="392.96" font-size="13" fill="#1f2328">Windows</text>
+<text x="89.23" y="392.96" font-size="13" fill="#1f2328"> </text>
+<text x="93.13" y="392.96" font-size="13" fill="#1f2328">11</text>
+<text x="109.25" y="392.96" font-size="13" fill="#1f2328"> </text>
+<text x="113.15" y="392.96" font-size="13" fill="#1f2328">—</text>
+<text x="126.15" y="392.96" font-size="13" fill="#1f2328">—</text>
+<text x="139.15" y="392.96" font-size="13" fill="#1f2328"> </text>
+<text x="143.05" y="392.96" font-size="13" fill="#1f2328">只</text>
+<text x="156.05" y="392.96" font-size="13" fill="#1f2328">编</text>
+<text x="169.05" y="392.96" font-size="13" fill="#1f2328">辑</text>
+<text x="182.05" y="392.96" font-size="13" fill="#1f2328">,</text>
+<text x="186.47" y="392.96" font-size="13" fill="#1f2328">不</text>
+<text x="199.47" y="392.96" font-size="13" fill="#1f2328">跑</text>
+<text x="44.25" y="411.68" font-size="13" fill="#1f2328">ta-assistant</text>
+<text x="127.32" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="131.22" y="411.68" font-size="13" fill="#1f2328">源</text>
+<text x="144.22" y="411.68" font-size="13" fill="#1f2328">码</text>
+<text x="157.22" y="411.68" font-size="13" fill="#1f2328">工</text>
+<text x="170.22" y="411.68" font-size="13" fill="#1f2328">作</text>
+<text x="183.22" y="411.68" font-size="13" fill="#1f2328">副</text>
+<text x="196.22" y="411.68" font-size="13" fill="#1f2328">本</text>
+<rect x="177.48" y="128.72" width="193.93" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="195.6" y="150.08" font-size="13" fill="#1f2328">WSL</text>
+<text x="219.78" y="150.08" font-size="13" fill="#1f2328"> </text>
+<text x="223.69" y="150.08" font-size="13" fill="#1f2328">Ubuntu</text>
+<text x="267.5" y="150.08" font-size="13" fill="#1f2328"> </text>
+<text x="271.39" y="150.08" font-size="13" fill="#1f2328">—</text>
+<text x="284.39" y="150.08" font-size="13" fill="#1f2328">—</text>
+<text x="297.39" y="150.08" font-size="13" fill="#1f2328"> </text>
+<text x="301.29" y="150.08" font-size="13" fill="#1f2328">真</text>
+<text x="314.29" y="150.08" font-size="13" fill="#1f2328">正</text>
+<text x="327.29" y="150.08" font-size="13" fill="#1f2328">在</text>
+<text x="340.29" y="150.08" font-size="13" fill="#1f2328">跑</text>
+<text x="192.48" y="168.8" font-size="13" fill="#1f2328">OpenClaw(TS</text>
+<text x="269.31" y="168.8" font-size="13" fill="#1f2328"> </text>
+<text x="273.21" y="168.8" font-size="13" fill="#1f2328">Bot,</text>
+<text x="300" y="168.8" font-size="13" fill="#1f2328">微</text>
+<text x="313" y="168.8" font-size="13" fill="#1f2328">信</text>
+<text x="326" y="168.8" font-size="13" fill="#1f2328">网</text>
+<text x="339" y="168.8" font-size="13" fill="#1f2328">关</text>
+<text x="352" y="168.8" font-size="13" fill="#1f2328">)</text>
+<rect x="170.98" y="250.16" width="206.93" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="195.6" y="271.52" font-size="13" fill="#1f2328">WSL</text>
+<text x="219.78" y="271.52" font-size="13" fill="#1f2328"> </text>
+<text x="223.69" y="271.52" font-size="13" fill="#1f2328">Ubuntu</text>
+<text x="267.5" y="271.52" font-size="13" fill="#1f2328"> </text>
+<text x="271.39" y="271.52" font-size="13" fill="#1f2328">—</text>
+<text x="284.39" y="271.52" font-size="13" fill="#1f2328">—</text>
+<text x="297.39" y="271.52" font-size="13" fill="#1f2328"> </text>
+<text x="301.29" y="271.52" font-size="13" fill="#1f2328">真</text>
+<text x="314.29" y="271.52" font-size="13" fill="#1f2328">正</text>
+<text x="327.29" y="271.52" font-size="13" fill="#1f2328">在</text>
+<text x="340.29" y="271.52" font-size="13" fill="#1f2328">跑</text>
+<text x="185.98" y="290.24" font-size="13" fill="#1f2328">~/ta-assistant/</text>
+<text x="285.04" y="290.24" font-size="13" fill="#1f2328"> </text>
+<text x="288.94" y="290.24" font-size="13" fill="#1f2328">代</text>
+<text x="301.94" y="290.24" font-size="13" fill="#1f2328">码</text>
+<text x="314.94" y="290.24" font-size="13" fill="#1f2328"> </text>
+<text x="318.84" y="290.24" font-size="13" fill="#1f2328">+</text>
+<text x="325.99" y="290.24" font-size="13" fill="#1f2328"> </text>
+<text x="329.89" y="290.24" font-size="13" fill="#1f2328">.venv</text>
+<rect x="257.47" y="371.6" width="265.43" height="78.16" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="272.47" y="392.96" font-size="13" fill="#1f2328">~/ykt_questions/</text>
+<text x="378.68" y="392.96" font-size="13" fill="#1f2328"> </text>
+<text x="382.58" y="392.96" font-size="13" fill="#1f2328">—</text>
+<text x="395.58" y="392.96" font-size="13" fill="#1f2328">—</text>
+<text x="408.58" y="392.96" font-size="13" fill="#1f2328"> </text>
+<text x="412.48" y="392.96" font-size="13" fill="#1f2328">数</text>
+<text x="425.48" y="392.96" font-size="13" fill="#1f2328">据</text>
+<text x="438.48" y="392.96" font-size="13" fill="#1f2328">,</text>
+<text x="442.9" y="392.96" font-size="13" fill="#1f2328">不</text>
+<text x="455.9" y="392.96" font-size="13" fill="#1f2328">进</text>
+<text x="468.9" y="392.96" font-size="13" fill="#1f2328">版</text>
+<text x="481.9" y="392.96" font-size="13" fill="#1f2328">本</text>
+<text x="494.9" y="392.96" font-size="13" fill="#1f2328">库</text>
+<text x="277.09" y="411.68" font-size="13" fill="#1f2328">materials/</text>
+<text x="340.4" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="344.3" y="411.68" font-size="13" fill="#1f2328">·</text>
+<text x="357.3" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="361.19" y="411.68" font-size="13" fill="#1f2328">花</text>
+<text x="374.19" y="411.68" font-size="13" fill="#1f2328">名</text>
+<text x="387.19" y="411.68" font-size="13" fill="#1f2328">册</text>
+<text x="400.19" y="411.68" font-size="13" fill="#1f2328">/</text>
+<text x="404.62" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="408.51" y="411.68" font-size="13" fill="#1f2328">·</text>
+<text x="421.51" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="425.41" y="411.68" font-size="13" fill="#1f2328">常</text>
+<text x="438.41" y="411.68" font-size="13" fill="#1f2328">问</text>
+<text x="451.41" y="411.68" font-size="13" fill="#1f2328">问</text>
+<text x="464.41" y="411.68" font-size="13" fill="#1f2328">题</text>
+<text x="477.41" y="411.68" font-size="13" fill="#1f2328">.txt</text>
+<text x="306.21" y="430.4" font-size="13" fill="#1f2328">补</text>
+<text x="319.21" y="430.4" font-size="13" fill="#1f2328">交</text>
+<text x="332.21" y="430.4" font-size="13" fill="#1f2328">表</text>
+<text x="345.21" y="430.4" font-size="13" fill="#1f2328">.xlsx</text>
+<text x="375.5" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="379.4" y="430.4" font-size="13" fill="#1f2328">·</text>
+<text x="392.4" y="430.4" font-size="13" fill="#1f2328"> </text>
+<text x="396.3" y="430.4" font-size="13" fill="#1f2328">课</text>
+<text x="409.3" y="430.4" font-size="13" fill="#1f2328">程</text>
+<text x="422.3" y="430.4" font-size="13" fill="#1f2328">事</text>
+<text x="435.3" y="430.4" font-size="13" fill="#1f2328">务</text>
+<text x="448.3" y="430.4" font-size="13" fill="#1f2328">.txt</text>
+</svg>

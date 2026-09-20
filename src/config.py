@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -29,12 +30,47 @@ ROSTER_DIR = WINDOWS_ROOT / "花名册"
 GRADEBOOK_PATH = Path(
     os.getenv("ROSTER_PATH", str(ROSTER_DIR / "电路基础理论课_学生名单.xlsx"))
 )
-# 补交表路径。`SUBMISSION_TABLE` 环境变量可覆盖 —— 这个口子主要是给**单测**留的:
+# 补交表:**由花名册路径推导**,不再写死文件名(同目录、同课名、后缀换「补交表」)。
+#
+# 【2026-09-20 改】原来是 `WINDOWS_ROOT / "数字电路与逻辑设计实验（一）补交表.xlsx"`
+# 这种写死的名字,这学期换成「电路基础」之后,它指着一条**根本不存在的路径**。
+# 后果不是报错,是**静默**:下一个补交的学生会让 ensure_submission_table 新建一张
+# 空表、机器人照样回「✅ 已登记」,而助教那份真表一直是空的(见 knowledge_base.md)。
+#
+# 为什么正确的做法是"跟着花名册走":补交是**按课**归属的 —— 数电的补交记在数电那份、
+# 电路基础的记在电路基础那份 —— 而"现在是哪门课"唯一的权威来源就是 `GRADEBOOK_PATH`
+# 指向的那份名单。于是换课只需要换名单一处(覆盖文件或改 `ROSTER_PATH`),
+# 补交表自动跟着换,不需要有人记得去改第二个地方。
+_ROSTER_NAME_TAILS = ("学生名单", "成绩记分册", "学生名册", "记分册", "名单")
+# 分隔符**不能写死下划线**:两份真实文件就不是一个版式 ——
+#   `电路基础理论课_学生名单.xlsx`                (下划线 + 名单)
+#   `数字电路与逻辑设计实验（一）成绩记分册_1774943315001.xlsx`  (课名直接顶到"成绩记分册")
+# 第二种是雨课堂导出的原名,课名和"成绩记分册"之间**没有分隔符**。写死 `_成绩记分册`
+# 就漏掉它,推出来的名字里会留住"成绩记分册"五个字(测试里当场抓到了)。
+_ROSTER_TAIL_RE = re.compile(r"[-_—\s]*(" + "|".join(_ROSTER_NAME_TAILS) + r")$")
+
+
+def submission_table_for(roster_path: Path) -> Path:
+    """由花名册路径推出这门课的补交表路径:同目录,课名相同,后缀换成「补交表」。
+
+        .../花名册/电路基础理论课_学生名单.xlsx          → .../花名册/电路基础理论课_补交表.xlsx
+        .../花名册/数字电路…成绩记分册_1774943315001.xlsx → .../花名册/数字电路…_补交表.xlsx
+
+    认不出的名字**不猜课名**,直接接一个后缀(`名单.xlsx` → `名单_补交表.xlsx`)。
+    宁可名字丑一点:猜错课名等于把补交记到别的课上去,而那是要交给老师的东西。
+    """
+    stem = re.sub(r"[_\-]\d{10,}$", "", roster_path.stem)   # 抹掉雨课堂导出的时间戳尾巴
+    m = _ROSTER_TAIL_RE.search(stem)
+    if m and m.start() > 0:      # `m.start() == 0` 意味着整个名字就是"名单"两字,
+        stem = stem[: m.start()]  # 剥完没有课名了 —— 那还不如保留原名
+    return roster_path.with_name(f"{stem}_补交表.xlsx")
+
+
+# `SUBMISSION_TABLE` 环境变量仍可覆盖 —— 这个口子主要是给**单测**留的:
 # `subprocess` 起的 bridge 是另一份进程,`monkeypatch` 跨不过去,只能靠环境变量
 # (同 `TA_LOGS_DIR` 的理由)。它会**追加写**,所以单测碰它一次就污染一次。
 SUBMISSION_TABLE_PATH = Path(
-    os.getenv("SUBMISSION_TABLE",
-              str(WINDOWS_ROOT / "数字电路与逻辑设计实验（一）补交表.xlsx"))
+    os.getenv("SUBMISSION_TABLE", str(submission_table_for(GRADEBOOK_PATH)))
 )
 FAQ_PATH = WINDOWS_ROOT / "常问问题.txt"
 MATERIALS_DIR = WINDOWS_ROOT / "materials"

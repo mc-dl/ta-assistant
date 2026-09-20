@@ -14,7 +14,8 @@
 ## 1. 总体架构
 
 ```mermaid
-flowchart LR
+flowchart TD
+  %% caption: 上半段 —— 一条消息进来,被路由到哪个 Handler。竖着读,分岔口就是判断
   W["微信<br/>学生提问 / 助教【记录】"] --> OC["OpenClaw<br/>(WSL,TS Bot)"]
   OC -->|"子进程 bridge<br/>stdout 只写一行 JSON"| MAIN["src/main.py<br/>process()"]
 
@@ -24,25 +25,33 @@ flowchart LR
   GATE -->|"【转发学生提问】"| CLS["分类器<br/>规则优先 + LLM 兜底"]
 
   CLS -->|"submission"| SUB["补交 Handler<br/>抽学号/姓名/次数"]
-  CLS -->|"question"| QA["答疑 Handler"]
+  CLS -->|"question"| QA["答疑 Handler<br/>详见下一张图"]
 
-  QA --> KIND{"分档 _classify()"}
-  KIND -->|"事务 admin"| FACTS["课程事务事实表<br/>(带生效期,高于 FAQ)"]
-  KIND -->|"事务 admin"| FAQ["FAQ 检索<br/>阈值 + 实词闸门"]
+  SUB --> XLS["补交表.xlsx<br/>(花名册校验)"]
+  REC --> TXT["常问问题.txt<br/>追加 + 回读校验"]
+  XLS --> REPLY["reply<br/>回微信"]
+  TXT -.->|"下一条提问即可命中"| CLS
+```
+
+```mermaid
+flowchart TD
+  %% caption: 下半段 —— 答疑 Handler 内部:先分档,再决定查不查 FAQ、查不查资料
+  QA["答疑 Handler"] --> KIND{"分档 _classify()"}
+  KIND -->|"事务 admin"| FACTS["课程事务事实表<br/>带生效期,压过 FAQ"]
+  KIND -->|"事务 admin"| FAQ["FAQ 检索<br/>阈值 4.0 + 实词闸门"]
   KIND -->|"概念 concept"| FAQ
   KIND -->|"概念 concept"| RAG["BM25 RAG<br/>materials/ 分块 top-7"]
   KIND -->|"题号 problem"| RAG
 
-  SUB --> XLS["补交表.xlsx<br/>(花名册校验)"]
-  REC --> TXT["常问问题.txt<br/>追加 + 回读校验"]
-
-  FAQ --> LLM["LLM 通道<br/>默认 OpenCode Go<br/>MinMax 回滚"]
+  FACTS --> LLM["LLM 通道<br/>默认 OpenCode Go<br/>MinMax 回滚"]
+  FAQ --> LLM
   RAG --> LLM
-  FACTS --> LLM
-  LLM -->|"reply"| OC
-  XLS -->|"reply"| OC
-  TXT -->|"下一条提问即可命中"| FAQ
+  LLM --> REPLY["reply<br/>回微信"]
 ```
+
+> 原来这一整条链是一张 `flowchart LR` —— 14 级横着排,画出来 2577px 宽,
+> 塞进正文栏就得缩到 0.33 倍,图里的字只剩 4px,等于没画。
+> 拆成上下两张**竖着排**,每张都在 1080px 以内,字保持原大小。
 
 > 同一张图的 **ASCII 版**留在下面 —— 终端里、`git diff` 里、以及不渲染 mermaid 的地方看这份。
 
@@ -212,7 +221,12 @@ GRADEBOOK_PATH = ROSTER_DIR / "电路基础理论课_学生名单.xlsx"   # 本�
 # **安静地读成空名单** —— 那正是这个 bug 藏了几个月的形状。见 §3.3 与 §5。
 # 打开方式也必须 read_only=False:那份记分册里写着 `<dimension ref="A1"/>`(错的范围声明),
 # openpyxl 的只读模式只信它、也不校验,会把整份工作簿读成 1 行 1 列。
-SUBMISSION_TABLE_PATH = WINDOWS_ROOT / "数字电路与逻辑设计实验（一）补交表.xlsx"
+# 补交表**由花名册路径推导**(同目录、同课名、后缀换成「补交表」):
+# 本学期的名单是 `电路基础理论课_学生名单.xlsx`,于是补交表是 `花名册/电路基础理论课_补交表.xlsx`。
+# 原来这里写死的是 `WINDOWS_ROOT / "数字电路与逻辑设计实验（一）补交表.xlsx"` —— 那是
+# 数电时期的名字,换成电路基础之后成了一条**不存在的路径**,而它坏得安静:补交照样"成功",
+# 只是走进 ensure_submission_table 新建的另一张表里,助教那份真表一直空着。
+SUBMISSION_TABLE_PATH = submission_table_for(GRADEBOOK_PATH)
 FAQ_PATH = WINDOWS_ROOT / "常问问题.txt"
 MATERIALS_DIR = WINDOWS_ROOT / "materials"        # 【当前】原先是 "数电资料"
 
@@ -360,6 +374,22 @@ class BM25Retriever:
 **【当前】** 拆成两层:`src/llm/__init__.py` 是**对外的统一入口**(业务代码只 import 它),
 `src/llm/minmax.py` 里装着各家供应商的实现。默认走 OpenCode Go(OpenAI 兼容),
 `LLM_API_KEY` 留空时自动退回旧的 MinMax —— 这条退路是**回滚用**的。
+
+:::compare
+### 默认:OpenCode Go
+- OpenAI 兼容协议,`POST /v1/chat/completions`
+- **必须**带 `x-opencode-session` 头,缺了直接 400
+- 还要伪装浏览器 UA —— 部分网关会拦 `python-requests` 的默认 UA
+- ✅ **[当前]** `.env` 里 `LLM_API_KEY` 有值就走这条
+
+---
+
+### 回滚:MinMax(旧通道)
+- 端点 `api.minimax.chat/v1/text/chatcompletion_v2`,**协议不一样**,单独一套 payload
+- 用途只有一个:新通道出事时**能立刻退回去**
+- `.env` 里 `LLM_API_KEY` 留空时自动走这条
+- 2026-09-17 就是它额度用尽(`status_code: 2056`)才换的通道
+:::
 
 ```
 # src/llm/__init__.py —— 业务代码只认这个
@@ -550,11 +580,18 @@ markdown>=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML 版
 
 ## 8. 测试策略
 
-**【当前】离线全量 338 个测试,5 秒左右跑完**(`pytest test/ -q`)。
+**【当前】离线全量 389 个测试,5 秒左右跑完**(`pytest test/ -q`)。
 **默认不发真实 API 请求** —— `test/conftest.py` 把网络调用兜住了,所以没网、
 没配 key 也能跑。
 
-分七类:
+:::stats
+- **389** | 测试总数 | `pytest test/ -q`,约 5 秒跑完
+- **0** | 需要联网的测试 | `conftest.py` 把网络调用兜住了,没网没 key 也能跑
+- **17** | 检索评测用例 | `eval_retrieval.py --compare`,退化就退出码 1
+- **8** | 测试分类 | 每类守的东西完全不同,见下表
+:::
+
+分八类:
 
 | 类别 | 例子 | 守什么 |
 |---|---|---|
@@ -564,7 +601,8 @@ markdown>=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML 版
 | **检索质量** | `test_retrieval_recall.py`、`test_idf.py`、`test_eval_baseline.py` | **学生真会问的 17 条提问能不能召回到对的资料**;IDF 算得对不对;评测基线自身还在不在 |
 | **写通路的隔离与安全** | `test_record.py`(49 例)、`test_log_isolation.py`、`test_submission_table_isolation.py`、`test_mine_faq_candidates.py` | `【记录】`的解析/拒收/原子写/回滚;**测试不许写进任何一份真实数据文件** |
 | **读入口的版式韧性** | `test_roster.py`(11 例) | 花名册**换版式**还读不读得出来;读不出来时**说不说得出原因**(`scan_roster` 的 reason) |
-| **文档渲染** | `test_md2html.py`(13 例) | mermaid 转图后**不留 `MERMAIDBLOCK` 占位符**、表格/图题/提示块构件齐全 —— 它坏了不会让系统答错话,但会静默产出"看起来正常、其实图没出来"的 HTML |
+| **文档渲染** | `test_md2html.py`(16 例) | mermaid 转图后**不留 `MERMAIDBLOCK` 占位符**、表格/图题/提示块构件齐全、**重复生成同一个 md 必须字节不变** —— 它坏了不会让系统答错话,但会静默产出"看起来正常、其实图没出来"的 HTML |
+| **仓库卫生** | `test_repo_hygiene.py`(3 例) | 全仓文本文件**不许有 CRLF**,`.gitattributes` 必须钉住 `eol=lf`。见下方「行尾」一段 |
 
 > **隔离是这一类的重点。** `【记录】`会**追加**进一份手写、无版本库的
 > `常问问题.txt`,一次跑歪就是真数据受损。所以 `conftest.py` 的
@@ -579,6 +617,16 @@ markdown>=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML 版
 > 又加了 `test_submission_table_isolation.py`:它比的是**真实文件的字节快照**,
 > 并且同时证明"补交登记本身照常落盘"——否则靠功能整个坏掉也能通过。
 > **同一个 bug 会在你没检查的每一种资源上各长一遍。**
+
+**行尾(CRLF)为什么也算一"类"。** 测试跑在 WSL、代码写在 Windows,中间靠 rsync
+**原样搬字节** —— 所以行尾是跨越那条边界的**载体**,和上面"会被写的东西"是同一类问题:
+两边不一致,坏在另一边。实测 `scripts/setup.sh`(Windows 侧被存成 CRLF)搬到 WSL 后
+`bash -n` 直接报 `syntax error: unexpected end of file`,报错还指向文件末尾,极易被误读成
+括号没配对。另外 `docs/*.html` 若被检出成 CRLF,"网页层是否与 md 同步"就没法用
+`md2html --all docs/ --hub && git diff --stat docs/` 判断。两道防线:
+`.gitattributes` 的 `* text=auto eol=lf` 管 git 检出的那一路,
+`test_repo_hygiene.py` 管"有人用别的编辑器把 CRLF 写回工作树"那一路。
+详见 `deployment.md`「行尾必须是 LF」。
 
 > **最后一类是这个项目最该被看重的一类。** 前三类测的是"索引里有没有那块内容",
 > 最后一类测的是**"学生问出来,能不能召回到"** —— 两者中间隔着 BM25 的打分与排序,
@@ -605,7 +653,7 @@ markdown>=3.5         # 【当前】scripts/md2html.py 生成文档的 HTML 版
 - [ ] `scripts/build_index.py` 成功生成 `data/index/bm25_index.pkl`
 - [ ] **`.env` 里的 `LLM_API_KEY` 配好**(留空会退回 MinMax 旧通道),
       调一次 `llm.chat("你好", "你是谁")` 能返回内容
-- [ ] **`pytest test/ -q` 全绿**(离线,约 5 秒,当前 338 例)
+- [ ] **`pytest test/ -q` 全绿**(离线,约 5 秒,当前 389 例)
 - [ ] **`python scripts/eval_retrieval.py --compare` 退出码 0**(检索没有退化)
 - [ ] OpenClaw 配置好调用脚本,端到端跑通一次补交、一次 FAQ、一次 RAG
 - [ ] **`【记录】` 通路验一次**(发一条**会被拒收**的,例如带个假学号 ——

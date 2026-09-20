@@ -140,20 +140,28 @@ $ python -m src.main --message "你好啊今天天气不错"
 
 ```
 C:\Users\YOUR_USERNAME\Downloads\ykt_questions\
-├── materials\         ← 数电资料放这里
-├── 常问问题.txt
-├── 数字电路与逻辑设计实验（一）成绩记分册_1774943315001.xlsx
-└── 数字电路与逻辑设计实验（一）补交表.xlsx
+├── materials\         ← 教学资料放这里
+├── 花名册\
+│   ├── 电路基础理论课_学生名单.xlsx   ← 本学期的名单(雨课堂导出后改名)
+│   └── 电路基础理论课_补交表.xlsx     ← 补交记录;由名单文件名推导,首次补交时自动建
+└── 常问问题.txt
 ```
+
+> 补交表**不在** `ykt_questions\` 根目录下,而是和名单同目录、同课名 ——
+> 换课(覆盖名单文件)时它自动跟着换,不用记得改第二个地方。
+> 推导规则见 `src/config.py` 的 `submission_table_for()`。
 
 如果资料实际目录名不是 `materials`,改 `src/config.py` 里的 `MATERIALS_DIR`。
 
 ### 2. 放数据文件
 
 确保以下文件/目录存在:
-- `ykt_questions/materials/` 下有数电资料(PDF/DOCX)
+- `ykt_questions/materials/` 下有教学资料(PDF/DOCX)
 - `ykt_questions/常问问题.txt` (FAQ 文件)
-- `ykt_questions/数字电路与逻辑设计实验（一）成绩记分册_1774943315001.xlsx` (花名册)
+- `ykt_questions/花名册/电路基础理论课_学生名单.xlsx` (名单,即 `config.GRADEBOOK_PATH`)
+  —— 放好后跑 `.venv/bin/python scripts/check_roster.py`,**退出码 0 才算可用**
+- `ykt_questions/花名册/电路基础理论课_补交表.xlsx` (补交记录) **不用手工准备**:
+  它由名单文件名推导、首次补交时自动创建
 
 ### 3. 构建索引
 

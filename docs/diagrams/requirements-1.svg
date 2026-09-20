@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 938.75 231.6"
+     width="938.75" height="231.6" role="img"
+     aria-label="main.process() 的两道闸门 —— 【记录】必须在学生转发闸门之前">
+  <title>main.process() 的两道闸门 —— 【记录】必须在学生转发闸门之前</title>
+  <desc>flowchart LR
+  %% caption: main.process() 的两道闸门 —— 【记录】必须在学生转发闸门之前
+  MSG[&quot;学生转发来的消息&quot;] --&gt; G1{&quot;①【记录】闸门&lt;br/&gt;以 【记录】 开头?&quot;}
+  G1 --&gt;|&quot;是&quot;| W[&quot;写 FAQ&lt;br/&gt;不经过分类器&quot;]
+  G1 --&gt;|&quot;不是&quot;| G2{&quot;②学生转发闸门&lt;br/&gt;以 【转发学生提问】 开头?&quot;}
+  G2 --&gt;|&quot;是&quot;| C[&quot;进分类器&lt;br/&gt;submission / question&quot;]
+  G2 --&gt;|&quot;不是&quot;| S[&quot;skip&lt;br/&gt;(非学生消息,未处理)&quot;]</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="938.75" height="231.6" fill="#ffffff"/>
+<path d="M 160,115.8 L 191,115.8 L 191,115.8 L 222,115.8" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="222,115.8 213.49,118.73 213.49,112.87" fill="#8c959f"/>
+<path d="M 441.41,115.8 L 472.41,115.8 L 472.41,55.72 L 503.41,55.72" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="503.41,55.72 494.9,58.65 494.9,52.79" fill="#8c959f"/>
+<rect x="461.66" y="75.28" width="21.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="466.66" y="85.76" font-size="11.5" fill="#1f2328">是</text>
+<path d="M 441.41,115.8 L 472.41,115.8 L 472.41,160.52 L 503.41,160.52" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="503.41,160.52 494.9,163.45 494.9,157.59" fill="#8c959f"/>
+<rect x="455.91" y="127.69" width="33" height="20.95" rx="4" fill="#ffffff"/>
+<text x="460.91" y="138.16" font-size="11.5" fill="#1f2328">不是</text>
+<path d="M 688.02,160.52 L 719.02,160.52 L 719.02,71.08 L 750.02,71.08" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="750.02,71.08 741.51,74.01 741.51,68.15" fill="#8c959f"/>
+<rect x="708.27" y="105.32" width="21.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="713.27" y="115.8" font-size="11.5" fill="#1f2328">是</text>
+<path d="M 688.02,160.52 L 719.02,160.52 L 719.02,160.52 L 750.02,160.52" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="750.02,160.52 741.51,163.45 741.51,157.59" fill="#8c959f"/>
+<rect x="702.52" y="150.04" width="33" height="20.95" rx="4" fill="#ffffff"/>
+<text x="707.52" y="160.52" font-size="11.5" fill="#1f2328">不是</text>
+<rect x="26" y="95.44" width="134" height="40.72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="41" y="116.8" font-size="13" fill="#1f2328">学</text>
+<text x="54" y="116.8" font-size="13" fill="#1f2328">生</text>
+<text x="67" y="116.8" font-size="13" fill="#1f2328">转</text>
+<text x="80" y="116.8" font-size="13" fill="#1f2328">发</text>
+<text x="93" y="116.8" font-size="13" fill="#1f2328">来</text>
+<text x="106" y="116.8" font-size="13" fill="#1f2328">的</text>
+<text x="119" y="116.8" font-size="13" fill="#1f2328">消</text>
+<text x="132" y="116.8" font-size="13" fill="#1f2328">息</text>
+<polygon points="331.71,80.08 441.41,115.8 331.71,151.52 222,115.8" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="288.68" y="107.44" font-size="13" fill="#1f2328">①</text>
+<text x="296.74" y="107.44" font-size="13" fill="#1f2328">【</text>
+<text x="309.74" y="107.44" font-size="13" fill="#1f2328">记</text>
+<text x="322.74" y="107.44" font-size="13" fill="#1f2328">录</text>
+<text x="335.74" y="107.44" font-size="13" fill="#1f2328">】</text>
+<text x="348.74" y="107.44" font-size="13" fill="#1f2328">闸</text>
+<text x="361.74" y="107.44" font-size="13" fill="#1f2328">门</text>
+<text x="278.73" y="126.16" font-size="13" fill="#1f2328">以</text>
+<text x="291.73" y="126.16" font-size="13" fill="#1f2328"> </text>
+<text x="295.63" y="126.16" font-size="13" fill="#1f2328">【</text>
+<text x="308.63" y="126.16" font-size="13" fill="#1f2328">记</text>
+<text x="321.63" y="126.16" font-size="13" fill="#1f2328">录</text>
+<text x="334.63" y="126.16" font-size="13" fill="#1f2328">】</text>
+<text x="347.63" y="126.16" font-size="13" fill="#1f2328"> </text>
+<text x="351.53" y="126.16" font-size="13" fill="#1f2328">开</text>
+<text x="364.53" y="126.16" font-size="13" fill="#1f2328">头</text>
+<text x="377.53" y="126.16" font-size="13" fill="#1f2328">?</text>
+<rect x="503.41" y="26" width="108" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="536.87" y="47.36" font-size="13" fill="#1f2328">写</text>
+<text x="549.87" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="553.77" y="47.36" font-size="13" fill="#1f2328">FAQ</text>
+<text x="518.41" y="66.08" font-size="13" fill="#1f2328">不</text>
+<text x="531.41" y="66.08" font-size="13" fill="#1f2328">经</text>
+<text x="544.41" y="66.08" font-size="13" fill="#1f2328">过</text>
+<text x="557.41" y="66.08" font-size="13" fill="#1f2328">分</text>
+<text x="570.41" y="66.08" font-size="13" fill="#1f2328">类</text>
+<text x="583.41" y="66.08" font-size="13" fill="#1f2328">器</text>
+<polygon points="595.72,115.44 688.02,160.52 595.72,205.6 503.41,160.52" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="552.69" y="142.8" font-size="13" fill="#1f2328">②</text>
+<text x="560.75" y="142.8" font-size="13" fill="#1f2328">学</text>
+<text x="573.75" y="142.8" font-size="13" fill="#1f2328">生</text>
+<text x="586.75" y="142.8" font-size="13" fill="#1f2328">转</text>
+<text x="599.75" y="142.8" font-size="13" fill="#1f2328">发</text>
+<text x="612.75" y="142.8" font-size="13" fill="#1f2328">闸</text>
+<text x="625.75" y="142.8" font-size="13" fill="#1f2328">门</text>
+<text x="554.76" y="161.52" font-size="13" fill="#1f2328">以</text>
+<text x="567.76" y="161.52" font-size="13" fill="#1f2328"> </text>
+<text x="571.66" y="161.52" font-size="13" fill="#1f2328">【</text>
+<text x="584.66" y="161.52" font-size="13" fill="#1f2328">转</text>
+<text x="597.66" y="161.52" font-size="13" fill="#1f2328">发</text>
+<text x="610.66" y="161.52" font-size="13" fill="#1f2328">学</text>
+<text x="623.66" y="161.52" font-size="13" fill="#1f2328">生</text>
+<text x="557.69" y="180.24" font-size="13" fill="#1f2328">提</text>
+<text x="570.69" y="180.24" font-size="13" fill="#1f2328">问</text>
+<text x="583.69" y="180.24" font-size="13" fill="#1f2328">】</text>
+<text x="596.69" y="180.24" font-size="13" fill="#1f2328"> </text>
+<text x="600.59" y="180.24" font-size="13" fill="#1f2328">开</text>
+<text x="613.59" y="180.24" font-size="13" fill="#1f2328">头</text>
+<text x="626.59" y="180.24" font-size="13" fill="#1f2328">?</text>
+<rect x="750.02" y="41.36" width="162.73" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="805.38" y="62.72" font-size="13" fill="#1f2328">进</text>
+<text x="818.38" y="62.72" font-size="13" fill="#1f2328">分</text>
+<text x="831.38" y="62.72" font-size="13" fill="#1f2328">类</text>
+<text x="844.38" y="62.72" font-size="13" fill="#1f2328">器</text>
+<text x="765.02" y="81.44" font-size="13" fill="#1f2328">submission</text>
+<text x="831.06" y="81.44" font-size="13" fill="#1f2328"> </text>
+<text x="834.96" y="81.44" font-size="13" fill="#1f2328">/</text>
+<text x="839.38" y="81.44" font-size="13" fill="#1f2328"> </text>
+<text x="843.28" y="81.44" font-size="13" fill="#1f2328">question</text>
+<rect x="750.02" y="130.8" width="147.26" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="810.71" y="152.16" font-size="13" fill="#1f2328">skip</text>
+<text x="765.02" y="170.88" font-size="13" fill="#1f2328">(</text>
+<text x="769.44" y="170.88" font-size="13" fill="#1f2328">非</text>
+<text x="782.44" y="170.88" font-size="13" fill="#1f2328">学</text>
+<text x="795.44" y="170.88" font-size="13" fill="#1f2328">生</text>
+<text x="808.44" y="170.88" font-size="13" fill="#1f2328">消</text>
+<text x="821.44" y="170.88" font-size="13" fill="#1f2328">息</text>
+<text x="834.44" y="170.88" font-size="13" fill="#1f2328">,</text>
+<text x="838.86" y="170.88" font-size="13" fill="#1f2328">未</text>
+<text x="851.86" y="170.88" font-size="13" fill="#1f2328">处</text>
+<text x="864.86" y="170.88" font-size="13" fill="#1f2328">理</text>
+<text x="877.86" y="170.88" font-size="13" fill="#1f2328">)</text>
+</svg>

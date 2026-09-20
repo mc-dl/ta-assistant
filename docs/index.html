@@ -68,6 +68,18 @@ hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
 h2:hover .anchor,h3:hover .anchor{opacity:1}
 .anchor:hover{color:var(--accent)}
 
+/* ---- 每页顶部的 hero ---- */
+.hero{background:linear-gradient(135deg,#0969da14,#0969da04 62%,rgba(255,255,255,0));
+      border:1px solid var(--border);border-radius:12px;padding:22px 26px 18px;
+      margin:0 0 1.5em}
+.hero .kicker{color:var(--accent);font-size:.78em;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase}
+.hero h1{border:0;margin:.1em 0 .3em;font-size:1.72em;padding:0;line-height:1.3}
+.hero .lead{color:var(--muted);margin:0;font-size:1.02em}
+.hero .meta{margin-top:.85em;padding-top:.7em;border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:.3em 1.5em;color:var(--muted);font-size:.84em}
+.hero .meta b{color:var(--fg);font-variant-numeric:tabular-nums}
+
 /* ---- 表格:横向滚动 + 表头吸顶 ---- */
 .table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
@@ -87,16 +99,96 @@ blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color
 blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
 blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
 
-/* ---- 图:mermaid 与图片 ---- */
+/* ---- 图:构建期画好的 svg ---- */
 figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
                           border-radius:8px;background:#fcfcfd}
-figure.diagram .mermaid{overflow-x:auto;text-align:center}
-figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
-     margin-top:.6em;text-align:center}
+figure.diagram img{max-width:100%;height:auto;display:block;margin:0 auto}
+/* 宽图**按原尺寸横向滚动,不缩放**。
+   缩到版心宽度的后果是字号一起缩:一张 1655px 宽的图塞进 1050px 的版心,
+   图里 13px 的字只剩 8px —— 一屏是放下了,但没人读得下去。
+   宁可让读者横向拉一下,也不能把字缩没。
+   窄图(≤860px)照旧居中自适应,那种情况下缩放比例 ≥1,不存在缩字问题。 */
+figure.diagram.wide{overflow-x:auto}
+figure.diagram.wide img{max-width:none;margin:0}
+figure.diagram figcaption{color:var(--fg);font-size:.9em;margin-bottom:.7em;
+     text-align:center;font-weight:600}
+figure.diagram.wide figcaption{text-align:left}
+/* 滚动提示贴在框外:它不该跟着图一起滚走 */
+figure.diagram .wide-hint{position:sticky;left:0;margin:.6em 0 0;color:var(--muted);
+     font-size:.84em}
+figure.pic figcaption{color:var(--muted);font-size:.88em;margin-top:.6em;text-align:center}
 figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
-details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src{margin-top:.8em;font-size:.85em;border-top:1px dashed var(--border);
+     padding-top:.5em}
 details.mermaid-src summary{cursor:pointer;color:var(--muted)}
 details.mermaid-src pre{margin:.5em 0 0}
+/* 图表框**贴着图**走:图是固定 620px 宽的,框撑满版心的话右边会空一大块,
+   看着像图没画完 */
+figure.chart{margin:1.4em auto;padding:10px 12px;border:1px solid var(--border);
+     border-radius:8px;background:#fcfcfd;overflow-x:auto;width:fit-content;max-width:100%}
+figure.chart svg{max-width:100%;height:auto;display:block}
+
+/* ---- :::stats 数字卡 ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+       gap:12px;margin:1.3em 0}
+.stat{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:8px;padding:13px 16px;background:var(--bg)}
+.stat .v{font-size:1.6em;font-weight:700;line-height:1.15;color:var(--accent);
+      font-variant-numeric:tabular-nums}
+.stat .l{font-weight:600;margin-top:.15em;font-size:.95em}
+.stat .n{color:var(--muted);font-size:.84em;margin-top:.15em;line-height:1.55}
+
+/* ---- :::compare 并排对比 ---- */
+.cmp{display:grid;gap:14px;margin:1.3em 0}
+.cmp.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cmp.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cmp.c2,.cmp.c3{grid-template-columns:1fr}}
+.cmp .col{border:1px solid var(--border);border-top:3px solid var(--accent);
+      border-radius:8px;padding:6px 18px 10px;background:var(--bg);min-width:0}
+.cmp .col.tone1{border-top-color:#1a7f37}
+.cmp .col.tone2{border-top-color:#9a6700}
+.cmp .col > :first-child{margin-top:.6em}
+.cmp .col h3{margin:.4em 0 .5em;font-size:1.03em}
+.cmp .col ul,.cmp .col ol{padding-left:1.25em}
+
+/* ---- :::steps 步骤条 ---- */
+.steps{counter-reset:st;display:grid;gap:10px;margin:1.3em 0}
+.step{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      padding:11px 16px 11px 54px;position:relative}
+.step:before{counter-increment:st;content:counter(st);
+      position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:50%;
+      background:var(--accent);color:#fff;font-weight:700;font-size:.82em;
+      display:flex;align-items:center;justify-content:center}
+.step .t{font-weight:600}
+.step .d{color:var(--muted);font-size:.91em;margin-top:.1em}
+
+/* ---- :::timeline 时间线 ---- */
+.timeline{margin:1.3em 0 1.3em 6px;padding-left:22px;border-left:2px solid var(--border)}
+.tl{position:relative;padding:0 0 1.05em 18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-30px;top:.5em;width:11px;height:11px;
+      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl .when{color:var(--muted);font-size:.8em;font-variant-numeric:tabular-nums}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.91em}
+
+/* ---- :::cards 小卡片墙 ---- */
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));
+      gap:12px;margin:1.3em 0}
+.mini > div{border:1px solid var(--border);border-radius:8px;padding:12px 15px;
+      background:var(--bg)}
+.mini .t{font-weight:600;margin-bottom:.15em}
+.mini .d{color:var(--muted);font-size:.89em;line-height:1.6}
+
+/* ---- :::note 提示框 / :::fold 折叠 ---- */
+.note{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;background:#fbfcfd;padding:.75em 1.2em;margin:1.2em 0}
+.note .nt{font-weight:600;margin-bottom:.15em;color:var(--accent)}
+.note > :last-child{margin-bottom:.35em}
+details.fold{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      margin:1.1em 0;padding:0 16px}
+details.fold > summary{cursor:pointer;padding:11px 0;font-weight:600;color:var(--accent)}
+details.fold[open] > summary{border-bottom:1px solid var(--border);margin-bottom:.6em}
 
 /* ---- 本页速览胶囊 ---- */
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
@@ -128,7 +220,9 @@ details.mermaid-src pre{margin:.5em 0 0}
 
 @media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
   .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
-  .table-wrap{overflow:visible}th{position:static}}
+  .table-wrap{overflow:visible}th{position:static}
+  details.fold{border:0;padding:0}details.fold > summary{color:var(--fg)}
+  details.fold > *{display:revert!important}}
 </style>
 </head>
 <body>
@@ -140,15 +234,15 @@ details.mermaid-src pre{margin:.5em 0 0}
 </ul>
 </div>
 </div>
-<div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a><a href="_hub_input.html" class="here">文档</a></div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="index.html" class="here">文档首页</a><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
 </aside>
 <main>
+<header class="hero"><div class="kicker">INDEX</div><h1>文档</h1><div class="meta"><span><b>1</b> 个小节</span><span><b>1</b> 张表</span></div></header>
 
-<h1 id="文档">文档</h1>
-<div class="hub-hero"><h1>助教自动化工具 · 文档</h1><p>共 7 篇。左边随便点一篇都能直接看 —— 图是 mermaid 现渲染的,表是真实的表,目录在右侧跟着滚动高亮。</p></div>
-<div class="cards"><a class="card-link" href="README.html"><div class="t">数电助教自动化助手 (TA Assistant)</div><div class="d">文档目录说明与时效性提示</div><div class="m">7 节 · 6 行表格 · 0 张图 · 约 5 千字</div></a><a class="card-link" href="knowledge_base.html"><div class="t">知识库说明(FAQ + 资料库)</div><div class="d">知识库里到底有什么:语料来源、索引规模、检索参数、每一轮改了什么、已知限制</div><div class="m">9 节 · 301 行表格 · 3 张图 · 约 63 千字</div></a><a class="card-link" href="design.html"><div class="t">系统设计文档</div><div class="d">系统设计:模块划分、数据流、关键取舍(为什么是 BM25、为什么分三档答疑)</div><div class="m">9 节 · 30 行表格 · 2 张图 · 约 21 千字</div></a><a class="card-link" href="deployment.html"><div class="t">部署与 OpenClaw 接入指南</div><div class="d">部署与 OpenClaw 接入:目录放置、换学期怎么换、故障排查表</div><div class="m">9 节 · 33 行表格 · 1 张图 · 约 8 千字</div></a><a class="card-link" href="wechat_end_to_end.html"><div class="t">微信端到端跑通手册</div><div class="d">微信端到端跑通手册:实测记录、逐段排障、TS 侧踩过的坑</div><div class="m">9 节 · 94 行表格 · 1 张图 · 约 33 千字</div></a><a class="card-link" href="requirements.html"><div class="t">需求文档(PRD)</div><div class="d">需求文档:功能清单、验收标准、非功能需求</div><div class="m">7 节 · 20 行表格 · 1 张图 · 约 9 千字</div></a><a class="card-link" href="claude_code_prompt.html"><div class="t">交给 Claude Code 的 Prompt</div><div class="d">2026-04 项目启动时交给 Claude Code 的那份 prompt(历史存档,含被实测推翻之处)</div><div class="m">2 节 · 0 行表格 · 0 张图 · 约 5 千字</div></a></div>
+<div class="hub-hero"><h1>助教自动化工具 · 文档</h1><p>共 7 篇,25 块可视化、519 行表格。左边随便点一篇都能直接看 —— 图是构建期就画好的 SVG(不联网也有),表是真实的表,目录在左侧跟着滚动高亮。</p></div>
+<div class="cards"><a class="card-link" href="README.html"><div class="t">数电助教自动化助手 (TA Assistant)</div><div class="d">文档目录说明与时效性提示</div><div class="m">7 节 · 6 行表格 · 3 块可视化 · 约 6 千字</div></a><a class="card-link" href="knowledge_base.html"><div class="t">知识库说明(FAQ + 资料库)</div><div class="d">知识库里到底有什么:语料来源、索引规模、检索参数、每一轮改了什么、已知限制</div><div class="m">9 节 · 334 行表格 · 4 块可视化 · 约 69 千字</div></a><a class="card-link" href="design.html"><div class="t">系统设计文档</div><div class="d">系统设计:模块划分、数据流、关键取舍(为什么是 BM25、为什么分三档答疑)</div><div class="m">9 节 · 31 行表格 · 5 块可视化 · 约 23 千字</div></a><a class="card-link" href="deployment.html"><div class="t">部署与 OpenClaw 接入指南</div><div class="d">部署与 OpenClaw 接入:目录放置、换学期怎么换、故障排查表</div><div class="m">9 节 · 34 行表格 · 3 块可视化 · 约 10 千字</div></a><a class="card-link" href="wechat_end_to_end.html"><div class="t">微信端到端跑通手册</div><div class="d">微信端到端跑通手册:实测记录、逐段排障、TS 侧踩过的坑</div><div class="m">9 节 · 94 行表格 · 3 块可视化 · 约 34 千字</div></a><a class="card-link" href="requirements.html"><div class="t">需求文档(PRD)</div><div class="d">需求文档:功能清单、验收标准、非功能需求</div><div class="m">7 节 · 20 行表格 · 4 块可视化 · 约 11 千字</div></a><a class="card-link" href="claude_code_prompt.html"><div class="t">交给 Claude Code 的 Prompt</div><div class="d">2026-04 项目启动时交给 Claude Code 的那份 prompt(历史存档,含被实测推翻之处)</div><div class="m">2 节 · 0 行表格 · 3 块可视化 · 约 6 千字</div></a></div>
 
-<2 id="一览">一览<a class="anchor" href="#一览" title="链接到这一节">#</a></2>
+<h2 id="一览">一览<a class="anchor" href="#一览" title="链接到这一节">#</a></h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -156,7 +250,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 <th>讲什么</th>
 <th>小节</th>
 <th>表格行</th>
-<th>图</th>
+<th>可视化块</th>
 </tr>
 </thead>
 <tbody>
@@ -165,58 +259,58 @@ details.mermaid-src pre{margin:.5em 0 0}
 <td>文档目录说明与时效性提示</td>
 <td>7</td>
 <td>6</td>
-<td>0</td>
+<td>3</td>
 </tr>
 <tr>
 <td><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a></td>
 <td>知识库里到底有什么:语料来源、索引规模、检索参数、每一轮改了什么、已知限制</td>
 <td>9</td>
-<td>301</td>
-<td>3</td>
+<td>334</td>
+<td>4</td>
 </tr>
 <tr>
 <td><a href="design.html">系统设计文档</a></td>
 <td>系统设计:模块划分、数据流、关键取舍(为什么是 BM25、为什么分三档答疑)</td>
 <td>9</td>
-<td>30</td>
-<td>2</td>
+<td>31</td>
+<td>5</td>
 </tr>
 <tr>
 <td><a href="deployment.html">部署与 OpenClaw 接入指南</a></td>
 <td>部署与 OpenClaw 接入:目录放置、换学期怎么换、故障排查表</td>
 <td>9</td>
-<td>33</td>
-<td>1</td>
+<td>34</td>
+<td>3</td>
 </tr>
 <tr>
 <td><a href="wechat_end_to_end.html">微信端到端跑通手册</a></td>
 <td>微信端到端跑通手册:实测记录、逐段排障、TS 侧踩过的坑</td>
 <td>9</td>
 <td>94</td>
-<td>1</td>
+<td>3</td>
 </tr>
 <tr>
 <td><a href="requirements.html">需求文档(PRD)</a></td>
 <td>需求文档:功能清单、验收标准、非功能需求</td>
 <td>7</td>
 <td>20</td>
-<td>1</td>
+<td>4</td>
 </tr>
 <tr>
 <td><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></td>
 <td>2026-04 项目启动时交给 Claude Code 的那份 prompt(历史存档,含被实测推翻之处)</td>
 <td>2</td>
 <td>0</td>
-<td>0</td>
+<td>3</td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
-<p>📘 这些 HTML 都是 <code>python scripts/md2html.py --all docs/ --hub</code> 生成的,<strong>不要手改</strong>;要改内容就改对应的 <code>.md</code> 再重跑一次。</p>
+<p>📘 这些 HTML 都是 <code>python scripts/md2html.py --all docs/ --hub</code> 生成的,<strong>不要手改</strong>;要改内容就改对应的 <code>.md</code> 再重跑一次。图是 <code>scripts/svgkit.py</code> 画的,改图就改 md 里的 ```mermaid 块。</p>
 </blockquote>
 <div class="foot">
-  <span>源文件 <code>docs/_hub_input.md</code> · 生成于 2026-09-20 21:09</span>
-  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+  <span>本页由 <code>md2html.py --hub</code> 汇总生成(内容取自 docs/ 下各篇 md) · 内容指纹 <code>9914fd8b</code></span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是构建期渲染出来的</span>
 </div>
 </main>
 </div>

@@ -147,10 +147,24 @@ def load_roster(path: Path | None = None) -> dict[str, str]:
 
 
 def ensure_submission_table(path: Path) -> None:
-    """补交表不存在则自动创建,带标题和表头。"""
+    """补交表不存在则新建一张带表头的空表。
+
+    **自动新建是对的**:换学期就是换一门课,新学期第一笔补交理应把表建出来
+    (路径按课推导,见 config.submission_table_for)。
+
+    **但父目录不存在时不许建。** 补交表的位置是"花名册旁边",父目录(花名册/)
+    不在就说明路径本身是错的 —— 这时候 mkdir + 建空表,等于在一个助教根本不会
+    去看的地方悄悄记下补交,而机器人照样回「✅ 已登记」。这类"静默分裂"在 FAQ 那边
+    已经定过规矩(见 src/handlers/record.py:路径可疑时宁可不写)。所以这里直接抛错,
+    由调用方翻成一句诚实的回执。
+    """
     if path.exists():
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.parent.exists():
+        raise FileNotFoundError(
+            f"补交表所在目录不存在,不敢新建:{path.parent}"
+            f"(补交表应当与花名册同目录,检查 config.GRADEBOOK_PATH)"
+        )
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "补交记录"

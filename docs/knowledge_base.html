@@ -68,6 +68,18 @@ hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
 h2:hover .anchor,h3:hover .anchor{opacity:1}
 .anchor:hover{color:var(--accent)}
 
+/* ---- 每页顶部的 hero ---- */
+.hero{background:linear-gradient(135deg,#0969da14,#0969da04 62%,rgba(255,255,255,0));
+      border:1px solid var(--border);border-radius:12px;padding:22px 26px 18px;
+      margin:0 0 1.5em}
+.hero .kicker{color:var(--accent);font-size:.78em;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase}
+.hero h1{border:0;margin:.1em 0 .3em;font-size:1.72em;padding:0;line-height:1.3}
+.hero .lead{color:var(--muted);margin:0;font-size:1.02em}
+.hero .meta{margin-top:.85em;padding-top:.7em;border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:.3em 1.5em;color:var(--muted);font-size:.84em}
+.hero .meta b{color:var(--fg);font-variant-numeric:tabular-nums}
+
 /* ---- 表格:横向滚动 + 表头吸顶 ---- */
 .table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
@@ -87,16 +99,96 @@ blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color
 blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
 blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
 
-/* ---- 图:mermaid 与图片 ---- */
+/* ---- 图:构建期画好的 svg ---- */
 figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
                           border-radius:8px;background:#fcfcfd}
-figure.diagram .mermaid{overflow-x:auto;text-align:center}
-figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
-     margin-top:.6em;text-align:center}
+figure.diagram img{max-width:100%;height:auto;display:block;margin:0 auto}
+/* 宽图**按原尺寸横向滚动,不缩放**。
+   缩到版心宽度的后果是字号一起缩:一张 1655px 宽的图塞进 1050px 的版心,
+   图里 13px 的字只剩 8px —— 一屏是放下了,但没人读得下去。
+   宁可让读者横向拉一下,也不能把字缩没。
+   窄图(≤860px)照旧居中自适应,那种情况下缩放比例 ≥1,不存在缩字问题。 */
+figure.diagram.wide{overflow-x:auto}
+figure.diagram.wide img{max-width:none;margin:0}
+figure.diagram figcaption{color:var(--fg);font-size:.9em;margin-bottom:.7em;
+     text-align:center;font-weight:600}
+figure.diagram.wide figcaption{text-align:left}
+/* 滚动提示贴在框外:它不该跟着图一起滚走 */
+figure.diagram .wide-hint{position:sticky;left:0;margin:.6em 0 0;color:var(--muted);
+     font-size:.84em}
+figure.pic figcaption{color:var(--muted);font-size:.88em;margin-top:.6em;text-align:center}
 figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
-details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src{margin-top:.8em;font-size:.85em;border-top:1px dashed var(--border);
+     padding-top:.5em}
 details.mermaid-src summary{cursor:pointer;color:var(--muted)}
 details.mermaid-src pre{margin:.5em 0 0}
+/* 图表框**贴着图**走:图是固定 620px 宽的,框撑满版心的话右边会空一大块,
+   看着像图没画完 */
+figure.chart{margin:1.4em auto;padding:10px 12px;border:1px solid var(--border);
+     border-radius:8px;background:#fcfcfd;overflow-x:auto;width:fit-content;max-width:100%}
+figure.chart svg{max-width:100%;height:auto;display:block}
+
+/* ---- :::stats 数字卡 ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+       gap:12px;margin:1.3em 0}
+.stat{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:8px;padding:13px 16px;background:var(--bg)}
+.stat .v{font-size:1.6em;font-weight:700;line-height:1.15;color:var(--accent);
+      font-variant-numeric:tabular-nums}
+.stat .l{font-weight:600;margin-top:.15em;font-size:.95em}
+.stat .n{color:var(--muted);font-size:.84em;margin-top:.15em;line-height:1.55}
+
+/* ---- :::compare 并排对比 ---- */
+.cmp{display:grid;gap:14px;margin:1.3em 0}
+.cmp.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cmp.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cmp.c2,.cmp.c3{grid-template-columns:1fr}}
+.cmp .col{border:1px solid var(--border);border-top:3px solid var(--accent);
+      border-radius:8px;padding:6px 18px 10px;background:var(--bg);min-width:0}
+.cmp .col.tone1{border-top-color:#1a7f37}
+.cmp .col.tone2{border-top-color:#9a6700}
+.cmp .col > :first-child{margin-top:.6em}
+.cmp .col h3{margin:.4em 0 .5em;font-size:1.03em}
+.cmp .col ul,.cmp .col ol{padding-left:1.25em}
+
+/* ---- :::steps 步骤条 ---- */
+.steps{counter-reset:st;display:grid;gap:10px;margin:1.3em 0}
+.step{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      padding:11px 16px 11px 54px;position:relative}
+.step:before{counter-increment:st;content:counter(st);
+      position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:50%;
+      background:var(--accent);color:#fff;font-weight:700;font-size:.82em;
+      display:flex;align-items:center;justify-content:center}
+.step .t{font-weight:600}
+.step .d{color:var(--muted);font-size:.91em;margin-top:.1em}
+
+/* ---- :::timeline 时间线 ---- */
+.timeline{margin:1.3em 0 1.3em 6px;padding-left:22px;border-left:2px solid var(--border)}
+.tl{position:relative;padding:0 0 1.05em 18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-30px;top:.5em;width:11px;height:11px;
+      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl .when{color:var(--muted);font-size:.8em;font-variant-numeric:tabular-nums}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.91em}
+
+/* ---- :::cards 小卡片墙 ---- */
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));
+      gap:12px;margin:1.3em 0}
+.mini > div{border:1px solid var(--border);border-radius:8px;padding:12px 15px;
+      background:var(--bg)}
+.mini .t{font-weight:600;margin-bottom:.15em}
+.mini .d{color:var(--muted);font-size:.89em;line-height:1.6}
+
+/* ---- :::note 提示框 / :::fold 折叠 ---- */
+.note{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;background:#fbfcfd;padding:.75em 1.2em;margin:1.2em 0}
+.note .nt{font-weight:600;margin-bottom:.15em;color:var(--accent)}
+.note > :last-child{margin-bottom:.35em}
+details.fold{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      margin:1.1em 0;padding:0 16px}
+details.fold > summary{cursor:pointer;padding:11px 0;font-weight:600;color:var(--accent)}
+details.fold[open] > summary{border-bottom:1px solid var(--border);margin-bottom:.6em}
 
 /* ---- 本页速览胶囊 ---- */
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
@@ -128,7 +220,9 @@ details.mermaid-src pre{margin:.5em 0 0}
 
 @media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
   .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
-  .table-wrap{overflow:visible}th{position:static}}
+  .table-wrap{overflow:visible}th{position:static}
+  details.fold{border:0;padding:0}details.fold > summary{color:var(--fg)}
+  details.fold > *{display:revert!important}}
 </style>
 </head>
 <body>
@@ -186,6 +280,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <li><a href="#97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷">9.7 第七轮:FAQ 从"手改 txt"变成"能记";顺带收掉三处静默缺陷</a></li>
 <li><a href="#98-第八轮花名册修好顺带撞出补交表被单测写了-398-行">9.8 第八轮:花名册修好,顺带撞出"补交表被单测写了 398 行"</a></li>
 <li><a href="#99-第九轮文档长出网页层-全仓一致性审计">9.9 第九轮:文档长出"网页层" + 全仓一致性审计</a></li>
+<li><a href="#910-第十轮让网页层是否与-md-同步变成一条命令-修掉-crlf-这个真-bug">9.10 第十轮:让"网页层是否与 md 同步"变成一条命令 + 修掉 CRLF 这个真 bug</a></li>
+<li><a href="#911-第十一轮补交表改成跟着花名册走-修掉没写进去却说已登记">9.11 第十一轮:补交表改成"跟着花名册走" + 修掉"没写进去却说已登记"</a></li>
 </ul>
 </li>
 </ul>
@@ -194,8 +290,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html" class="here">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
 </aside>
 <main>
+<header class="hero"><div class="kicker">knowledge_base</div><h1>知识库说明(FAQ + 资料库)</h1><div class="meta"><span><b>9</b> 个小节</span><span><b>3</b> 张图</span><span><b>50</b> 张表</span></div></header>
 <nav class="quick"><a href="#1-两条召回通路">1. 两条召回通路</a><a href="#2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 .env 里配的那个)</a><a href="#3-资料库里现在有什么">3. 资料库里现在有什么</a><a href="#31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)</a><a href="#32-电路基础">3.2 电路基础</a><a href="#33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)</a><a href="#34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进每一块,不能只放第一块</a><a href="#341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件不进索引(2026-09-20 晚)</a><a href="#342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上学生的说法,不能只写书面语</a><a href="#35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)</a><a href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)</a><a href="#4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被故意排除了(不是遗漏)</a><a href="#5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回</a><a href="#51-格式">5.1 格式</a></nav>
-<h1 id="知识库说明faq-资料库">知识库说明(FAQ + 资料库)</h1>
 <blockquote>
 <p>建立:2026-09-20 · 起因:新增「电路基础」(张曰理老师)理论课的作业答案与群聊问答
 最近一轮:<strong>第九轮</strong> —— 文档长出"网页层"(HTML 里有架构图/流程图/时序图/饼图,
@@ -213,30 +309,11 @@ details.mermaid-src pre{margin:.5em 0 0}
 于是 <code>的/是/原理</code> 这类虚词变成"正证据"、把无关章节顶到正确章节前面。
 现在的修法是 <code>apply_lucene_idf()</code>,而且<strong>不许用到 FAQ 通路</strong>(那会偷偷改掉 4.0 阈值)。</p>
 <hr />
-<2 id="1-两条召回通路">1. 两条召回通路<a class="anchor" href="#1-两条召回通路" title="链接到这一节">#</a></2>
+<h2 id="1-两条召回通路">1. 两条召回通路<a class="anchor" href="#1-两条召回通路" title="链接到这一节">#</a></h2>
 <p>ta-assistant 的答疑是<strong>两路串联</strong>,不是一路:</p>
 <figure class="diagram">
-<div class="mermaid">flowchart TD
-  Q[&quot;学生提问&quot;] --&gt; K{&quot;_classify() 分档&quot;}
-
-  K --&gt;|&quot;problem&lt;br/&gt;带题号 1.36 / 第5题&quot;| RAGONLY[&quot;只走②资料通路&lt;br/&gt;FAQ 连补充都不加&quot;]
-  K --&gt;|&quot;admin&lt;br/&gt;提交/截止/成绩/考试&quot;| FAQHIT{&quot;① FAQ 命中?&lt;br/&gt;阈值 4.0 + 实词闸门&quot;}
-  K --&gt;|&quot;concept&lt;br/&gt;概念/原理,以及没命中任何关键词的默认档&quot;| BOTH
-
-  FAQHIT --&gt;|&quot;命中&quot;| FAST[&quot;① FAQ 当依据&lt;br/&gt;不查资料,交给大模型润色&quot;]
-  FAQHIT --&gt;|&quot;未命中&quot;| RAGONLY
-
-  BOTH[&quot;② 资料通路&quot;] --&gt; MERGE{&quot;① FAQ 也命中?&quot;}
-  MERGE --&gt;|&quot;命中&quot;| SUPP[&quot;FAQ 一并当补充材料喂进去&quot;]
-  MERGE --&gt;|&quot;没命中&quot;| ONLYDOC[&quot;只喂资料&quot;]
-
-  RAGONLY --&gt; BM[&quot;BM25 over ~/ykt_questions/materials/&lt;br/&gt;取 top-RAG_TOP_K(默认 7)块&quot;]
-  SUPP --&gt; BM
-  ONLYDOC --&gt; BM
-  BM --&gt; ANS[&quot;大模型作答&quot;]
-
-  FAST --&gt; ANS</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart TD
+<img src="diagrams/knowledge_base-0.svg" alt="结构图" loading="lazy">
+<details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>flowchart TD
   Q[&quot;学生提问&quot;] --&gt; K{&quot;_classify() 分档&quot;}
 
   K --&gt;|&quot;problem&lt;br/&gt;带题号 1.36 / 第5题&quot;| RAGONLY[&quot;只走②资料通路&lt;br/&gt;FAQ 连补充都不加&quot;]
@@ -287,7 +364,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 <strong>"只有事务题才走 FAQ 快路"这条,是为了不让 FAQ 短路掉概念讲解</strong>(§6)。</p>
 <p><strong>为什么 FAQ 要卡阈值 + 实词闸门</strong>:见第 5 节,那里记了一次真实的误召回。</p>
 <hr />
-<2 id="2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 <code>.env</code> 里配的那个)<a class="anchor" href="#2-知识库落在哪以及为什么不是-env-里配的那个" title="链接到这一节">#</a></2>
+<h2 id="2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 <code>.env</code> 里配的那个)<a class="anchor" href="#2-知识库落在哪以及为什么不是-env-里配的那个" title="链接到这一节">#</a></h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -314,7 +391,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 </tr>
 <tr>
 <td>补交表</td>
-<td><code>~/ykt_questions/数字电路与逻辑设计实验（一）补交表.xlsx</code></td>
+<td><strong>跟着花名册走</strong>:<code>花名册/电路基础理论课_补交表.xlsx</code>(由名单文件名推导,同目录、同课名)</td>
 </tr>
 <tr>
 <td>索引文件</td>
@@ -337,7 +414,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 是<strong>旧部署方式的遗留说明</strong>,与现在的实际运行状态不一致;真要改回 Windows 侧,得先把
 <code>~/ykt_questions/补交表.xlsx</code> 里的补交记录合并过去,不然会丢记录。</p>
 <hr />
-<2 id="3-资料库里现在有什么">3. 资料库里现在有什么<a class="anchor" href="#3-资料库里现在有什么" title="链接到这一节">#</a></2>
+<h2 id="3-资料库里现在有什么">3. 资料库里现在有什么<a class="anchor" href="#3-资料库里现在有什么" title="链接到这一节">#</a></h2>
 <p>重建后的索引:<strong>114 个文件 / 3165 个分块</strong>。
 电路基础里<strong>教材占 2105 块(全库 67%)</strong> —— 是 2026-09-20 晚 OCR 进来的,见 §3.5。</p>
 <blockquote>
@@ -346,7 +423,40 @@ details.mermaid-src pre{margin:.5em 0 0}
 见 §8 第 12、13 条。移动前后跑了 <code>eval_retrieval.py --compare</code>:17 条用例全中、
 0 条回归,§3.6 那张 df 表<strong>逐个数复量过,一个都没动</strong>(那块里没有那些词)。</p>
 </blockquote>
-<p>分块构成(从实际索引里数的,不是估的;<code>pickle</code> 里 <code>path</code> 按目录归类):</p>
+<p>分块构成 —— <strong>教材一门就占了三分之二</strong>,这也是"概念题答得比事务题好"的底气所在:</p>
+<figure class="chart"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 646 245"
+     width="646" height="245" role="img"
+     aria-label="索引 3165 块按来源分布">
+  <title>索引 3165 块按来源分布</title>
+  <desc>电路基础 · 教材=2105块; 电路基础 · 各章作业答案=491块; 电路基础 · 课堂讲义=288块; 数电实验=231块; 电路基础 · 参考答案=44块; 电路基础 · 错误集锦=6块</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="646" height="245" fill="#ffffff"/>
+<text x="26" y="26" font-size="15" fill="#1f2328" font-weight="600">索引 3165 块按来源分布</text>
+<line x1="190.8" y1="46" x2="190.8" y2="225" stroke="#d0d7de" stroke-width="1"/>
+<text x="180.8" y="64.24" font-size="13" fill="#1f2328" text-anchor="end">电路基础 · 教材</text>
+<rect x="190.8" y="52" width="355.96" height="17" rx="4" fill="#0969da"/>
+<text x="562.76" y="64.24" font-size="13" fill="#59636e">2105块</text>
+<text x="180.8" y="94.24" font-size="13" fill="#1f2328" text-anchor="end">电路基础 · 各章作业答案</text>
+<rect x="190.8" y="82" width="83.03" height="17" rx="4" fill="#1a7f37"/>
+<text x="562.76" y="94.24" font-size="13" fill="#59636e">491块</text>
+<text x="180.8" y="124.24" font-size="13" fill="#1f2328" text-anchor="end">电路基础 · 课堂讲义</text>
+<rect x="190.8" y="112" width="48.7" height="17" rx="4" fill="#9a6700"/>
+<text x="562.76" y="124.24" font-size="13" fill="#59636e">288块</text>
+<text x="180.8" y="154.24" font-size="13" fill="#1f2328" text-anchor="end">数电实验</text>
+<rect x="190.8" y="142" width="39.06" height="17" rx="4" fill="#8250df"/>
+<text x="562.76" y="154.24" font-size="13" fill="#59636e">231块</text>
+<text x="180.8" y="184.24" font-size="13" fill="#1f2328" text-anchor="end">电路基础 · 参考答案</text>
+<rect x="190.8" y="172" width="7.44" height="17" rx="4" fill="#cf222e"/>
+<text x="562.76" y="184.24" font-size="13" fill="#59636e">44块</text>
+<text x="180.8" y="214.24" font-size="13" fill="#1f2328" text-anchor="end">电路基础 · 错误集锦</text>
+<rect x="190.8" y="202" width="2" height="17" rx="4" fill="#0d9488"/>
+<text x="562.76" y="214.24" font-size="13" fill="#59636e">6块</text>
+</svg>
+</figure>
+<p>精确数字(从实际索引里数的,不是估的;<code>pickle</code> 里 <code>path</code> 按目录归类):</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -395,14 +505,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 </table></div>
 <p>同一份数据画成图(教材一块就占三分之二 —— 这是"概念题为什么答得像教材"的直接原因):</p>
 <figure class="diagram">
-<div class="mermaid">pie showData title 索引 3165 块的来源
-  &quot;电路基础·教材&quot; : 2105
-  &quot;电路基础·各章作业答案&quot; : 491
-  &quot;电路基础·课堂讲义&quot; : 288
-  &quot;数电实验&quot; : 231
-  &quot;电路基础·参考答案&quot; : 44
-  &quot;电路基础·错误集锦&quot; : 6</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>pie showData title 索引 3165 块的来源
+<img src="diagrams/knowledge_base-1.svg" alt="结构图" loading="lazy">
+<details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>pie showData title 索引 3165 块的来源
   &quot;电路基础·教材&quot; : 2105
   &quot;电路基础·各章作业答案&quot; : 491
   &quot;电路基础·课堂讲义&quot; : 288
@@ -415,7 +519,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 最小的是 <code>教材-译者序-符号与国标差异.md</code>(5 块)和附录(48 块)。
 (比上一版少 1 块 = 2026-09-20 语料审计丢掉的那张扫描仪元信息页,见 §3.5.1。)</p>
 </blockquote>
-<3 id="31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)<a class="anchor" href="#31-数电实验原有本次只是搬进来" title="链接到这一节">#</a></3>
+<h3 id="31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)<a class="anchor" href="#31-数电实验原有本次只是搬进来" title="链接到这一节">#</a></h3>
 <p>原来那份索引里的 7 个文件,分块 232 个:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -458,7 +562,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 不是因为有人拦它,而是因为 <code>doc_parser</code> 用了 <code>read_only=True</code>,而那份工作簿的
 <code>&lt;dimension ref="A1"/&gt;</code> 撒了谎 —— <strong>是被同一个 bug 意外挡住的</strong>,不是设计。</p>
 </blockquote>
-<3 id="32-电路基础">3.2 电路基础<a class="anchor" href="#32-电路基础" title="链接到这一节">#</a></3>
+<h3 id="32-电路基础">3.2 电路基础<a class="anchor" href="#32-电路基础" title="链接到这一节">#</a></h3>
 <p>由 <code>scripts/import_circuit_theory.py</code> + <code>scripts/enhance_circuit_basic.py</code> 从
 <code>C:\Users\52880\Downloads\202509电路理论基础\</code>(张老师课件 + 中文版作业答案)与
 <code>C:\Users\52880\Downloads\电路基础课后作业答案\</code>(英文版 Soln)一起生成,
@@ -564,7 +668,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 </ol>
 <p><strong>第 6 章整章写 <code>6-11</code> 而不是 <code>6.11</code></strong>,所以切题时统一归一成点号,
 否则中文版的 6-11 就没法和英文版的 <code>6.11.md</code> 合并。</p>
-<3 id="33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)<a class="anchor" href="#33-中文详细解析2026-09-20-加的-llm-增强" title="链接到这一节">#</a></3>
+<h3 id="33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)<a class="anchor" href="#33-中文详细解析2026-09-20-加的-llm-增强" title="链接到这一节">#</a></h3>
 <p><strong>原解析太简略,检索到了也答不了疑。</strong> 1.36 题原文全文就两行:</p>
 <pre><code>(a) I = 20/0.25 = 80 amps.
 (b) days = (20/0.002)/24 = 416.7 days.
@@ -684,7 +788,7 @@ Solution 1.36 ...
 "(此处依赖题图,请对照作业册或原始 PDF)",<strong>禁止凭空描述电路长什么样</strong>。
 实测 9.67、13.11 等题都正确写了这句。想让它能讲图,得先做 OCR/视觉方案(见 §8)。</p>
 </blockquote>
-<3 id="34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进<strong>每一块</strong>,不能只放第一块<a class="anchor" href="#34-检索锚点必须复制进每一块不能只放第一块" title="链接到这一节">#</a></3>
+<h3 id="34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进<strong>每一块</strong>,不能只放第一块<a class="anchor" href="#34-检索锚点必须复制进每一块不能只放第一块" title="链接到这一节">#</a></h3>
 <p>这是增强之后暴露出来的、比"内容简略"更隐蔽的问题(2026-09-20)。</p>
 <p>学生问「电路基础第一章作业的1.36怎么做」,修好 FAQ 截胡后资料通路终于被调用了,
 可模型回答的却是"<strong>资料里只有题目,没有收录解题步骤</strong>"。查分块得分,真相是:</p>
@@ -739,7 +843,7 @@ IDF 自动趋近 0,真正有区分度的<strong>题号</strong>反而更突出�
 真正的代价不在尾巴本身,而在当时 <code>原理</code> 这类词的 IDF 被兜底成一个<strong>正数</strong>(1.70):
 见 §3.6。<strong>结论:锚点复制这个机制没错,但"往锚点里多塞词"不是免费的。</strong></p>
 </blockquote>
-<3 id="341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件<strong>不进索引</strong>(2026-09-20 晚)<a class="anchor" href="#341-目录清单类文件不进索引2026-09-20-晚" title="链接到这一节">#</a></3>
+<h3 id="341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件<strong>不进索引</strong>(2026-09-20 晚)<a class="anchor" href="#341-目录清单类文件不进索引2026-09-20-晚" title="链接到这一节">#</a></h3>
 <p>加完讲义后复测,发现<strong>每个问题的第一名都是 <code>00_资料总目录.md</code></strong>:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -771,7 +875,7 @@ IDF 自动趋近 0,真正有区分度的<strong>题号</strong>反而更突出�
 它都能拿高分 —— 而它的正文只是一份清单,对回答毫无营养,还占掉 7 个名额里的 1 个。
 <strong>修法</strong>:<code>_iter_files()</code> 里跳过 <code>00_</code> 开头(人工目录)和 <code>_</code> 开头(生成清单)的文件。
 它们是给人看的,不是给人问的。改完 1064 → 1061 块,第一名全部还给真正的资料。</p>
-<3 id="342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上<strong>学生的说法</strong>,不能只写书面语<a class="anchor" href="#342-锚点里要写上学生的说法不能只写书面语" title="链接到这一节">#</a></3>
+<h3 id="342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上<strong>学生的说法</strong>,不能只写书面语<a class="anchor" href="#342-锚点里要写上学生的说法不能只写书面语" title="链接到这一节">#</a></h3>
 <p>同一批复测里暴露的第二种失败:问「教材上<strong>哪里有印错</strong>的地方」,错误集锦排第 9、
 大模型答"我这边没有拿到那份清单的内容";把问法换成「教材哪里<strong>印错了</strong>」,同一份资料
 排第 <strong>2</strong>。一模一样的意图,一个答得上一个答不上 —— 因为锚点里写的是
@@ -797,7 +901,7 @@ IDF 自动趋近 0,真正有区分度的<strong>题号</strong>反而更突出�
 所以大模型照实说了「下面这版讲法是通用教材知识,供参考;教材第5章(从P134起)专门讲
 运算放大器,可以对照着看」—— 该收的声明收了,该给的页码给了。
 <strong>锚点负责"召得回",不负责"块里真有答案";后者由提示词第①档的声明规则兜住。</strong></p>
-<3 id="35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)<a class="anchor" href="#35-扫描版中文教材ocr-进库2026-09-20-晚" title="链接到这一节">#</a></3>
+<h3 id="35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)<a class="anchor" href="#35-扫描版中文教材ocr-进库2026-09-20-晚" title="链接到这一节">#</a></h3>
 <p><code>电路基础-中文版-原书第6版（扫描版）.pdf</code>(711 页 / 266 MB)一直是唯一一个
 "资料就在手里但进不了库"的东西。<strong>它是纯扫描件</strong>:每页一张 1904×2944 的图
 (<code>Pdg2Pic</code> + <code>FreePic2Pdf</code> 生成),<code>get_text()</code> 全文只有 115 个字符(还是元数据里的书名)。
@@ -917,7 +1021,7 @@ IDF 自动趋近 0,真正有区分度的<strong>题号</strong>反而更突出�
 文件名进了索引 <code>source</code> 字段、进了基线 JSON、也被学生的历史对话引用,
 为了对齐一个页码去重命名,换来的是一致的假象而不是一致。记在这里,不修。</p>
 </blockquote>
-<3 id="36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)<a class="anchor" href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜" title="链接到这一节">#</a></3>
+<h3 id="36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)<a class="anchor" href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜" title="链接到这一节">#</a></h3>
 <p><strong>症状。</strong> 用户验收过的提问「什么是叠加原理」,第 4 名才是 <code>教材-第4章-电路定理.md</code>
 (13.47 分),而 <code>教材-第5章-运算放大器.md</code>(13.53 分)、<code>教材-第17章-傅里叶级数.md</code>
 挤在它前面。<strong>"运算放大器"和"叠加原理"没有任何关系</strong> —— 这不是"排序不太好",是错的。</p>
@@ -1004,7 +1108,7 @@ ch4/ch5 的名次反转被纠正。但要如实说清楚:严格表上的"无关�
 <p>表里后来又从 7 条降到 4 条,那是<strong>逐条核对 <code>allow_ch</code></strong>(把"确实相关的章"正名)的结果,
 <strong>不是打分变好了</strong>。这个区别必须分清,否则下次会以为"再调调 IDF 还能降"。</p>
 <hr />
-<2 id="4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被<strong>故意排除</strong>了(不是遗漏)<a class="anchor" href="#4-有这几类文件被故意排除了不是遗漏" title="链接到这一节">#</a></2>
+<h2 id="4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被<strong>故意排除</strong>了(不是遗漏)<a class="anchor" href="#4-有这几类文件被故意排除了不是遗漏" title="链接到这一节">#</a></h2>
 <p><code>import_circuit_basic.py</code> 里用 <code>KNOWN_SKIP</code> 逐个写明原因,每次运行都会打印。依据都是实测:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -1044,8 +1148,8 @@ ch4/ch5 的名次反转被纠正。但要如实说清楚:严格表上的"无关�
 后来被当成了"做不到"。真正卡住的从来不是可行性,是<strong>没去量 OCR 的成本</strong>(实测 48 分钟)。</p>
 </blockquote>
 <hr />
-<2 id="5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回<a class="anchor" href="#5-faq-文件格式阈值和一次真实的误召回" title="链接到这一节">#</a></2>
-<3 id="51-格式">5.1 格式<a class="anchor" href="#51-格式" title="链接到这一节">#</a></3>
+<h2 id="5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回<a class="anchor" href="#5-faq-文件格式阈值和一次真实的误召回" title="链接到这一节">#</a></h2>
+<h3 id="51-格式">5.1 格式<a class="anchor" href="#51-格式" title="链接到这一节">#</a></h3>
 <p><code>~/ykt_questions/常问问题.txt</code>,条目间空行分隔;解析器是
 <code>src/rag/retriever.py</code> 的 <code>_parse_faq()</code>:</p>
 <pre><code>Q:
@@ -1058,7 +1162,7 @@ Q:
 </code></pre>
 <p>文件开头可以写注释(解析器遇到 <code>Q:</code> 之前的内容会跳过)。
 <strong>不要</strong>在答案里出现行首的 <code>Q:</code>。当前 <strong>37 条</strong>:数电 7 条 + 电路基础 30 条。</p>
-<3 id="52-阈值与实词闸门">5.2 阈值与"实词闸门"<a class="anchor" href="#52-阈值与实词闸门" title="链接到这一节">#</a></3>
+<h3 id="52-阈值与实词闸门">5.2 阈值与"实词闸门"<a class="anchor" href="#52-阈值与实词闸门" title="链接到这一节">#</a></h3>
 <p><code>FAQ_HIT_THRESHOLD = 4.0</code>。2026-09-20 加了第二道闸门,原因是实测踩到的假召回:</p>
 <p>加入电路基础 FAQ 后,<code>什么是竞争冒险</code>(数电概念题)以 <strong>4.83 分</strong>命中了
 <code>电路基础作业的截止时间是什么时候?</code> —— 因为中文疑问句里 <code>是</code>、<code>什么</code>、<code>的</code>
@@ -1088,7 +1192,7 @@ if not (self.content_tokens[i] &amp; q_content):            # 无实词交集 �
 再拿<strong>真实的 <code>常问问题.txt</code></strong> 钉住那个被记录下来的假命中。
 并且做了<strong>突变测试</strong>:把闸门删掉,两条测试必须红 —— 红了才算真测试(§9.6)。</p>
 </blockquote>
-<3 id="521-实词闸门拦不住的那种截胡带题号就先去查资料">5.2.1 实词闸门<strong>拦不住</strong>的那种截胡:带题号就先去查资料<a class="anchor" href="#521-实词闸门拦不住的那种截胡带题号就先去查资料" title="链接到这一节">#</a></3>
+<h3 id="521-实词闸门拦不住的那种截胡带题号就先去查资料">5.2.1 实词闸门<strong>拦不住</strong>的那种截胡:带题号就先去查资料<a class="anchor" href="#521-实词闸门拦不住的那种截胡带题号就先去查资料" title="链接到这一节">#</a></h3>
 <p>闸门只挡"纯虚词凑分"。但下面这种情况它挡不住,因为两边<strong>共享的确实是实词</strong>:</p>
 <pre><code>学生问:电路基础第一章作业的1.36怎么做？        ← 2026-09-20 用户实测报的这个
 FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得分 5.61(阈值 4.0)
@@ -1133,7 +1237,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 概念题即使命中 FAQ 也照常查资料,把 FAQ 当补充材料一起喂进去。
 原因是概念题要能展开讲解,短路会把"讲得更透"一起掐掉。见 §6。
 分档判据 <code>_classify()</code> 收在 <code>src/handlers/qa.py</code>,回归测试 <code>test/test_query_kind.py</code>。</p>
-<3 id="53-脱敏规则重要新增条目前先读这段">5.3 脱敏规则(重要,新增条目前先读这段)<a class="anchor" href="#53-脱敏规则重要新增条目前先读这段" title="链接到这一节">#</a></3>
+<h3 id="53-脱敏规则重要新增条目前先读这段">5.3 脱敏规则(重要,新增条目前先读这段)<a class="anchor" href="#53-脱敏规则重要新增条目前先读这段" title="链接到这一节">#</a></h3>
 <p>本次从两份微信群聊记录里提取问答,<strong>公开规则</strong>是:</p>
 <ul>
 <li>✅ <strong>可以出现</strong>:<code>张曰理</code>(任课老师姓名)、<code>mcdl</code>(助教网名)</li>
@@ -1194,7 +1298,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 所以以后做这类检查,<strong>先确认"名单类文件有没有混进会被提交的目录",再看黑名单</strong>。
 扫描时也只打印<strong>位置</strong>、不打印命中内容 —— 姓名学号本身不该被复述到任何地方。</p>
 </blockquote>
-<3 id="54-勘误faq-快路快在不查资料不是不调大模型">5.4 勘误:"FAQ 快路"快在<strong>不查资料</strong>,不是"不调大模型"<a class="anchor" href="#54-勘误faq-快路快在不查资料不是不调大模型" title="链接到这一节">#</a></3>
+<h3 id="54-勘误faq-快路快在不查资料不是不调大模型">5.4 勘误:"FAQ 快路"快在<strong>不查资料</strong>,不是"不调大模型"<a class="anchor" href="#54-勘误faq-快路快在不查资料不是不调大模型" title="链接到这一节">#</a></h3>
 <p><strong>一句话</strong>:事务题命中 FAQ 时,系统<strong>跳过资料通路、仍然调大模型润色</strong>。</p>
 <p>这条本来不值得单开一节,但<strong>四份文档同时写错了</strong>,而且错得<strong>方向相反</strong> ——
 照错的写去"修",会修出一个事务答复直接裸奔的快路:</p>
@@ -1289,7 +1393,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 <strong>没有机制去挡</strong>。记在这里,留作观察项。</p>
 <p><strong>这条不进单测</strong>,因为它验的是<strong>模型的输出</strong>,不是代码逻辑 ——
 单测里那个"模型"是桩,桩不会改写数字。要复核就手动跑上面那个脚本。</p>
-<3 id="55-助教自己在微信里加-faq记录">5.5 助教自己在微信里加 FAQ:<code>【记录】</code><a class="anchor" href="#55-助教自己在微信里加-faq记录" title="链接到这一节">#</a></3>
+<h3 id="55-助教自己在微信里加-faq记录">5.5 助教自己在微信里加 FAQ:<code>【记录】</code><a class="anchor" href="#55-助教自己在微信里加-faq记录" title="链接到这一节">#</a></h3>
 <p><strong>在这之前,加一条 FAQ 只有一条路:开编辑器手改 <code>常问问题.txt</code>。</strong>
 那份文件没有版本库兜底、没有格式校验、写错一个行首 <code>A:</code> 就会把条目截成两半,
 而且<strong>改完没有任何反馈</strong>。<code>【记录】</code>就是给这件事补的入口。</p>
@@ -1382,7 +1486,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 <p><strong>验真用的是突变测试</strong>:22 个变异抓住 21 个,漏掉的那个经核对是<strong>等价变异</strong>
 (标记词正则都是 <code>^</code> 锚定的,<code>^\s*答案\s*[:：]</code> 不可能匹配 <code>标准答案:</code>,分支顺序颠倒不改变行为)。
 顺带纠正了我在源码里写错的一句注释 —— 原来写"顺序有讲究",是变异测试试出来那句话不成立。</p>
-<3 id="56-从日志里挖下一条-faq-该写什么">5.6 从日志里挖"下一条 FAQ 该写什么"<a class="anchor" href="#56-从日志里挖下一条-faq-该写什么" title="链接到这一节">#</a></3>
+<h3 id="56-从日志里挖下一条-faq-该写什么">5.6 从日志里挖"下一条 FAQ 该写什么"<a class="anchor" href="#56-从日志里挖下一条-faq-该写什么" title="链接到这一节">#</a></h3>
 <p><code>scripts/mine_faq_candidates.py</code>(2026-09-20 新增)。读 <code>data/logs/*.log</code> 里的 <code>qa_kind</code> 事件,
 把<strong>学生真问过、但 FAQ 没接住</strong>的问法挖出来:<code>faq_hit=False</code> 且被反复问的 →
 <strong>该补 FAQ 条目</strong>(它的主产出);<code>top_score</code> 很低的 → 该补语料。
@@ -1403,9 +1507,9 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 回滚就是 <code>mv</code> 回来一句。<strong>跑挖矿前先看一眼日志里有没有 <code>raw_repr</code> 的测试残留。</strong></p>
 </blockquote>
 <hr />
-<2 id="6-大模型侧的三档规则资料里没有时怎么办">6. 大模型侧的三档规则(资料里没有时怎么办)<a class="anchor" href="#6-大模型侧的三档规则资料里没有时怎么办" title="链接到这一节">#</a></2>
+<h2 id="6-大模型侧的三档规则资料里没有时怎么办">6. 大模型侧的三档规则(资料里没有时怎么办)<a class="anchor" href="#6-大模型侧的三档规则资料里没有时怎么办" title="链接到这一节">#</a></h2>
 <p><code>src/handlers/qa.py</code> 的 <code>_SYSTEM_PROMPT</code>。这里记的是<strong>为什么这么写</strong>,改提示词前先读。</p>
-<3 id="61-走过的一段弯路">6.1 走过的一段弯路<a class="anchor" href="#61-走过的一段弯路" title="链接到这一节">#</a></3>
+<h3 id="61-走过的一段弯路">6.1 走过的一段弯路<a class="anchor" href="#61-走过的一段弯路" title="链接到这一节">#</a></h3>
 <p>第一版提示词是"<strong>只依据资料作答,资料里没有就回答『这个我不确定,建议问任课老师』</strong>"。
 写它的原因是实测问<code>什么是叠加定理</code>时,模型在资料里没有的情况下<strong>凭自己的知识讲了一整段</strong>,
 而本项目的定位是答疑以资料为准。</p>
@@ -1413,7 +1517,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 (课堂讲义是 §9.4 那一轮才加进来的),
 于是所有概念题(什么是叠加原理、为什么功率因数要补偿)都被一刀切成"我不确定,建议问任课老师"。
 学生问概念得到的是一堵墙 —— 这正是助教 2026-09-20 反馈要改的。</p>
-<3 id="62-现在的三档">6.2 现在的三档<a class="anchor" href="#62-现在的三档" title="链接到这一节">#</a></3>
+<h3 id="62-现在的三档">6.2 现在的三档<a class="anchor" href="#62-现在的三档" title="链接到这一节">#</a></h3>
 <p>把"资料里没有"拆成三种情况,提示词里逐条写明:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -1464,11 +1568,11 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
    <strong>不要猜一个看起来通顺的公式</strong>"。
    这一条比第一条重要:<strong>猜出来的公式看起来是对的,学生不会去核对。</strong></li>
 </ol>
-<3 id="63-为什么②③必须单独钉住">6.3 为什么②③必须单独钉住<a class="anchor" href="#63-为什么②③必须单独钉住" title="链接到这一节">#</a></3>
+<h3 id="63-为什么②③必须单独钉住">6.3 为什么②③必须单独钉住<a class="anchor" href="#63-为什么②③必须单独钉住" title="链接到这一节">#</a></h3>
 <p>因为<strong>幻觉的代价不对等</strong>。概念讲得浅一点、用词不完全是老师的说法,学生自己看书也能纠正;
 但<strong>编一个截止日期、编一道题的解答</strong>,学生会照着做 —— 后者就像 §4 里那份 4th 版答案手册,
 "自信地给出错题的解答"。所以放开①的前提,是把②③写死。</p>
-<3 id="64-实测2026-09-20">6.4 实测(2026-09-20)<a class="anchor" href="#64-实测2026-09-20" title="链接到这一节">#</a></3>
+<h3 id="64-实测2026-09-20">6.4 实测(2026-09-20)<a class="anchor" href="#64-实测2026-09-20" title="链接到这一节">#</a></h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1521,7 +1625,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 <code>4.15</code> 那段提到的 20-V / 2-A / 16-V 三个电源、3Ω 电阻、i = 1.875 A、p = 10.55 W
 也全都能在 <code>4第四章/4.15.md</code> 原文里找到。<strong>引用是读出来的,不是编的</strong> ——
 这两条每次改完提示词都值得再抽查一遍。</p>
-<3 id="641-教材进库后的复测2026-09-20-晚同一批提问">6.4.1 教材进库后的复测(2026-09-20 晚,同一批提问)<a class="anchor" href="#641-教材进库后的复测2026-09-20-晚同一批提问" title="链接到这一节">#</a></3>
+<h3 id="641-教材进库后的复测2026-09-20-晚同一批提问">6.4.1 教材进库后的复测(2026-09-20 晚,同一批提问)<a class="anchor" href="#641-教材进库后的复测2026-09-20-晚同一批提问" title="链接到这一节">#</a></h3>
 <p>教材从"资料里没有"变成"资料里最细的那份",① 档的口径随之改了(§6.2),
 所以同一批问题又跑了一遍:</p>
 <div class="table-wrap"><table>
@@ -1559,7 +1663,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 看着像编的 —— 实测 grep 教材正文:<code>例5-5</code> 在 <code>教材-第5章-运算放大器.md</code> 出现 2 次、
 <code>例10-5</code> 在 <code>教材-第10章-正弦稳态分析.md</code> 出现 2 次,<strong>都在</strong>(书的例题编号确实有
 <code>例4.10</code> 和 <code>例5-5</code> 两种写法)。<strong>"看起来像幻觉"不等于幻觉,但必须每次都去查一遍。</strong></p>
-<3 id="65-还有一条不要用-markdown">6.5 还有一条:不要用 Markdown<a class="anchor" href="#65-还有一条不要用-markdown" title="链接到这一节">#</a></3>
+<h3 id="65-还有一条不要用-markdown">6.5 还有一条:不要用 Markdown<a class="anchor" href="#65-还有一条不要用-markdown" title="链接到这一节">#</a></h3>
 <p>回复是<strong>原样发到微信</strong>的,微信不渲染 <code>**</code> <code>#</code> <code>-</code>。改之前模型输出了 <code>**叠加定理**</code>,
 学生看到的是一堆星号。这条从第一版保留到现在。</p>
 <blockquote class="warn">
@@ -1567,7 +1671,7 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 没有 tool calling、也没接搜索 API。所以 ① 档的讲解全部来自模型<strong>自己的知识</strong>,
 不是实时检索的结果。要真联网得先加一个搜索步骤(见 §8 待办)。</p>
 </blockquote>
-<3 id="66-②-档多了一层会过期的口径课程事务事实表">6.6 ② 档多了一层"会过期的口径":课程事务事实表<a class="anchor" href="#66-②-档多了一层会过期的口径课程事务事实表" title="链接到这一节">#</a></3>
+<h3 id="66-②-档多了一层会过期的口径课程事务事实表">6.6 ② 档多了一层"会过期的口径":课程事务事实表<a class="anchor" href="#66-②-档多了一层会过期的口径课程事务事实表" title="链接到这一节">#</a></h3>
 <p><strong>问题不在"答不出来",在"答得太自信"。</strong> FAQ 对事务类的覆盖率本来就高,
 但<strong>FAQ 条目不会过期</strong> —— 截止时间、提交方式、补交规则这类事每学期都变,
 而写下的那条答案会继续被命中、而且说得很自信。提示词第②条(事务类一个字都不许猜)防的是
@@ -1629,32 +1733,27 @@ FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得
 真正该做的是等干净日志攒够量再量,而且<strong>该由挖矿脚本来量</strong>(§5.6)。</p>
 </blockquote>
 <hr />
-<2 id="7-资料更新后怎么重建日常运维">7. 资料更新后怎么重建(日常运维)<a class="anchor" href="#7-资料更新后怎么重建日常运维" title="链接到这一节">#</a></2>
+<h2 id="7-资料更新后怎么重建日常运维">7. 资料更新后怎么重建(日常运维)<a class="anchor" href="#7-资料更新后怎么重建日常运维" title="链接到这一节">#</a></h2>
 <p><strong>先把七步的顺序记成图,再看下面可直接复制的命令</strong>(②③ 的顺序不能反,④ 平时不用做):</p>
 <figure class="diagram">
-<div class="mermaid">flowchart LR
-  A[&quot;① --dry-run&lt;br/&gt;先看要动什么&lt;br/&gt;不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
-  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】&lt;br/&gt;幂等,走缓存&quot;]
+<figcaption>重建语料的八步 —— 虚线是"这两步容易搞反/容易漏",不是数据流</figcaption><img src="diagrams/knowledge_base-2.svg" alt="重建语料的八步 —— 虚线是"这两步容易搞反/容易漏",不是数据流" loading="lazy">
+<details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>flowchart TD
+  %% caption: 重建语料的八步 —— 虚线是&quot;这两步容易搞反/容易漏&quot;,不是数据流
+  A[&quot;① --dry-run&lt;br/&gt;先看要动什么,不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
+  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】,幂等走缓存&quot;]
   C --&gt; D[&quot;④ OCR → import_textbook&lt;br/&gt;仅教材换了才需要&quot;]
-  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引&lt;br/&gt;(FAQ 不用重建)&quot;]
-  E --&gt; F[&quot;⑥ audit_enhanced_numbers&lt;br/&gt;大模型有没有改数字&quot;]
-  F --&gt; G[&quot;⑦ eval_retrieval --compare&lt;br/&gt;17 条用例,退化则退出码 1&quot;]
-  G --&gt; H[&quot;⑧ 抽查几问&lt;br/&gt;端到端、要人眼看&quot;]
-
-  B -.-&gt;|&quot;顺序反了会被跳过,不会覆盖&quot;| C
-  D -.-&gt;|&quot;跳过这一大步&quot;| E</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart LR
-  A[&quot;① --dry-run&lt;br/&gt;先看要动什么&lt;br/&gt;不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
-  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】&lt;br/&gt;幂等,走缓存&quot;]
-  C --&gt; D[&quot;④ OCR → import_textbook&lt;br/&gt;仅教材换了才需要&quot;]
-  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引&lt;br/&gt;(FAQ 不用重建)&quot;]
-  E --&gt; F[&quot;⑥ audit_enhanced_numbers&lt;br/&gt;大模型有没有改数字&quot;]
+  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引(FAQ 不用重建)&quot;]
+  E --&gt; F[&quot;⑥ audit_enhanced_numbers&lt;br/&gt;查大模型有没有改数字&quot;]
   F --&gt; G[&quot;⑦ eval_retrieval --compare&lt;br/&gt;17 条用例,退化则退出码 1&quot;]
   G --&gt; H[&quot;⑧ 抽查几问&lt;br/&gt;端到端、要人眼看&quot;]
 
   B -.-&gt;|&quot;顺序反了会被跳过,不会覆盖&quot;| C
   D -.-&gt;|&quot;跳过这一大步&quot;| E</code></pre></details>
 </figure>
+<blockquote>
+<p>这张图原本是 <code>flowchart LR</code>,八步横着排成 2554px —— 同样是"字被缩没"那一类。
+流水线本来就是一步接一步,<strong>竖着排才符合它本来的形状</strong>。</p>
+</blockquote>
 <pre><code class="language-bash">cd ~/ta-assistant
 
 # ① 先看要动哪些文件、要花多少次大模型调用(不调 API、不写盘)
@@ -1751,7 +1850,7 @@ cp data/index/bm25_index.pkl data/index/bm25_index.pkl.bak.$(date +%Y%m%d-%H%M%S
   加条目<strong>优先用微信里的 <code>【记录】</code></strong>(§5.5),别再手改 txt —— 手改没有校验,写错一个
   行首 <code>A:</code> 就把条目截成两半,而且没有反馈。</li>
 </ul>
-<3 id="71-三条不碰索引的日常操作">7.1 三条"不碰索引"的日常操作<a class="anchor" href="#71-三条不碰索引的日常操作" title="链接到这一节">#</a></3>
+<h3 id="71-三条不碰索引的日常操作">7.1 三条"不碰索引"的日常操作<a class="anchor" href="#71-三条不碰索引的日常操作" title="链接到这一节">#</a></h3>
 <p>日常最常做的三件事<strong>都不用重建索引</strong>,因为它们都是每次调用现读文件:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -1791,7 +1890,7 @@ cp data/index/bm25_index.pkl data/index/bm25_index.pkl.bak.$(date +%Y%m%d-%H%M%S
 它比单测更早发现问题 —— 单测只回答"过/不过",它能报出"第 3 名从 12.1 掉到 4.3"。</p>
 </blockquote>
 <hr />
-<3 id="72-文档怎么重新生成改了-md-之后">7.2 文档怎么重新生成(改了 md 之后)<a class="anchor" href="#72-文档怎么重新生成改了-md-之后" title="链接到这一节">#</a></3>
+<h3 id="72-文档怎么重新生成改了-md-之后">7.2 文档怎么重新生成(改了 md 之后)<a class="anchor" href="#72-文档怎么重新生成改了-md-之后" title="链接到这一节">#</a></h3>
 <p><code>docs/*.html</code> 是<strong>生成物</strong>,不要手改:</p>
 <pre><code class="language-bash">cd ~/ta-assistant
 .venv/bin/python scripts/md2html.py --all docs/ --hub
@@ -1799,7 +1898,7 @@ cp data/index/bm25_index.pkl data/index/bm25_index.pkl.bak.$(date +%Y%m%d-%H%M%S
 <p>改内容一律改 <code>.md</code>,再跑这一条。渲染层做了什么("不是翻版"体现在哪)见 §9.9。
 mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <code>```mermaid</code> 块
 在 GitHub 和本地 HTML 里都是图,不用维护两份。</p>
-<2 id="8-已知限制与待办">8. 已知限制与待办<a class="anchor" href="#8-已知限制与待办" title="链接到这一节">#</a></2>
+<h2 id="8-已知限制与待办">8. 已知限制与待办<a class="anchor" href="#8-已知限制与待办" title="链接到这一节">#</a></h2>
 <ol>
 <li><strong>题图看不到</strong>。电路题的图是图片,大模型只能读文字。提示词要求它注明
    "(此处依赖题图,请对照作业册或原始 PDF)"而不是瞎编,但<strong>它讲不了图</strong>。
@@ -1964,7 +2063,10 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 | 归档脏表 | 改名 <code>…补交表.xlsx.tests-polluted-20260920</code>,<strong>字节不动</strong>(15039 B),回滚 = <code>mv</code> 回去 |
 | 堵住写通路 | <code>conftest.isolated_submission_table</code>(autouse)把花名册与补交表都指到临时目录;<strong>子进程那条路</strong>靠新增的 <code>SUBMISSION_TABLE</code> 环境变量(同 <code>TA_LOGS_DIR</code> 的理由) |
 | 守住它 | <code>test/test_submission_table_isolation.py</code>:比 xlsx 的<strong>字节快照</strong>,并且证明"补交登记本身照常落盘"(否则靠功能坏掉也能过) |</p>
-<p>归档后<strong>不再重建</strong>空表 —— 下一次真实补交登记时 <code>ensure_submission_table()</code> 会自己建。</p>
+<p>归档后<strong>不再重建</strong>空表 —— 下一次真实补交登记时 <code>ensure_submission_table()</code> 会自己建。
+(<strong>但"自己建"这件事本身在第十一轮又改了一次</strong>:表不再建在写死的位置,而是建在
+花名册旁边;目录不存在时宁可不建。见 §9.11 —— 归档 + 静默新建这两件事凑在一起,
+正是"补交悄悄走进一张空表"那条路的起点。)</p>
 <blockquote>
 <p>教训:<strong>"测试不许写生产数据"这条线,要按"会被写的东西"逐个数,不能只在踩过的那一处堵。</strong>
 日志那次堵完只覆盖了 <code>data/logs/</code>;这个项目的生产数据还有 FAQ、事务表、补交表、花名册,
@@ -2001,8 +2103,11 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
   评测脚本 + 共用同一张表的 pytest 闸门 + 基线 JSON,见 §3.6 / §9.6。</li>
 </ul>
 <hr />
-<2 id="9-改动清单2026-09-20">9. 改动清单(2026-09-20)<a class="anchor" href="#9-改动清单2026-09-20" title="链接到这一节">#</a></2>
-<3 id="91-第一轮搭建知识库">9.1 第一轮:搭建知识库<a class="anchor" href="#91-第一轮搭建知识库" title="链接到这一节">#</a></3>
+<h2 id="9-改动清单2026-09-20">9. 改动清单(2026-09-20)<a class="anchor" href="#9-改动清单2026-09-20" title="链接到这一节">#</a></h2>
+<p>这一节是<strong>十一轮改动的流水账</strong>,每轮都有一个"为什么非改不可"的起因。
+先看顺序,再看细节 —— 很多轮的起因是上一轮顺手撞出来的:</p>
+<div class="timeline"><div class="tl"><div class="when">第一轮</div><div class="t">搭建知识库</div><div class="d">两门课语料入库,FAQ 从零建(37 条)</div></div><div class="tl"><div class="when">第二轮</div><div class="t">修"1.36 答不出来"</div><div class="d">给作业答案补【中文详细解析】</div></div><div class="tl"><div class="when">第三轮</div><div class="t">概念题不该一律回"我不确定"</div><div class="d">改成三档规则(§6)</div></div><div class="tl"><div class="when">第四轮</div><div class="t">作业答案以<strong>中文版</strong>为准</div><div class="d">加课堂讲义 + 错误集锦</div></div><div class="tl"><div class="when">第五轮</div><div class="t">扫描版中文教材 OCR 进库</div><div class="d">711 页;教材从此占全库 67%(§3.5)</div></div><div class="tl"><div class="when">第六轮</div><div class="t">教材语料审计</div><div class="d">修 BM25 的 IDF 兜底 + 建 17 条常驻评测(§3.6)</div></div><div class="tl"><div class="when">第七轮</div><div class="t">FAQ 从"手改 txt"变成"能记"</div><div class="d">顺带收掉三处<strong>静默缺陷</strong>(§5.5)</div></div><div class="tl"><div class="when">第八轮</div><div class="t">花名册修好</div><div class="d">顺带撞出"补交表被单测写了 398 行"</div></div><div class="tl"><div class="when">第九轮</div><div class="t">文档长出"网页层"</div><div class="d">全仓一致性审计</div></div><div class="tl"><div class="when">第十轮</div><div class="t">网页层同步变成一条命令</div><div class="d">修掉 CRLF 这个真 bug</div></div><div class="tl"><div class="when">第十一轮</div><div class="t">补交表改成"跟着花名册走"</div><div class="d">修掉"没写进去却说已登记"</div></div></div>
+<h3 id="91-第一轮搭建知识库">9.1 第一轮:搭建知识库<a class="anchor" href="#91-第一轮搭建知识库" title="链接到这一节">#</a></h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -2041,7 +2146,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 </tr>
 </tbody>
 </table></div>
-<3 id="92-第二轮修136-答不出来-加中文详细解析">9.2 第二轮:修"1.36 答不出来" + 加中文详细解析<a class="anchor" href="#92-第二轮修136-答不出来-加中文详细解析" title="链接到这一节">#</a></3>
+<h3 id="92-第二轮修136-答不出来-加中文详细解析">9.2 第二轮:修"1.36 答不出来" + 加中文详细解析<a class="anchor" href="#92-第二轮修136-答不出来-加中文详细解析" title="链接到这一节">#</a></h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -2083,7 +2188,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 <p>索引规模:384 块 → <strong>638 块</strong>(80 个文件)。备份在
 <code>data/index/bm25_index.pkl.bak.20260920-015722</code>(增强前)与
 <code>bm25_index.pkl.bak.20260920-013854</code>(搭库前)。</p>
-<3 id="93-第三轮概念题不该一律回我不确定">9.3 第三轮:概念题不该一律回"我不确定"<a class="anchor" href="#93-第三轮概念题不该一律回我不确定" title="链接到这一节">#</a></3>
+<h3 id="93-第三轮概念题不该一律回我不确定">9.3 第三轮:概念题不该一律回"我不确定"<a class="anchor" href="#93-第三轮概念题不该一律回我不确定" title="链接到这一节">#</a></h3>
 <p>起因:助教反馈「什么是叠加原理」这类概念题只会回"建议问任课老师",
 应当允许大模型用自己的知识讲清概念,<strong>并结合库里的作业题</strong>帮学生理解。</p>
 <div class="table-wrap"><table>
@@ -2111,7 +2216,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 <p><strong>没有改索引、没有调 <code>PROMPT_VERSION</code></strong> —— 改的是答疑侧的通路与提示词,
 跟语料生成无关,不用重建索引。</p>
 <p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档。</p>
-<3 id="94-第四轮中文版作业答案为准-讲义-错误集锦">9.4 第四轮:中文版作业答案为准 + 讲义 + 错误集锦<a class="anchor" href="#94-第四轮中文版作业答案为准-讲义-错误集锦" title="链接到这一节">#</a></3>
+<h3 id="94-第四轮中文版作业答案为准-讲义-错误集锦">9.4 第四轮:中文版作业答案为准 + 讲义 + 错误集锦<a class="anchor" href="#94-第四轮中文版作业答案为准-讲义-错误集锦" title="链接到这一节">#</a></h3>
 <p>起因:助教给了新目录 <code>202509电路理论基础</code>(张老师课件 + 中文版作业答案),
 并指出<strong>国际版与中文版个别题目参数不同(公里↔英里),课后题答案要以中文版为准</strong>;
 另外概念题当时"没有资料可依"(§9.3 的遗留),希望把<strong>中文版第 6 版教材和错误集锦</strong>也加进来。</p>
@@ -2201,7 +2306,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 <p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档。
 <strong><code>电路基础-中文版-原书第6版（扫描版）.pdf</code>(266 MB)没有索引</strong> —— 它是<strong>扫描件、
 没有文字层</strong>,<code>pdfplumber</code> 抽不出文本(见 §4 / §8 第 5 条)。</p>
-<3 id="95-第五轮扫描版中文教材-ocr-进库">9.5 第五轮:扫描版中文教材 OCR 进库<a class="anchor" href="#95-第五轮扫描版中文教材-ocr-进库" title="链接到这一节">#</a></3>
+<h3 id="95-第五轮扫描版中文教材-ocr-进库">9.5 第五轮:扫描版中文教材 OCR 进库<a class="anchor" href="#95-第五轮扫描版中文教材-ocr-进库" title="链接到这一节">#</a></h3>
 <p>起因:§9.4 剩下的最后一件事 —— "中文版第六版教材也加入并且索引"。
 教材是<strong>纯扫描件</strong>(无文本层),所以这次是 OCR 工程,不是解析工程。</p>
 <div class="table-wrap"><table>
@@ -2331,7 +2436,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
   (见 §8 第 7 条),不在本轮。</li>
 </ul>
 <p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档、作业答案与讲义语料(一字未动)。</p>
-<3 id="96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测">9.6 第六轮:教材语料审计 + 修 BM25 的 IDF 兜底 + 建常驻评测<a class="anchor" href="#96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测" title="链接到这一节">#</a></3>
+<h3 id="96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测">9.6 第六轮:教材语料审计 + 修 BM25 的 IDF 兜底 + 建常驻评测<a class="anchor" href="#96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测" title="链接到这一节">#</a></h3>
 <p>起因:助教自己试了一遍(「叠加原理」答出了教材 + 例题 + 通用知识),<strong>明确说满意</strong>,
 同时让我自己找可改进的地方、并多写自动化测试让系统更可靠。
 所以这一轮<strong>不是从需求出发,是从"先量一遍"出发</strong> —— 量出来两个真问题,加一套闸门。</p>
@@ -2524,7 +2629,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 </ul>
 <p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档、答疑提示词、
 以及<strong>作业答案 / 讲义 / 数电语料(一字未动)</strong> —— 这一轮只动教材语料和检索打分。</p>
-<3 id="97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷">9.7 第七轮:FAQ 从"手改 txt"变成"能记";顺带收掉三处<strong>静默缺陷</strong><a class="anchor" href="#97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷" title="链接到这一节">#</a></3>
+<h3 id="97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷">9.7 第七轮:FAQ 从"手改 txt"变成"能记";顺带收掉三处<strong>静默缺陷</strong><a class="anchor" href="#97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷" title="链接到这一节">#</a></h3>
 <p>起因是助教提的三件事,合起来指向同一个洞 —— <strong>FAQ 这份东西一直没有"维护"这条路</strong>:</p>
 <ol>
 <li>加一条 FAQ 只能开编辑器手改 <code>常问问题.txt</code>,没有校验、没有版本库、没有反馈;</li>
@@ -2646,7 +2751,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 </table></div>
 <p>未改动:<code>.env</code>、补交表、<code>~/ykt_questions/常问问题.txt</code>、<code>materials/</code> 里的语料、
 答疑提示词(<code>_SYSTEM_PROMPT</code>)、OpenClaw 配置 —— 这一轮动的是<strong>通路和入口</strong>,不是语料。</p>
-<3 id="98-第八轮花名册修好顺带撞出补交表被单测写了-398-行">9.8 第八轮:花名册修好,顺带撞出"补交表被单测写了 398 行"<a class="anchor" href="#98-第八轮花名册修好顺带撞出补交表被单测写了-398-行" title="链接到这一节">#</a></3>
+<h3 id="98-第八轮花名册修好顺带撞出补交表被单测写了-398-行">9.8 第八轮:花名册修好,顺带撞出"补交表被单测写了 398 行"<a class="anchor" href="#98-第八轮花名册修好顺带撞出补交表被单测写了-398-行" title="链接到这一节">#</a></h3>
 <p>上一轮把"花名册读不出来"记进了待办(§8 第 12 条),标着"等助教拍板"。
 这一轮的起点就是助教给了<strong>本学期的名单</strong>(雨课堂导出)——
 而要核对"哪份名单才是对的那份",就必须去看补交表里的学号,<strong>然后撞上了第 13 条</strong>。</p>
@@ -2743,7 +2848,7 @@ mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <
 </tbody>
 </table></div>
 <p>未改动:<code>.env</code>、<code>常问问题.txt</code>、答疑提示词、OpenClaw 配置、<code>materials/</code> 里除记分册外的语料。</p>
-<3 id="99-第九轮文档长出网页层-全仓一致性审计">9.9 第九轮:文档长出"网页层" + 全仓一致性审计<a class="anchor" href="#99-第九轮文档长出网页层-全仓一致性审计" title="链接到这一节">#</a></3>
+<h3 id="99-第九轮文档长出网页层-全仓一致性审计">9.9 第九轮:文档长出"网页层" + 全仓一致性审计<a class="anchor" href="#99-第九轮文档长出网页层-全仓一致性审计" title="链接到这一节">#</a></h3>
 <p>这一轮<strong>没有动语料、没有动检索、没有动答疑提示词</strong> —— 动的是"文档长什么样"和
 "全仓的数字对不对得上"。起点是助教的两句话:一句是"课程名对不上是因为这学期我改带电路基础课了"
 (所以补交表文件名里那个"数电实验"是<strong>历史遗留,不用改</strong>),另一句是:</p>
@@ -2853,9 +2958,236 @@ GitHub <strong>原生渲染</strong> mermaid —— 同一个围栏,GitHub 上�
 </tr>
 </tbody>
 </table></div>
+<h3 id="910-第十轮让网页层是否与-md-同步变成一条命令-修掉-crlf-这个真-bug">9.10 第十轮:让"网页层是否与 md 同步"变成一条命令 + 修掉 CRLF 这个真 bug<a class="anchor" href="#910-第十轮让网页层是否与-md-同步变成一条命令-修掉-crlf-这个真-bug" title="链接到这一节">#</a></h3>
+<p>起点很小:第九轮把 HTML 变成了正经的网页层,那<strong>怎么知道它没和 md 脱节</strong>?
+本来想的是一行 <code>git diff</code> —— 结果一行都不干净。顺着这条线挖下去,挖出两件事。</p>
+<p><strong>第一件:页脚印的"生成于 &lt;时刻&gt;"让生成不幂等。</strong> 每跑一次 <code>--all</code>,8 份 HTML 全部
+被改写(内容没变、只有时间戳变),<code>git diff</code> 满屏是红,<strong>看不出到底是哪份真的过期了</strong>;
+而且同一份 md 在两个时刻生成出的字节不同,没法比对。改成印<strong>源 md 的内容指纹</strong>
+(<code>sha256</code> 前 8 位)之后,md 不变则 HTML 一个字节都不变:</p>
+<pre><code class="language-bash">python scripts/md2html.py --all docs/ --hub &amp;&amp; git diff --stat docs/   # 空 = 网页层是最新的
+</code></pre>
+<p>指纹本身对读者也有用:两份 HTML 指纹相同 ⇔ 它们的源 md 逐字节相同。</p>
+<p><strong>第二件(这个才是 bug):<code>scripts/setup.sh</code> 在 WSL 上根本跑不起来。</strong> 顺着"谁在改文件的行尾"
+查下去才发现:本机 <code>core.autocrlf=true</code>,工作树里 15 个文本文件是 CRLF,
+而它们会被 rsync <strong>原样</strong>搬到 WSL 执行。实测:</p>
+<pre><code>$ bash -n scripts/setup.sh
+scripts/setup.sh: line 54: syntax error: unexpected end of file
+</code></pre>
+<p>脚本内容完全正常,报错却指向文件末尾 —— 这种症状最容易让人往"少了个 <code>fi</code>"的方向查。
+真因是 shebang 成了 <code>#!/usr/bin/env bash\r</code>(od 看得见那个 <code>\r</code>),别的行也会撞到它。
+<strong>修的不只是 setup.sh:<code>deploy.sh</code> 同样中招,只是还没被跑过。</strong>
+(Python 源码不怕 CRLF —— 标准库按 universal newlines 读,所以这批里 <code>.py</code> 是"陪跑"的。)</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>做了什么</th>
+<th>文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>43</td>
+<td>页脚"生成于 &lt;时刻&gt;"→ <strong>源 md 的内容指纹</strong>,生成变成幂等的</td>
+<td><code>scripts/md2html.py</code></td>
+</tr>
+<tr>
+<td>44</td>
+<td>新增 <code>.gitattributes</code>(<code>* text=auto eol=lf</code> + 图片/表格声明 <code>binary</code>),并把工作树里 <strong>15 个 CRLF 文本文件</strong>转成 LF</td>
+<td><code>.gitattributes</code>(<strong>新增</strong>)</td>
+</tr>
+<tr>
+<td>45</td>
+<td>仓库卫生测试 <strong>3 例</strong>:全仓文本文件不许有 CRLF、扫描器自身别空转、<code>.gitattributes</code> 必须钉住 <code>eol=lf</code></td>
+<td><code>test/test_repo_hygiene.py</code>(<strong>新增</strong>)</td>
+</tr>
+<tr>
+<td>46</td>
+<td>同步测试数 338 → 344,并补上"仓库卫生"这一类</td>
+<td><code>README.md</code>、<code>docs/*.md</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>两道防线,缺一不可。</strong> <code>.gitattributes</code> 管的是 <strong>git 检出</strong>那一路(不写 <code>eol=lf</code>,
+<code>autocrlf=true</code> 会把 fresh clone 出的 HTML 又转成 CRLF,第九轮那条 <code>git diff</code> 校验立刻失效);
+<code>test_repo_hygiene.py</code> 管的是<strong>有人用别的编辑器把 CRLF 写回工作树</strong>那一路 ——
+.gitattributes 对工作树里已经存在的 CRLF 无能为力。转换脚本只动 git 判定为 <code>w/crlf</code> 的文件,
+并且跳过二进制:图片里任何一个 <code>0x0D</code> 字节都会被 <code>grep $'\r'</code> 误报成 CRLF,
+照着它去转会把 PNG 转坏(<code>docs/images/</code> 下那两张就命中了这个假阳性)。</p>
+<blockquote>
+<p><strong>审计里"本来就对"的一项</strong>:转完之后重新 <code>git add --renormalize .</code>,<strong>15 个文件一个字节
+的内容变化都没有</strong> —— 说明索引里本来就是 LF,坏的只是工作树。所以这次是"让工作树追上索引",
+不是"改了 15 个文件的内容"。</p>
+</blockquote>
+<p><strong>效果(实测):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>离线测试</td>
+<td><strong>344 通过 / 约 4.7 秒</strong>(上一轮 338,新增 6 例)</td>
+</tr>
+<tr>
+<td>检索评测</td>
+<td>17/17 命中,MRR 0.956,<strong>0 条回归</strong>(<code>--compare</code> 退出码 0)</td>
+</tr>
+<tr>
+<td>索引</td>
+<td><strong>114 文件 / 3165 块</strong>(未改动;这一轮同样没碰语料)</td>
+</tr>
+<tr>
+<td>生产数据</td>
+<td>FAQ md5 仍为 <code>2bf236af…</code>;跑完测试不会重新生成补交表</td>
+</tr>
+<tr>
+<td>脚本</td>
+<td><code>setup.sh</code> / <code>deploy.sh</code> 现在 <code>bash -n</code> 通过(修之前 setup.sh 报错)</td>
+</tr>
+<tr>
+<td>网页层</td>
+<td>8 份 HTML 两边字节一致;重新生成后 <code>git diff</code> 只剩改动过的那几篇</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="911-第十一轮补交表改成跟着花名册走-修掉没写进去却说已登记">9.11 第十一轮:补交表改成"跟着花名册走" + 修掉"没写进去却说已登记"<a class="anchor" href="#911-第十一轮补交表改成跟着花名册走-修掉没写进去却说已登记" title="链接到这一节">#</a></h3>
+<p>这一轮<strong>没有动语料、没有动检索、没有动答疑</strong>。起点是上一轮审计里顺手发现的一件事,
+和助教随后给出的一句话:</p>
+<blockquote>
+<p>"补交表应该登记到花名册对应的表格上,例如这学期电路基础作业补交就登记在电路基础的花名册上"</p>
+</blockquote>
+<p><strong>先说发现的那个东西(它是这一轮的起因)。</strong> <code>config.SUBMISSION_TABLE_PATH</code> 里写死的是
+<code>WINDOWS_ROOT / "数字电路与逻辑设计实验（一）补交表.xlsx"</code> —— 上学期的名字。这学期换成
+电路基础之后,那条路径<strong>根本不存在</strong>。而它坏得非常安静:</p>
+<pre><code>真有学生补交 → append_submission_row() 第一句 ensure_submission_table()
+             → 表不存在 → 新建一张只有表头的空表 → 把记录写进去
+             → 回复学生「✅ 已登记」
+</code></pre>
+<p>也就是说:<strong>真表一直是空的,机器人一直说登记好了</strong>,唯一的痕迹是
+<code>warn("[excel_ops] 新建补交表: …")</code> —— 而它走 stderr,仓库里没有任何一处把 stderr
+重定向进 <code>data/logs/</code>,事后翻日志都翻不到。(还好它<strong>一次都没触发过</strong>:文件不存在本身
+就是证明 —— 只要登记成功过一次,文件就一定在。日志里最后一次真正的 <code>submission</code> 事件
+停在 2026-04-26。)</p>
+<p><strong>查证:没有真实历史可恢复。</strong> 归档件 <code>…补交表.xlsx.tests-polluted-20260920</code>
+(15039 B)里的 398 行<strong>全部</strong>能被判为伪造 —— 判据不是"按行号截断",是
+<strong>内容逐字出现在 <code>test/*.py</code> 里</strong>(那是伪造这件事本身的签名):398/398 行命中,
+只有 1 个学号、1 个姓名,真实记录 <strong>0 行</strong>。又按<strong>工作表名</strong>而不是文件名,扫遍了
+Downloads / <code>~/ykt_questions</code> / 桌面 / 文档,想找任何一份含 <code>补交记录</code> 表的 xlsx:
+<strong>一个都没有</strong>。顺带确认了文件名确实会骗人:Windows 侧那份
+<code>Downloads\ykt_questions\数字电路与逻辑设计实验（一）补交表.xlsx</code> 打开看是
+<strong>成绩记分册</strong>(150 行、142 个不同学号,4 月那份)。</p>
+<p><strong>落点:三个方案里选了"同目录、同课名的独立补交表"。</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>为什么不选 / 为什么选</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>写进花名册工作簿,新增一张 <code>补交记录</code> 表</td>
+<td>助教字面上说的就是这个。但它会让同一个工作簿里出现<strong>两张都含「学号/姓名」的表</strong>,<code>scan_roster()</code> 读的是 <code>wb.active</code> —— 我们自己的那张一旦被选中,学号校验就<strong>静默失效</strong>。这个项目在同类坑里已经栽过两次,不值得为省一个文件再赌一次</td>
+</tr>
+<tr>
+<td><strong>同目录、同课名的独立补交表(选它)</strong></td>
+<td>花名册全程<strong>只读</strong>,任何写入都碰不到它;"现在是哪门课"由名单文件名推导,换课自动换表</td>
+</tr>
+<tr>
+<td>在花名册原表里按学号加一列</td>
+<td>会改动雨课堂导出的版式;而那份导出件<strong>换学期要覆盖</strong>,补交标记会被冲掉</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>做了什么:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>做了什么</th>
+<th>文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>47</td>
+<td>新增 <code>submission_table_for(roster_path)</code>:同目录、同课名、后缀换成「补交表」;<code>SUBMISSION_TABLE_PATH</code> 改为由 <code>GRADEBOOK_PATH</code> <strong>推导</strong>(<code>SUBMISSION_TABLE</code> 环境变量仍可覆盖,子进程隔离靠它)</td>
+<td><code>src/config.py</code></td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>ensure_submission_table()</code> <strong>不再 mkdir 父目录</strong> —— 父目录不存在就说明路径是错的,抛错而不是在没人看的地方悄悄建表;<code>submission.handle()</code> 捕获写入失败,<strong>回一句明确的"没登记上"并落 <code>submission_write_error</code> 日志</strong></td>
+<td><code>src/utils/excel_ops.py</code>、<code>src/handlers/submission.py</code></td>
+</tr>
+<tr>
+<td>49</td>
+<td>补交表路径回归测试 <strong>11 例</strong></td>
+<td><code>test/test_submission_table_path.py</code>(<strong>新增</strong>)</td>
+</tr>
+<tr>
+<td>50</td>
+<td>文档里写死的那条补交表路径(5 处)+ 测试数 344 → 389</td>
+<td><code>README.md</code>、<code>docs/*.md</code>、<code>HANDOFF.md</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>命名规则:认不出的名字</strong>不猜课名<strong>,直接接后缀。</strong> 宁可名字丑一点 —— 猜错课名等于
+把补交记到别的课上去,而那是要交给老师的东西。分隔符也<strong>不能写死下划线</strong>,这是测试
+当场抓出来的两份真实版式:</p>
+<pre><code>电路基础理论课_学生名单.xlsx                 → 电路基础理论课_补交表.xlsx
+数字电路与逻辑设计实验（一）成绩记分册_1774943315001.xlsx → 数字电路与逻辑设计实验（一）_补交表.xlsx
+</code></pre>
+<p>第二种(雨课堂导出的原名)课名直接顶到"成绩记分册",<strong>中间没有分隔符</strong>;
+第一版写成 <code>_成绩记分册</code> 就漏掉了它,推出来的名字里留着"成绩记分册"五个字。</p>
+<p><strong>关键测试不是"常量等于某个字符串",而是那个关系。</strong> 常量字符串改一次名字就得跟着改,
+而这一轮要钉的恰恰是"<strong>它必须由花名册推出来</strong>"。所以最重的那条在<strong>子进程</strong>里跑
+(本进程的 <code>config</code> 已经被 autouse 的隔离 fixture 改过,再断言就成了自己证自己),
+清掉 <code>ROSTER_PATH</code> / <code>SUBMISSION_TABLE</code> 两个环境变量拿默认值,断言:</p>
+<pre><code class="language-python">SUBMISSION_TABLE_PATH == submission_table_for(GRADEBOOK_PATH)
+</code></pre>
+<p><strong>效果(实测):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>离线测试</td>
+<td><strong>389 通过 / 约 4.7 秒</strong>(上一轮 344;其中 33 例是上一轮新加的 HTML 完整性,11 例是本轮)</td>
+</tr>
+<tr>
+<td>检索评测</td>
+<td>17/17 命中,MRR 0.956,<strong>0 条回归</strong>(<code>--compare</code> 退出码 0)</td>
+</tr>
+<tr>
+<td>索引</td>
+<td><strong>114 文件 / 3165 块</strong>(未改动;这一轮同样没碰语料)</td>
+</tr>
+<tr>
+<td>花名册自检</td>
+<td><code>check_roster.py</code> 退出码 0,169 人,学号位数 <code>{8: 169}</code></td>
+</tr>
+<tr>
+<td>生产数据</td>
+<td>FAQ md5 仍为 <code>2bf236af…</code>;<strong>数电那份归档件原字节未动</strong>;跑完测试不会新建任何表</td>
+</tr>
+<tr>
+<td>补交表落点</td>
+<td><code>~/ykt_questions/花名册/电路基础理论课_补交表.xlsx</code>(新学期第一笔补交时自动建)</td>
+</tr>
+</tbody>
+</table></div>
 <div class="foot">
-  <span>源文件 <code>docs/knowledge_base.md</code> · 生成于 2026-09-20 21:09</span>
-  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+  <span>源文件 <code>docs/knowledge_base.md</code> · 内容指纹 <code>058ac644</code></span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是构建期渲染出来的</span>
 </div>
 </main>
 </div>
@@ -2883,12 +3215,6 @@ GitHub <strong>原生渲染</strong> mermaid —— 同一个围栏,GitHub 上�
   }
   document.addEventListener('scroll',spy,{passive:true});spy();
 })();
-</script>
-<script type="module">
-  // startOnLoad 关掉,只跑一次 run():两者同时开会重复渲染同一张图
-  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
-    .then(function(m){var M=m.default||m;M.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});return M.run({nodes:document.querySelectorAll('.mermaid')});})
-    .catch(function(){/* 没网:图保持源码原样,折叠区里也有一份 */});
 </script>
 </body>
 </html>

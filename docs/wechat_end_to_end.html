@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>微信端到端跑通手册</title>
-<meta name="description" content="很多人(包括我)一开始会以为"ta-assistant 要自己去连微信"。不是的。">
+<meta name="description" content="---">
 <meta name="generator" content="scripts/md2html.py">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
 <style>
@@ -68,6 +68,18 @@ hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
 h2:hover .anchor,h3:hover .anchor{opacity:1}
 .anchor:hover{color:var(--accent)}
 
+/* ---- 每页顶部的 hero ---- */
+.hero{background:linear-gradient(135deg,#0969da14,#0969da04 62%,rgba(255,255,255,0));
+      border:1px solid var(--border);border-radius:12px;padding:22px 26px 18px;
+      margin:0 0 1.5em}
+.hero .kicker{color:var(--accent);font-size:.78em;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase}
+.hero h1{border:0;margin:.1em 0 .3em;font-size:1.72em;padding:0;line-height:1.3}
+.hero .lead{color:var(--muted);margin:0;font-size:1.02em}
+.hero .meta{margin-top:.85em;padding-top:.7em;border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:.3em 1.5em;color:var(--muted);font-size:.84em}
+.hero .meta b{color:var(--fg);font-variant-numeric:tabular-nums}
+
 /* ---- 表格:横向滚动 + 表头吸顶 ---- */
 .table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
@@ -87,16 +99,96 @@ blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color
 blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
 blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
 
-/* ---- 图:mermaid 与图片 ---- */
+/* ---- 图:构建期画好的 svg ---- */
 figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
                           border-radius:8px;background:#fcfcfd}
-figure.diagram .mermaid{overflow-x:auto;text-align:center}
-figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
-     margin-top:.6em;text-align:center}
+figure.diagram img{max-width:100%;height:auto;display:block;margin:0 auto}
+/* 宽图**按原尺寸横向滚动,不缩放**。
+   缩到版心宽度的后果是字号一起缩:一张 1655px 宽的图塞进 1050px 的版心,
+   图里 13px 的字只剩 8px —— 一屏是放下了,但没人读得下去。
+   宁可让读者横向拉一下,也不能把字缩没。
+   窄图(≤860px)照旧居中自适应,那种情况下缩放比例 ≥1,不存在缩字问题。 */
+figure.diagram.wide{overflow-x:auto}
+figure.diagram.wide img{max-width:none;margin:0}
+figure.diagram figcaption{color:var(--fg);font-size:.9em;margin-bottom:.7em;
+     text-align:center;font-weight:600}
+figure.diagram.wide figcaption{text-align:left}
+/* 滚动提示贴在框外:它不该跟着图一起滚走 */
+figure.diagram .wide-hint{position:sticky;left:0;margin:.6em 0 0;color:var(--muted);
+     font-size:.84em}
+figure.pic figcaption{color:var(--muted);font-size:.88em;margin-top:.6em;text-align:center}
 figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
-details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src{margin-top:.8em;font-size:.85em;border-top:1px dashed var(--border);
+     padding-top:.5em}
 details.mermaid-src summary{cursor:pointer;color:var(--muted)}
 details.mermaid-src pre{margin:.5em 0 0}
+/* 图表框**贴着图**走:图是固定 620px 宽的,框撑满版心的话右边会空一大块,
+   看着像图没画完 */
+figure.chart{margin:1.4em auto;padding:10px 12px;border:1px solid var(--border);
+     border-radius:8px;background:#fcfcfd;overflow-x:auto;width:fit-content;max-width:100%}
+figure.chart svg{max-width:100%;height:auto;display:block}
+
+/* ---- :::stats 数字卡 ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+       gap:12px;margin:1.3em 0}
+.stat{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:8px;padding:13px 16px;background:var(--bg)}
+.stat .v{font-size:1.6em;font-weight:700;line-height:1.15;color:var(--accent);
+      font-variant-numeric:tabular-nums}
+.stat .l{font-weight:600;margin-top:.15em;font-size:.95em}
+.stat .n{color:var(--muted);font-size:.84em;margin-top:.15em;line-height:1.55}
+
+/* ---- :::compare 并排对比 ---- */
+.cmp{display:grid;gap:14px;margin:1.3em 0}
+.cmp.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cmp.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cmp.c2,.cmp.c3{grid-template-columns:1fr}}
+.cmp .col{border:1px solid var(--border);border-top:3px solid var(--accent);
+      border-radius:8px;padding:6px 18px 10px;background:var(--bg);min-width:0}
+.cmp .col.tone1{border-top-color:#1a7f37}
+.cmp .col.tone2{border-top-color:#9a6700}
+.cmp .col > :first-child{margin-top:.6em}
+.cmp .col h3{margin:.4em 0 .5em;font-size:1.03em}
+.cmp .col ul,.cmp .col ol{padding-left:1.25em}
+
+/* ---- :::steps 步骤条 ---- */
+.steps{counter-reset:st;display:grid;gap:10px;margin:1.3em 0}
+.step{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      padding:11px 16px 11px 54px;position:relative}
+.step:before{counter-increment:st;content:counter(st);
+      position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:50%;
+      background:var(--accent);color:#fff;font-weight:700;font-size:.82em;
+      display:flex;align-items:center;justify-content:center}
+.step .t{font-weight:600}
+.step .d{color:var(--muted);font-size:.91em;margin-top:.1em}
+
+/* ---- :::timeline 时间线 ---- */
+.timeline{margin:1.3em 0 1.3em 6px;padding-left:22px;border-left:2px solid var(--border)}
+.tl{position:relative;padding:0 0 1.05em 18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-30px;top:.5em;width:11px;height:11px;
+      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl .when{color:var(--muted);font-size:.8em;font-variant-numeric:tabular-nums}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.91em}
+
+/* ---- :::cards 小卡片墙 ---- */
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));
+      gap:12px;margin:1.3em 0}
+.mini > div{border:1px solid var(--border);border-radius:8px;padding:12px 15px;
+      background:var(--bg)}
+.mini .t{font-weight:600;margin-bottom:.15em}
+.mini .d{color:var(--muted);font-size:.89em;line-height:1.6}
+
+/* ---- :::note 提示框 / :::fold 折叠 ---- */
+.note{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;background:#fbfcfd;padding:.75em 1.2em;margin:1.2em 0}
+.note .nt{font-weight:600;margin-bottom:.15em;color:var(--accent)}
+.note > :last-child{margin-bottom:.35em}
+details.fold{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      margin:1.1em 0;padding:0 16px}
+details.fold > summary{cursor:pointer;padding:11px 0;font-weight:600;color:var(--accent)}
+details.fold[open] > summary{border-bottom:1px solid var(--border);margin-bottom:.6em}
 
 /* ---- 本页速览胶囊 ---- */
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
@@ -128,7 +220,9 @@ details.mermaid-src pre{margin:.5em 0 0}
 
 @media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
   .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
-  .table-wrap{overflow:visible}th{position:static}}
+  .table-wrap{overflow:visible}th{position:static}
+  details.fold{border:0;padding:0}details.fold > summary{color:var(--fg)}
+  details.fold > *{display:revert!important}}
 </style>
 </head>
 <body>
@@ -179,8 +273,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html" class="here">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
 </aside>
 <main>
+<header class="hero"><div class="kicker">wechat_end_to_end</div><h1>微信端到端跑通手册</h1><div class="meta"><span><b>9</b> 个小节</span><span><b>1</b> 张图</span><span><b>12</b> 张表</span></div></header>
 <nav class="quick"><a href="#0-先说清楚这条链路上谁负责什么">0. 先说清楚:这条链路上谁负责什么</a><a href="#1-为什么接入方式是技能-agentsmd而不是改代码">1. 为什么接入方式是"技能 + AGENTS.md",而不是改代码</a><a href="#2-一键安装接入件">2. 一键安装接入件</a><a href="#3-五段健康检查从小到大排障">3. 五段健康检查(从小到大排障)</a><a href="#31-第一段ta-assistant-本体不涉及-openclaw">3.1 第一段:ta-assistant 本体(不涉及 OpenClaw)</a><a href="#32-第二段ta-assistant-的大模型通道是否可用">3.2 第二段:ta-assistant 的大模型通道是否可用</a><a href="#33-第三段openclaw-网关与微信渠道">3.3 第三段:OpenClaw 网关与微信渠道</a><a href="#34-第四段agent-是否能正确路由不经过微信">3.4 第四段:agent 是否能正确路由(不经过微信)</a><a href="#35-第五段微信真机">3.5 第五段:微信真机</a><a href="#4-日常运维">4. 日常运维</a><a href="#41-启动顺序重启机器后">4.1 启动顺序(重启机器后)</a><a href="#42-什么时候需要动配置">4.2 什么时候需要动配置</a><a href="#43-agent-用哪个模型opencode-go-配置">4.3 agent 用哪个模型(OpenCode Go 配置)</a><a href="#44-看日志">4.4 看日志</a></nav>
-<h1 id="微信端到端跑通手册">微信端到端跑通手册</h1>
 <blockquote>
 <p>记录时间:2026-09-17,最后更新 2026-09-20 · 环境:Windows 11 + WSL2 Ubuntu-24.04 + OpenClaw <strong>2026.9.4</strong> + Node 24.21
 本文记录的是<strong>实测跑通</strong>的那条链路,每一步都附上可复制的命令和实测输出。
@@ -193,7 +287,7 @@ OpenClaw 为支持 Go 从 2026.6.5 升级到 2026.9.4。升级过程中踩的坑
 + 清掉会话状态里的覆盖字段。完整根因链与复现/修法见 <strong>§7.5</strong>。</p>
 </blockquote>
 <hr />
-<2 id="0-先说清楚这条链路上谁负责什么">0. 先说清楚:这条链路上谁负责什么<a class="anchor" href="#0-先说清楚这条链路上谁负责什么" title="链接到这一节">#</a></2>
+<h2 id="0-先说清楚这条链路上谁负责什么">0. 先说清楚:这条链路上谁负责什么<a class="anchor" href="#0-先说清楚这条链路上谁负责什么" title="链接到这一节">#</a></h2>
 <p>很多人(包括我)一开始会以为"ta-assistant 要自己去连微信"。<strong>不是的。</strong></p>
 <div class="table-wrap"><table>
 <thead>
@@ -251,33 +345,9 @@ ta-assistant 的在 <code>~/ta-assistant/.env</code>。<strong>改一个不会�
 <p><strong>关键认知</strong>:ta-assistant 不是常驻服务,它不主动连微信,也没有端口在监听。
 它就是一个<strong>命令行程序</strong>:OpenClaw 每次需要处理学生消息时,起一个子进程调它,读一行 JSON,进程结束。</p>
 <p><strong>一次转发到底经过谁</strong>(顺序图;下面那张 ASCII 图是同一件事的"谁住在哪"视角):</p>
-<figure class="diagram">
-<div class="mermaid">sequenceDiagram
-  autonumber
-  participant S as 学生(微信)
-  participant T as 助教(微信)
-  participant PL as openclaw-weixin 插件
-  participant AG as OpenClaw agent「main」
-  participant BR as openclaw_bridge.py&lt;br/&gt;(子进程)
-  participant TA as ta-assistant&lt;br/&gt;main.process()
-
-  S-&gt;&gt;T: 提问 / 说&quot;作业漏交了&quot;
-  T-&gt;&gt;PL: 转发(手动加前缀【转发学生提问】)
-  PL-&gt;&gt;AG: 投递消息
-  AG-&gt;&gt;AG: 读 AGENTS.md 路由规则&lt;br/&gt;+ 技能说明
-  AG-&gt;&gt;BR: bash 起子进程 --message &quot;…&quot;
-  BR-&gt;&gt;TA: process(msg)
-  alt 补交
-    TA-&gt;&gt;TA: 抽学号/姓名/次数 → 读花名册校验 → 追加补交表
-  else 答疑
-    TA-&gt;&gt;TA: 分档 → FAQ / BM25 检索 → 调 OpenCode Go 润色
-  end
-  TA--&gt;&gt;BR: 一行 JSON(只有这一行!)
-  BR--&gt;&gt;AG: stdout
-  AG-&gt;&gt;PL: 取 reply 字段
-  PL-&gt;&gt;T: 微信回复
-  Note over BR,AG: stdout 被日志污染 → TS 端 JSON.parse 失败&lt;br/&gt;这是这条链路上最难查的一类故障</div>
-<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>sequenceDiagram
+<figure class="diagram wide">
+<img src="diagrams/wechat_end_to_end-0.svg" alt="结构图" loading="lazy">
+<p class="wide-hint">↔ 这张图比正文宽:右边还有内容,把鼠标放在图上横向滚动(或按住 Shift 滚滚轮)就能看完。</p><details class="mermaid-src"><summary>这张图的源码(想改的话复制这段)</summary><pre><code>sequenceDiagram
   autonumber
   participant S as 学生(微信)
   participant T as 助教(微信)
@@ -323,7 +393,7 @@ ta-assistant 的在 <code>~/ta-assistant/.env</code>。<strong>改一个不会�
                         └──────────────────────────────────────────────┘
 </code></pre>
 <hr />
-<2 id="1-为什么接入方式是技能-agentsmd而不是改代码">1. 为什么接入方式是"技能 + AGENTS.md",而不是改代码<a class="anchor" href="#1-为什么接入方式是技能-agentsmd而不是改代码" title="链接到这一节">#</a></2>
+<h2 id="1-为什么接入方式是技能-agentsmd而不是改代码">1. 为什么接入方式是"技能 + AGENTS.md",而不是改代码<a class="anchor" href="#1-为什么接入方式是技能-agentsmd而不是改代码" title="链接到这一节">#</a></h2>
 <p>OpenClaw 的 agent 本身就能跑 shell,还支持 <strong>workspace 技能</strong>(<code>SKILL.md</code>)。
 所以接 ta-assistant 的正确做法不是改它的源码,而是<strong>用它的扩展点告诉它该调什么</strong>:</p>
 <div class="table-wrap"><table>
@@ -358,7 +428,7 @@ ta-assistant 的在 <code>~/ta-assistant/.env</code>。<strong>改一个不会�
 让 agent 调工具而不是跑 shell。当前方案够用,先不引入(见 <code>deploy/openclaw/README.md</code>)。</p>
 </blockquote>
 <hr />
-<2 id="2-一键安装接入件">2. 一键安装接入件<a class="anchor" href="#2-一键安装接入件" title="链接到这一节">#</a></2>
+<h2 id="2-一键安装接入件">2. 一键安装接入件<a class="anchor" href="#2-一键安装接入件" title="链接到这一节">#</a></h2>
 <p>在 WSL 里:</p>
 <pre><code class="language-bash">cd ~/ta-assistant
 bash scripts/install_openclaw_skill.sh
@@ -393,9 +463,14 @@ Details:
 <p><strong>回滚方式</strong>:删掉 <code>~/.openclaw/workspace/skills/ta-assistant/</code>,
 再用备份还原 AGENTS.md:<code>cp ~/.openclaw/workspace/AGENTS.md.bak.&lt;时间戳&gt; ~/.openclaw/workspace/AGENTS.md</code>。</p>
 <hr />
-<2 id="3-五段健康检查从小到大排障">3. 五段健康检查(从小到大排障)<a class="anchor" href="#3-五段健康检查从小到大排障" title="链接到这一节">#</a></2>
+<h2 id="3-五段健康检查从小到大排障">3. 五段健康检查(从小到大排障)<a class="anchor" href="#3-五段健康检查从小到大排障" title="链接到这一节">#</a></h2>
 <p>按这个顺序查,能一次定位问题出在哪一跳。</p>
-<3 id="31-第一段ta-assistant-本体不涉及-openclaw">3.1 第一段:ta-assistant 本体(不涉及 OpenClaw)<a class="anchor" href="#31-第一段ta-assistant-本体不涉及-openclaw" title="链接到这一节">#</a></3>
+<div class="steps"><div class="step"><div class="t">3.1 ta-assistant 本体</div><div class="d">命令行直接调 bridge,<strong>不经 OpenClaw</strong> —— 这段通了说明后端没毛病,问题在后面几跳</div></div><div class="step"><div class="t">3.2 大模型通道</div><div class="d">额度 / 权限 / 网络;坏了<strong>不会崩</strong>,只降级成"资料原文"</div></div><div class="step"><div class="t">3.3 OpenClaw 网关与微信渠道</div><div class="d">Bot 到底能不能收发</div></div><div class="step"><div class="t">3.4 agent 路由</div><div class="d">直接给 agent 发消息(<strong>不经过微信</strong>),看它调不调后端</div></div><div class="step"><div class="t">3.5 微信真机</div><div class="d">最后才在微信里试 —— 前面四段都绿了再进来</div></div></div>
+<div class="note"><div class="nt">为什么必须从小到大</div><p>链路上有四个能"安静地失败"的地方:插件没连上、agent 自己瞎答、
+后端降级成资料原文、模型回退到另一个模型。<strong>每一跳的表现都差不多</strong>
+——微信那头都是"回复得不太对"。从最小的一段开始查,每次只引入一个新变量,
+才能知道是哪一跳坏了;一上来就在微信里试,等于同时怀疑四个人。</p></div>
+<h3 id="31-第一段ta-assistant-本体不涉及-openclaw">3.1 第一段:ta-assistant 本体(不涉及 OpenClaw)<a class="anchor" href="#31-第一段ta-assistant-本体不涉及-openclaw" title="链接到这一节">#</a></h3>
 <pre><code class="language-bash">/home/jj/ta-assistant/.venv/bin/python \
   /home/jj/ta-assistant/scripts/openclaw_bridge.py \
   --message '【转发学生提问】Proteus 在哪下载?'
@@ -404,7 +479,7 @@ Details:
 <pre><code class="language-bash"># 看后端有没有记录这次调用(每次都会写)
 tail -5 ~/ta-assistant/data/logs/$(date +%Y-%m).log
 </code></pre>
-<3 id="32-第二段ta-assistant-的大模型通道是否可用">3.2 第二段:ta-assistant 的大模型通道是否可用<a class="anchor" href="#32-第二段ta-assistant-的大模型通道是否可用" title="链接到这一节">#</a></3>
+<h3 id="32-第二段ta-assistant-的大模型通道是否可用">3.2 第二段:ta-assistant 的大模型通道是否可用<a class="anchor" href="#32-第二段ta-assistant-的大模型通道是否可用" title="链接到这一节">#</a></h3>
 <p>答疑会调大模型润色。额度/权限/网络有问题时,<strong>整条链路不会崩</strong>,而是降级:
 答复变成"资料原文 + 来源列表"(格式是 <code>(LLM 暂不可用,以下是相关资料原文)</code>)。</p>
 <p><strong>用项目自己的客户端探活</strong>(比手搓 HTTP 准,因为带上了一样的请求头和重试逻辑,且不打印 Key):</p>
@@ -455,7 +530,7 @@ print('回答    :', out[:120] if out else '(空 —— 没调通)')
 </tr>
 </tbody>
 </table></div>
-<3 id="33-第三段openclaw-网关与微信渠道">3.3 第三段:OpenClaw 网关与微信渠道<a class="anchor" href="#33-第三段openclaw-网关与微信渠道" title="链接到这一节">#</a></3>
+<h3 id="33-第三段openclaw-网关与微信渠道">3.3 第三段:OpenClaw 网关与微信渠道<a class="anchor" href="#33-第三段openclaw-网关与微信渠道" title="链接到这一节">#</a></h3>
 <pre><code class="language-bash">systemctl --user status openclaw-gateway.service     # 是否常驻在跑
 openclaw channels list                               # 渠道是否配置
 openclaw channels status                             # 渠道是否真的连着
@@ -470,7 +545,7 @@ Gateway reachable.
 </code></pre>
 <p><code>in:11h ago</code> = 该账号<strong>最近一次收到入站消息</strong>距今多久。如果这个数字一直不更新,
 说明<strong>微信侧根本没有消息进来</strong>(网关没收到),问题在微信这一跳,不在 ta-assistant。</p>
-<3 id="34-第四段agent-是否能正确路由不经过微信">3.4 第四段:agent 是否能正确路由(不经过微信)<a class="anchor" href="#34-第四段agent-是否能正确路由不经过微信" title="链接到这一节">#</a></3>
+<h3 id="34-第四段agent-是否能正确路由不经过微信">3.4 第四段:agent 是否能正确路由(不经过微信)<a class="anchor" href="#34-第四段agent-是否能正确路由不经过微信" title="链接到这一节">#</a></h3>
 <p>这是最有价值的一步:它绕开微信,直接给 agent 喂一条带前缀的消息。</p>
 <pre><code class="language-bash">cd ~/.openclaw/workspace
 openclaw agent --agent main --message '【转发学生提问】什么是竞争冒险?'
@@ -502,7 +577,7 @@ $ wc -l &lt; ~/ta-assistant/data/logs/2026-09.log
 <pre><code class="language-bash">openclaw agent --agent main --message &quot;今天下午三点开会&quot;
 # 期望:后端日志行数不变(agent 没有调用 bridge)
 </code></pre>
-<3 id="35-第五段微信真机">3.5 第五段:微信真机<a class="anchor" href="#35-第五段微信真机" title="链接到这一节">#</a></3>
+<h3 id="35-第五段微信真机">3.5 第五段:微信真机<a class="anchor" href="#35-第五段微信真机" title="链接到这一节">#</a></h3>
 <p>前三段都过了,最后只剩"微信那一跳"。用你自己的微信给 Bot 发一条:</p>
 <pre><code>【转发学生提问】Proteus 在哪下载?
 </code></pre>
@@ -517,8 +592,8 @@ $ wc -l &lt; ~/ta-assistant/data/logs/2026-09.log
   (<code>~/.openclaw/agents/main/sessions/</code>)</li>
 </ul>
 <hr />
-<2 id="4-日常运维">4. 日常运维<a class="anchor" href="#4-日常运维" title="链接到这一节">#</a></2>
-<3 id="41-启动顺序重启机器后">4.1 启动顺序(重启机器后)<a class="anchor" href="#41-启动顺序重启机器后" title="链接到这一节">#</a></3>
+<h2 id="4-日常运维">4. 日常运维<a class="anchor" href="#4-日常运维" title="链接到这一节">#</a></h2>
+<h3 id="41-启动顺序重启机器后">4.1 启动顺序(重启机器后)<a class="anchor" href="#41-启动顺序重启机器后" title="链接到这一节">#</a></h3>
 <pre><code class="language-bash"># 1. OpenClaw 网关(systemd user 服务,开机自启,一般不用管)
 systemctl --user status openclaw-gateway.service
 systemctl --user restart openclaw-gateway.service   # 需要重启时
@@ -526,7 +601,7 @@ systemctl --user restart openclaw-gateway.service   # 需要重启时
 # 2. ta-assistant 不需要启动 —— 它是被调用的命令行程序
 </code></pre>
 <p><strong>ta-assistant 没有常驻进程,不需要启动、不会因为重启机器而失效。</strong></p>
-<3 id="42-什么时候需要动配置">4.2 什么时候需要动配置<a class="anchor" href="#42-什么时候需要动配置" title="链接到这一节">#</a></3>
+<h3 id="42-什么时候需要动配置">4.2 什么时候需要动配置<a class="anchor" href="#42-什么时候需要动配置" title="链接到这一节">#</a></h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -561,7 +636,7 @@ systemctl --user restart openclaw-gateway.service   # 需要重启时
 </tr>
 </tbody>
 </table></div>
-<3 id="43-agent-用哪个模型opencode-go-配置">4.3 agent 用哪个模型(OpenCode Go 配置)<a class="anchor" href="#43-agent-用哪个模型opencode-go-配置" title="链接到这一节">#</a></3>
+<h3 id="43-agent-用哪个模型opencode-go-配置">4.3 agent 用哪个模型(OpenCode Go 配置)<a class="anchor" href="#43-agent-用哪个模型opencode-go-配置" title="链接到这一节">#</a></h3>
 <p><strong>这条链路上有两个大模型,别搞混</strong>:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -731,7 +806,7 @@ systemctl --user restart openclaw-gateway.service
 <strong><code>openclaw models list --provider opencode-go</code> 显示 "No models found" 是正常的</strong>
 (它只列"配置里显式声明"的),不代表模型用不了 —— 以网关日志为准。</p>
 </blockquote>
-<3 id="44-看日志">4.4 看日志<a class="anchor" href="#44-看日志" title="链接到这一节">#</a></3>
+<h3 id="44-看日志">4.4 看日志<a class="anchor" href="#44-看日志" title="链接到这一节">#</a></h3>
 <pre><code class="language-bash">tail -f ~/ta-assistant/data/logs/$(date +%Y-%m).log   # 后端逐条事件(JSON 行)
 tail -f ~/ta-assistant/data/logs/llm.log              # 每次大模型调用的耗时/长度
 openclaw logs                                          # OpenClaw 网关日志
@@ -748,7 +823,7 @@ journalctl --user -u openclaw-gateway.service --since &quot;10 min ago&quot; --n
   grep -oE '&quot;(message|error)&quot;:&quot;[^&quot;]{0,160}&quot;' | tail -20
 </code></pre>
 <hr />
-<2 id="5-故障排查表">5. 故障排查表<a class="anchor" href="#5-故障排查表" title="链接到这一节">#</a></2>
+<h2 id="5-故障排查表">5. 故障排查表<a class="anchor" href="#5-故障排查表" title="链接到这一节">#</a></h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -821,7 +896,7 @@ journalctl --user -u openclaw-gateway.service --since &quot;10 min ago&quot; --n
 </tbody>
 </table></div>
 <hr />
-<2 id="6-三层验证清单改完东西照着过一遍">6. 三层验证清单(改完东西照着过一遍)<a class="anchor" href="#6-三层验证清单改完东西照着过一遍" title="链接到这一节">#</a></2>
+<h2 id="6-三层验证清单改完东西照着过一遍">6. 三层验证清单(改完东西照着过一遍)<a class="anchor" href="#6-三层验证清单改完东西照着过一遍" title="链接到这一节">#</a></h2>
 <pre><code class="language-bash"># ① 后端层(30 秒,不依赖 OpenClaw)
 ~/ta-assistant/.venv/bin/python ~/ta-assistant/scripts/openclaw_bridge.py \
   --message '【转发学生提问】Proteus 在哪下载?'
@@ -837,8 +912,10 @@ cd ~/.openclaw/workspace &amp;&amp; openclaw agent --agent main --message '【�
 tail -f ~/ta-assistant/data/logs/$(date +%Y-%m).log
 </code></pre>
 <hr />
-<2 id="7-已知问题与待办2026-09-17-首次实测2026-09-20-增补">7. 已知问题与待办(2026-09-17 首次实测,2026-09-20 增补)<a class="anchor" href="#7-已知问题与待办2026-09-17-首次实测2026-09-20-增补" title="链接到这一节">#</a></2>
-<3 id="71-minimax-额度用尽-全线切-opencode-go已解决">7.1 MiniMax 额度用尽 → 全线切 OpenCode Go(已解决 ✅)<a class="anchor" href="#71-minimax-额度用尽-全线切-opencode-go已解决" title="链接到这一节">#</a></3>
+<h2 id="7-已知问题与待办2026-09-17-首次实测2026-09-20-增补">7. 已知问题与待办(2026-09-17 首次实测,2026-09-20 增补)<a class="anchor" href="#7-已知问题与待办2026-09-17-首次实测2026-09-20-增补" title="链接到这一节">#</a></h2>
+<p>十条问题按时间铺开,一眼看出哪些还欠着:</p>
+<div class="timeline"><div class="tl"><div class="when">2026-09-17</div><div class="t">首次实测</div><div class="d">微信端到端第一次跑通,一次撞出 7.1–7.5 五条</div></div><div class="tl"><div class="when">2026-09-20</div><div class="t">额度用尽</div><div class="d">MiniMax 探活返回 <code>2056</code>,agent 和本项目两边都切 OpenCode Go ✅</div></div><div class="tl"><div class="when">2026-09-20</div><div class="t">资料目录名</div><div class="d">7.6 结案 ✅</div></div><div class="tl"><div class="when">2026-09-20 晚</div><div class="t">概念题</div><div class="d">不再一律回"建议问任课老师",改成按三档规则讲 ✅</div></div><div class="tl"><div class="when">2026-09-20 深夜</div><div class="t">语料</div><div class="d">作业答案统一取<strong>中文版</strong>参数 ✅;中文版第 6 版教材 OCR 进库 ✅</div></div><div class="tl"><div class="when">2026-09-20 更晚</div><div class="t">检索闸门</div><div class="d">修 BM25 的 IDF 兜底 + 建 17 条常驻评测 ✅</div></div><div class="tl"><div class="when">仍未解决</div><div class="t">7.3 补交去重 / 7.4 自传记忆 / 7.5 Fallback 字样</div><div class="d">⚠️ 详见下面各节</div></div></div>
+<h3 id="71-minimax-额度用尽-全线切-opencode-go已解决">7.1 MiniMax 额度用尽 → 全线切 OpenCode Go(已解决 ✅)<a class="anchor" href="#71-minimax-额度用尽-全线切-opencode-go已解决" title="链接到这一节">#</a></h3>
 <p><strong>起因</strong>:MiniMax Token Plan 额度用尽(探活返回 <code>status_code: 2056</code>),
 答疑的"润色"环节降级成"资料原文"。于是把 <strong>agent 和 ta-assistant 两边</strong>都换成
 OpenCode Go 套餐的 <code>deepseek-v4.1-flash</code>。</p>
@@ -902,7 +979,7 @@ systemctl --user start openclaw-gateway.service
 <p>回滚:<code>npm i -g openclaw@2026.6.5</code> + 还原 sqlite/配置备份
 (前提是<strong>没跑过</strong> <code>doctor --fix</code>,跑过就必须一起还原 sqlite)。</p>
 </blockquote>
-<3 id="72-faq-文件缺失">7.2 FAQ 文件缺失<a class="anchor" href="#72-faq-文件缺失" title="链接到这一节">#</a></3>
+<h3 id="72-faq-文件缺失">7.2 FAQ 文件缺失<a class="anchor" href="#72-faq-文件缺失" title="链接到这一节">#</a></h3>
 <p><code>~/ykt_questions/常问问题.txt</code> 不存在,日志里每次都会提示:</p>
 <pre><code>[FAQRetriever] FAQ 文件不存在:/home/jj/ykt_questions/常问问题.txt
 </code></pre>
@@ -911,9 +988,9 @@ systemctl --user start openclaw-gateway.service
 概念题和具体题号一律要查资料并调大模型 —— 这是 2026-09-20 晚的分档改造,
 详见 <code>docs/knowledge_base.md</code> §6 与 §7.7。
 把文件放到位即可,不需要重建索引。</p>
-<3 id="73-补交去重24-小时窗口未实现">7.3 补交去重(24 小时窗口)未实现<a class="anchor" href="#73-补交去重24-小时窗口未实现" title="链接到这一节">#</a></3>
+<h3 id="73-补交去重24-小时窗口未实现">7.3 补交去重(24 小时窗口)未实现<a class="anchor" href="#73-补交去重24-小时窗口未实现" title="链接到这一节">#</a></h3>
 <p>重复提交会<strong>追加</strong>一条新记录,而不是标记"重复"。助教核对时需要自己看。</p>
-<3 id="74-agent-的自传记忆会把旧话题一直挂在嘴边">7.4 agent 的"自传记忆"会把旧话题一直挂在嘴边 ⚠️<a class="anchor" href="#74-agent-的自传记忆会把旧话题一直挂在嘴边" title="链接到这一节">#</a></3>
+<h3 id="74-agent-的自传记忆会把旧话题一直挂在嘴边">7.4 agent 的"自传记忆"会把旧话题一直挂在嘴边 ⚠️<a class="anchor" href="#74-agent-的自传记忆会把旧话题一直挂在嘴边" title="链接到这一节">#</a></h3>
 <p><strong>现象</strong>:修好 fallback 之后,微信 Bot <strong>每条回复都还要提一句"fallback 备用模型是 aipai/claude-opus-4-8"</strong>。</p>
 <p><strong>原因</strong>:OpenClaw 的 <code>memory-core</code> 插件会<strong>自动把会话里的事写进 workspace 的记忆文件</strong>
 (<code>~/.openclaw/workspace/memory/YYYY-MM-DD.md</code>),而且<strong>每轮对话都会召回</strong>。
@@ -943,7 +1020,7 @@ openclaw memory search 运行时      # 期望能搜到新内容
 <p>顺带一提:日志里 <code>memory_index_chunks_vec not updated — semantic vector embeddings unavailable</code>
 是因为没配 embedding provider,<strong>不影响</strong>上面这套关键词召回。</p>
 </blockquote>
-<3 id="75-每条微信回复都挂着-model-fallback-aipaiclaude-opus-4-8">7.5 每条微信回复都挂着 <code>↪️ Model Fallback: aipai/claude-opus-4-8 …</code> ⚠️⚠️<a class="anchor" href="#75-每条微信回复都挂着-model-fallback-aipaiclaude-opus-4-8" title="链接到这一节">#</a></3>
+<h3 id="75-每条微信回复都挂着-model-fallback-aipaiclaude-opus-4-8">7.5 每条微信回复都挂着 <code>↪️ Model Fallback: aipai/claude-opus-4-8 …</code> ⚠️⚠️<a class="anchor" href="#75-每条微信回复都挂着-model-fallback-aipaiclaude-opus-4-8" title="链接到这一节">#</a></h3>
 <p><strong>现象</strong>(2026-09-20):配置早就改对了 —— <code>primary</code> 是 deepseek、<code>fallbacks: []</code>、
 aipai 也不在任何自动链路里 —— 但<strong>每条</strong>微信回复后面都跟着:</p>
 <pre><code>↪️ Model Fallback: aipai/claude-opus-4-8 (selected opencode-go/deepseek-v4.1-flash; selected model unavailable)
@@ -1062,7 +1139,7 @@ print(m['provider'], m['model'], m['contextTokens'], m['contextTokensSource'])&q
 <p>与 §7.4 的关系:7.4 解决的是"agent 在<strong>对话里提到</strong> fallback"(记忆污染),
 7.5 解决的是"运行时<strong>主动挂上</strong> fallback 通知"(会话状态覆盖)。两件事都修了才算干净。</p>
 </blockquote>
-<3 id="76-资料目录名-已确认2026-09-20-结案">7.6 资料目录名 —— 已确认(2026-09-20 结案)<a class="anchor" href="#76-资料目录名-已确认2026-09-20-结案" title="链接到这一节">#</a></3>
+<h3 id="76-资料目录名-已确认2026-09-20-结案">7.6 资料目录名 —— 已确认(2026-09-20 结案)<a class="anchor" href="#76-资料目录名-已确认2026-09-20-结案" title="链接到这一节">#</a></h3>
 <p><code>src/config.py</code> 里 <code>MATERIALS_DIR = ~/ykt_questions/materials</code>,<strong>就是实际在用的那份</strong>,不用改配置。</p>
 <p>一度以为要用的是 Windows 侧那份 <code>C:\Users\52880\Downloads\ykt_questions\</code>(旧部署文档里是这么写的),
 但 2026-09-17 的补交表比对给出了结论:运行时后端在 <strong><code>~/ykt_questions/</code></strong> 下新建了
@@ -1071,7 +1148,7 @@ print(m['provider'], m['model'], m['contextTokens'], m['contextTokensSource'])&q
 没有改动 <code>WINDOWS_ROOT</code>,也就不会把已登记的补交记录孤儿掉。</p>
 <p>2026-09-20 已把 Windows 旧库里的数电资料搬进 <code>~/ykt_questions/materials/</code>,两份合流。
 <strong>知识库的完整说明(内容、来源、重建步骤、已知限制)见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a>。</strong></p>
-<3 id="77-概念题会回这个我不确定建议问任课老师-已改-2026-09-20-晚">7.7 概念题会回"这个我不确定,建议问任课老师" —— 已改 ✅(2026-09-20 晚)<a class="anchor" href="#77-概念题会回这个我不确定建议问任课老师-已改-2026-09-20-晚" title="链接到这一节">#</a></3>
+<h3 id="77-概念题会回这个我不确定建议问任课老师-已改-2026-09-20-晚">7.7 概念题会回"这个我不确定,建议问任课老师" —— 已改 ✅(2026-09-20 晚)<a class="anchor" href="#77-概念题会回这个我不确定建议问任课老师-已改-2026-09-20-晚" title="链接到这一节">#</a></h3>
 <p>助教反馈:问「什么是叠加原理」这种概念题,机器人只会回"建议问任课老师",
 这不合理 —— 概念性的内容应当让大模型讲清楚,并<strong>结合库里已布置的作业题</strong>帮学生理解。</p>
 <p>根因是提示词写死了"<strong>只依据资料作答</strong>,资料里没有就说不知道"。这条规则本身是为了治
@@ -1119,7 +1196,7 @@ print(m['provider'], m['model'], m['contextTokens'], m['contextTokensSource'])&q
 <p>教材进来之后(§7.9),这一档的"资料里有"覆盖面大了很多 —— 全书 19 章都有正文,
 而讲义只覆盖 11 章、作业答案只覆盖 13 章。</p>
 </blockquote>
-<3 id="78-作业答案用中文版的参数不用国际版的-已改-2026-09-20-深夜">7.8 作业答案用<strong>中文版</strong>的参数,不用国际版的 —— 已改 ✅(2026-09-20 深夜)<a class="anchor" href="#78-作业答案用中文版的参数不用国际版的-已改-2026-09-20-深夜" title="链接到这一节">#</a></3>
+<h3 id="78-作业答案用中文版的参数不用国际版的-已改-2026-09-20-深夜">7.8 作业答案用<strong>中文版</strong>的参数,不用国际版的 —— 已改 ✅(2026-09-20 深夜)<a class="anchor" href="#78-作业答案用中文版的参数不用国际版的-已改-2026-09-20-深夜" title="链接到这一节">#</a></h3>
 <p>助教反馈:国际版教材和中文版作业册<strong>个别题目的参数/单位不一样</strong>(例如公里变成了英里),
 所以<strong>课后题答案要以中文版作业用书为准</strong>。原先库里只有英文版 Soln,答出来的数可能是
 错的那一版。</p>
@@ -1137,7 +1214,7 @@ print(m['provider'], m['model'], m['contextTokens'], m['contextTokensSource'])&q
 中文版没布置的题(第 13、19 章等 12 道)<strong>原样保留</strong>,不受影响。</p>
 <p><strong>注意</strong>:本次<strong>只重写了有中文版的那 56 题</strong>的解析(英文版独有的题沿用旧解析,它们本就
 不该被覆盖),所以大模型调用只多了 56 次。原理见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §3.3。</p>
-<3 id="79-中文版第-6-版教材-ocr-进库-已完成-2026-09-20-深夜">7.9 中文版第 6 版教材 OCR 进库 —— 已完成 ✅(2026-09-20 深夜)<a class="anchor" href="#79-中文版第-6-版教材-ocr-进库-已完成-2026-09-20-深夜" title="链接到这一节">#</a></3>
+<h3 id="79-中文版第-6-版教材-ocr-进库-已完成-2026-09-20-深夜">7.9 中文版第 6 版教材 OCR 进库 —— 已完成 ✅(2026-09-20 深夜)<a class="anchor" href="#79-中文版第-6-版教材-ocr-进库-已完成-2026-09-20-深夜" title="链接到这一节">#</a></h3>
 <p>这是 7.7 那个问题的<strong>根治</strong>:概念题以前没有教材正文可依,只有 PPT 提纲和作业答案。
 助教点名要的"中文版第六版教材"一直是库里唯一进不去的东西 —— 它 266 MB / 711 页,
 是<strong>纯扫描件</strong>,<code>pdfplumber</code> 一个字都抽不出来。</p>
@@ -1195,7 +1272,7 @@ print(m['provider'], m['model'], m['contextTokens'], m['contextTokensSource'])&q
 完整对照表见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §9.5。</p>
 <p><strong>这一轮没有做的事</strong>:题图仍然看不到(要到切图 + 挂题号那一步),
 英文教材正文和 4th 版答案手册仍然不进索引(理由没变)。</p>
-<3 id="710-检索质量的闸门修-idf-兜底-建常驻评测-已完成-2026-09-20-更晚">7.10 检索质量的"闸门":修 IDF 兜底 + 建常驻评测 —— 已完成 ✅(2026-09-20 更晚)<a class="anchor" href="#710-检索质量的闸门修-idf-兜底-建常驻评测-已完成-2026-09-20-更晚" title="链接到这一节">#</a></3>
+<h3 id="710-检索质量的闸门修-idf-兜底-建常驻评测-已完成-2026-09-20-更晚">7.10 检索质量的"闸门":修 IDF 兜底 + 建常驻评测 —— 已完成 ✅(2026-09-20 更晚)<a class="anchor" href="#710-检索质量的闸门修-idf-兜底-建常驻评测-已完成-2026-09-20-更晚" title="链接到这一节">#</a></h3>
 <p><strong>和微信链路本身无关,但会直接影响微信里回出来的话</strong>,所以记在这里。
 起因是助教验收「叠加原理」之后让我自己再找问题 —— 结果量出来一个<strong>真错</strong>:
 问<code>什么是叠加原理</code>,<code>教材-第5章-运算放大器.md</code>(13.53 分)排在了<strong>第 4 名</strong>(13.47 分)前面,
@@ -1235,7 +1312,7 @@ IDF 算出来是负数,它一律<strong>兜底成同一个正数</strong>。实�
 闸门整个失效却一路绿灯。现在缺基线返回 <strong>1</strong>,并加了 <code>test/test_eval_baseline.py</code> 守着基线。
 细节见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §3.6 / §9.6。</p>
 <hr />
-<2 id="8-附录路径与端口速查">8. 附录:路径与端口速查<a class="anchor" href="#8-附录路径与端口速查" title="链接到这一节">#</a></2>
+<h2 id="8-附录路径与端口速查">8. 附录:路径与端口速查<a class="anchor" href="#8-附录路径与端口速查" title="链接到这一节">#</a></h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1318,14 +1395,14 @@ IDF 算出来是负数,它一律<strong>兜底成同一个正数</strong>。实�
 </tr>
 </tbody>
 </table></div>
-<3 id="本文档的-html-版本">本文档的 HTML 版本<a class="anchor" href="#本文档的-html-版本" title="链接到这一节">#</a></3>
+<h3 id="本文档的-html-版本">本文档的 HTML 版本<a class="anchor" href="#本文档的-html-版本" title="链接到这一节">#</a></h3>
 <pre><code class="language-bash">cd ~/ta-assistant
 python scripts/md2html.py docs/wechat_end_to_end.md   # → docs/wechat_end_to_end.html
 </code></pre>
 <p>生成的 HTML 是<strong>单文件、内联样式</strong>,双击就能在浏览器里看,也可以直接发给别人。</p>
 <div class="foot">
-  <span>源文件 <code>docs/wechat_end_to_end.md</code> · 生成于 2026-09-20 21:09</span>
-  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+  <span>源文件 <code>docs/wechat_end_to_end.md</code> · 内容指纹 <code>5c291e00</code></span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是构建期渲染出来的</span>
 </div>
 </main>
 </div>
@@ -1353,12 +1430,6 @@ python scripts/md2html.py docs/wechat_end_to_end.md   # → docs/wechat_end_to_e
   }
   document.addEventListener('scroll',spy,{passive:true});spy();
 })();
-</script>
-<script type="module">
-  // startOnLoad 关掉,只跑一次 run():两者同时开会重复渲染同一张图
-  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
-    .then(function(m){var M=m.default||m;M.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});return M.run({nodes:document.querySelectorAll('.mermaid')});})
-    .catch(function(){/* 没网:图保持源码原样,折叠区里也有一份 */});
 </script>
 </body>
 </html>

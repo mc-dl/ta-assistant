@@ -68,6 +68,18 @@ hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
 h2:hover .anchor,h3:hover .anchor{opacity:1}
 .anchor:hover{color:var(--accent)}
 
+/* ---- 每页顶部的 hero ---- */
+.hero{background:linear-gradient(135deg,#0969da14,#0969da04 62%,rgba(255,255,255,0));
+      border:1px solid var(--border);border-radius:12px;padding:22px 26px 18px;
+      margin:0 0 1.5em}
+.hero .kicker{color:var(--accent);font-size:.78em;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase}
+.hero h1{border:0;margin:.1em 0 .3em;font-size:1.72em;padding:0;line-height:1.3}
+.hero .lead{color:var(--muted);margin:0;font-size:1.02em}
+.hero .meta{margin-top:.85em;padding-top:.7em;border-top:1px solid var(--border);
+      display:flex;flex-wrap:wrap;gap:.3em 1.5em;color:var(--muted);font-size:.84em}
+.hero .meta b{color:var(--fg);font-variant-numeric:tabular-nums}
+
 /* ---- 表格:横向滚动 + 表头吸顶 ---- */
 .table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
@@ -87,16 +99,96 @@ blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color
 blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
 blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
 
-/* ---- 图:mermaid 与图片 ---- */
+/* ---- 图:构建期画好的 svg ---- */
 figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
                           border-radius:8px;background:#fcfcfd}
-figure.diagram .mermaid{overflow-x:auto;text-align:center}
-figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
-     margin-top:.6em;text-align:center}
+figure.diagram img{max-width:100%;height:auto;display:block;margin:0 auto}
+/* 宽图**按原尺寸横向滚动,不缩放**。
+   缩到版心宽度的后果是字号一起缩:一张 1655px 宽的图塞进 1050px 的版心,
+   图里 13px 的字只剩 8px —— 一屏是放下了,但没人读得下去。
+   宁可让读者横向拉一下,也不能把字缩没。
+   窄图(≤860px)照旧居中自适应,那种情况下缩放比例 ≥1,不存在缩字问题。 */
+figure.diagram.wide{overflow-x:auto}
+figure.diagram.wide img{max-width:none;margin:0}
+figure.diagram figcaption{color:var(--fg);font-size:.9em;margin-bottom:.7em;
+     text-align:center;font-weight:600}
+figure.diagram.wide figcaption{text-align:left}
+/* 滚动提示贴在框外:它不该跟着图一起滚走 */
+figure.diagram .wide-hint{position:sticky;left:0;margin:.6em 0 0;color:var(--muted);
+     font-size:.84em}
+figure.pic figcaption{color:var(--muted);font-size:.88em;margin-top:.6em;text-align:center}
 figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
-details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src{margin-top:.8em;font-size:.85em;border-top:1px dashed var(--border);
+     padding-top:.5em}
 details.mermaid-src summary{cursor:pointer;color:var(--muted)}
 details.mermaid-src pre{margin:.5em 0 0}
+/* 图表框**贴着图**走:图是固定 620px 宽的,框撑满版心的话右边会空一大块,
+   看着像图没画完 */
+figure.chart{margin:1.4em auto;padding:10px 12px;border:1px solid var(--border);
+     border-radius:8px;background:#fcfcfd;overflow-x:auto;width:fit-content;max-width:100%}
+figure.chart svg{max-width:100%;height:auto;display:block}
+
+/* ---- :::stats 数字卡 ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+       gap:12px;margin:1.3em 0}
+.stat{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:8px;padding:13px 16px;background:var(--bg)}
+.stat .v{font-size:1.6em;font-weight:700;line-height:1.15;color:var(--accent);
+      font-variant-numeric:tabular-nums}
+.stat .l{font-weight:600;margin-top:.15em;font-size:.95em}
+.stat .n{color:var(--muted);font-size:.84em;margin-top:.15em;line-height:1.55}
+
+/* ---- :::compare 并排对比 ---- */
+.cmp{display:grid;gap:14px;margin:1.3em 0}
+.cmp.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cmp.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cmp.c2,.cmp.c3{grid-template-columns:1fr}}
+.cmp .col{border:1px solid var(--border);border-top:3px solid var(--accent);
+      border-radius:8px;padding:6px 18px 10px;background:var(--bg);min-width:0}
+.cmp .col.tone1{border-top-color:#1a7f37}
+.cmp .col.tone2{border-top-color:#9a6700}
+.cmp .col > :first-child{margin-top:.6em}
+.cmp .col h3{margin:.4em 0 .5em;font-size:1.03em}
+.cmp .col ul,.cmp .col ol{padding-left:1.25em}
+
+/* ---- :::steps 步骤条 ---- */
+.steps{counter-reset:st;display:grid;gap:10px;margin:1.3em 0}
+.step{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      padding:11px 16px 11px 54px;position:relative}
+.step:before{counter-increment:st;content:counter(st);
+      position:absolute;left:14px;top:11px;width:26px;height:26px;border-radius:50%;
+      background:var(--accent);color:#fff;font-weight:700;font-size:.82em;
+      display:flex;align-items:center;justify-content:center}
+.step .t{font-weight:600}
+.step .d{color:var(--muted);font-size:.91em;margin-top:.1em}
+
+/* ---- :::timeline 时间线 ---- */
+.timeline{margin:1.3em 0 1.3em 6px;padding-left:22px;border-left:2px solid var(--border)}
+.tl{position:relative;padding:0 0 1.05em 18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-30px;top:.5em;width:11px;height:11px;
+      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl .when{color:var(--muted);font-size:.8em;font-variant-numeric:tabular-nums}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.91em}
+
+/* ---- :::cards 小卡片墙 ---- */
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));
+      gap:12px;margin:1.3em 0}
+.mini > div{border:1px solid var(--border);border-radius:8px;padding:12px 15px;
+      background:var(--bg)}
+.mini .t{font-weight:600;margin-bottom:.15em}
+.mini .d{color:var(--muted);font-size:.89em;line-height:1.6}
+
+/* ---- :::note 提示框 / :::fold 折叠 ---- */
+.note{border:1px solid var(--border);border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;background:#fbfcfd;padding:.75em 1.2em;margin:1.2em 0}
+.note .nt{font-weight:600;margin-bottom:.15em;color:var(--accent)}
+.note > :last-child{margin-bottom:.35em}
+details.fold{border:1px solid var(--border);border-radius:8px;background:var(--bg);
+      margin:1.1em 0;padding:0 16px}
+details.fold > summary{cursor:pointer;padding:11px 0;font-weight:600;color:var(--accent)}
+details.fold[open] > summary{border-bottom:1px solid var(--border);margin-bottom:.6em}
 
 /* ---- 本页速览胶囊 ---- */
 .quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
@@ -128,7 +220,9 @@ details.mermaid-src pre{margin:.5em 0 0}
 
 @media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
   .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
-  .table-wrap{overflow:visible}th{position:static}}
+  .table-wrap{overflow:visible}th{position:static}
+  details.fold{border:0;padding:0}details.fold > summary{color:var(--fg)}
+  details.fold > *{display:revert!important}}
 </style>
 </head>
 <body>
@@ -149,8 +243,8 @@ details.mermaid-src pre{margin:.5em 0 0}
 <div class="card docs-nav"><h2>文档导航</h2><a href="README.html" class="here">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
 </aside>
 <main>
+<header class="hero"><div class="kicker">README</div><h1>数电助教自动化助手 (TA Assistant)</h1><div class="meta"><span><b>7</b> 个小节</span><span><b>2</b> 张表</span></div></header>
 <nav class="quick"><a href="#项目目标">项目目标</a><a href="#快速上手5-步">快速上手(5 步)</a><a href="#目录结构">目录结构</a><a href="#技术栈">技术栈</a><a href="#为什么这样设计">为什么这样设计</a><a href="#消息前缀过滤">消息前缀过滤</a><a href="#开发约定">开发约定</a></nav>
-<h1 id="数电助教自动化助手-ta-assistant">数电助教自动化助手 (TA Assistant)</h1>
 <blockquote>
 <p>一个轻量级的数电课助教工作自动化工具,配合 OpenClaw 微信 Bot 使用,基于 RAG + 规则分类实现作业补交自动登记 + 学生提问智能回答。</p>
 <p>⚠️ <strong>时效性(2026-09-20 校订)</strong>
@@ -186,7 +280,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 </tr>
 <tr>
 <td>没有「测试」一节</td>
-<td>现在有 <strong>338 个测试</strong> + 检索评测基线,见根 README 的「测试」</td>
+<td>现在有 <strong>389 个测试</strong> + 检索评测基线,见根 README 的「测试」</td>
 </tr>
 <tr>
 <td>没有 <code>src/handlers/record.py</code>、<code>src/utils/course_facts.py</code></td>
@@ -200,26 +294,35 @@ details.mermaid-src pre{margin:.5em 0 0}
 <td>目录树只列了 5 个 md</td>
 <td>还有 <code>wechat_end_to_end.md</code> / <code>knowledge_base.md</code>,且<strong>每篇都有网页版 <code>docs/*.html</code></strong> —— 见 <a href="index.html"><code>index.html</code></a></td>
 </tr>
+<tr>
+<td>没提行尾要求</td>
+<td>全仓文本文件必须是 <strong>LF</strong>(<code>.gitattributes</code> 钉住)。CRLF 会被 rsync 原样带到 WSL,<code>setup.sh</code> 会直接跑不起来(报错还指向文件末尾),见 <a href="deployment.md"><code>deployment.md</code></a> §7「行尾必须是 LF」</td>
+</tr>
 </tbody>
 </table></div>
 <p>(目录树里的 <code>data/samples/</code> 之类的<strong>仍然准确</strong>,不用疑心。)</p>
 </blockquote>
-<2 id="项目目标">项目目标<a class="anchor" href="#项目目标" title="链接到这一节">#</a></2>
+<div class="stats"><div class="stat"><div class="v"><strong>169</strong></div><div class="l">在册学生</div><div class="n">电路基础理论,8 个行政班</div></div><div class="stat"><div class="v"><strong>3165</strong></div><div class="l">索引块</div><div class="n">服务两门课:数电实验 + 电路基础理论</div></div><div class="stat"><div class="v"><strong>389</strong></div><div class="l">测试</div><div class="n"><code>pytest test/</code> 全绿才允许提交</div></div><div class="stat"><div class="v"><strong>17/17</strong></div><div class="l">检索命中</div><div class="n">评测闸门,MRR 0.956;退化就退出码 1</div></div></div>
+<blockquote>
+<p>上面这些数字是<strong>现状</strong>;下面正文是<strong>当时</strong>。两者冲突时,以根目录
+<a href="../README.md"><code>../README.md</code></a> 和 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> 为准。</p>
+</blockquote>
+<div class="timeline"><div class="tl"><div class="when">2026-04-19</div><div class="t">项目启动</div><div class="d">只有数电实验一门课,需求 / 设计 / 部署三份文档 + 骨架代码</div></div><div class="tl"><div class="when">2026-09-01</div><div class="t">加第二门课</div><div class="d">电路基础理论进语料库,答疑要能分得清是哪门课</div></div><div class="tl"><div class="when">2026-09-20</div><div class="t">校订 + 换学期</div><div class="d">八份文档逐处改成本文的实际值;同一天踩到"花名册读不出来"</div></div><div class="tl"><div class="when">2026-09-21</div><div class="t">补交表按课推导</div><div class="d">换名单这一处动作,同时换掉花名册和补交表</div></div></div>
+<h2 id="项目目标">项目目标<a class="anchor" href="#项目目标" title="链接到这一节">#</a></h2>
 <p>作为中山大学数字电路与逻辑设计实验课助教,每周要处理:</p>
 <ol>
 <li><strong>作业补交</strong>:学生在微信里发"我作业漏交了",发截图、姓名、学号。需要手工登记到 Excel。</li>
 <li><strong>答疑</strong>:学生问重复性问题(Proteus 在哪下载、PPT 在哪里、作业怎么批改等)或数电课本相关问题。需要翻资料、打字回复。</li>
 </ol>
 <p>本项目通过 OpenClaw(微信 Bot)+ 本地 Python 服务实现全自动化。</p>
-<2 id="快速上手5-步">快速上手(5 步)<a class="anchor" href="#快速上手5-步" title="链接到这一节">#</a></2>
-<ol>
-<li><strong>阅读文档</strong>:<code>docs/requirements.md</code> 和 <code>docs/design.md</code></li>
-<li><strong>放置项目</strong>:将整个 <code>ta-assistant/</code> 文件夹移动到 <code>C:\Users\YOUR_USERNAME\Downloads\</code></li>
-<li><strong>交给 Claude Code</strong>:打开 Claude Code,粘贴 <code>docs/claude_code_prompt.md</code> 里的内容,让它自动完成剩余实现和环境配置</li>
-<li><strong>WSL 首次部署</strong>:在 WSL Ubuntu 里运行 <code>bash /mnt/c/Users/YOUR_USERNAME/Downloads/ta-assistant/scripts/deploy.sh</code></li>
-<li><strong>接入 OpenClaw(微信端到端)</strong>:<code>bash scripts/install_openclaw_skill.sh</code>,完整链路与排障见 <code>docs/wechat_end_to_end.md</code>(也见 <code>docs/deployment.md</code> 的接入章节)</li>
-</ol>
-<2 id="目录结构">目录结构<a class="anchor" href="#目录结构" title="链接到这一节">#</a></2>
+<h2 id="快速上手5-步">快速上手(5 步)<a class="anchor" href="#快速上手5-步" title="链接到这一节">#</a></h2>
+<div class="steps"><div class="step"><div class="t">阅读文档</div><div class="d"><code>docs/requirements.md</code> 和 <code>docs/design.md</code></div></div><div class="step"><div class="t">放置项目</div><div class="d">把整个 <code>ta-assistant/</code> 文件夹移到 <code>C:\Users\YOUR_USERNAME\Downloads\</code></div></div><div class="step"><div class="t">交给 Claude Code</div><div class="d">打开 Claude Code,粘贴 <code>docs/claude_code_prompt.md</code> 里的内容,让它自动完成剩余实现和环境配置</div></div><div class="step"><div class="t">WSL 首次部署</div><div class="d">在 WSL Ubuntu 里跑 <code>bash /mnt/c/Users/YOUR_USERNAME/Downloads/ta-assistant/scripts/deploy.sh</code></div></div><div class="step"><div class="t">接入 OpenClaw</div><div class="d"><code>bash scripts/install_openclaw_skill.sh</code>;完整链路与排障见 <a href="wechat_end_to_end.md"><code>wechat_end_to_end.md</code></a></div></div></div>
+<blockquote class="warn">
+<p>⚠️ 这 5 步是<strong>当时</strong>的交付步骤,现在照做会装错(第 2 步的路径、第 4 步的脚本都变了)。
+真实的快速开始看根目录 <a href="../README.md"><code>../README.md</code></a>;这里原样保留,
+是为了留下"当时打算怎么交付"这份记录。</p>
+</blockquote>
+<h2 id="目录结构">目录结构<a class="anchor" href="#目录结构" title="链接到这一节">#</a></h2>
 <pre><code>ta-assistant/
 ├── README.md                   本文件
 ├── docs/                       所有设计文档
@@ -267,7 +370,7 @@ details.mermaid-src pre{margin:.5em 0 0}
 ├── .env.example                环境变量模板
 └── .gitignore
 </code></pre>
-<2 id="技术栈">技术栈<a class="anchor" href="#技术栈" title="链接到这一节">#</a></2>
+<h2 id="技术栈">技术栈<a class="anchor" href="#技术栈" title="链接到这一节">#</a></h2>
 <ul>
 <li><strong>语言</strong>:Python 3.10+</li>
 <li><strong>运行环境</strong>:WSL Ubuntu(文件通过 <code>/mnt/c/...</code> 访问 Windows 路径)</li>
@@ -277,14 +380,14 @@ details.mermaid-src pre{margin:.5em 0 0}
 <li><strong>LLM</strong>:MinMax API(已配置)</li>
 <li><strong>接入层</strong>:OpenClaw(微信)→ 本项目</li>
 </ul>
-<2 id="为什么这样设计">为什么这样设计<a class="anchor" href="#为什么这样设计" title="链接到这一节">#</a></2>
+<h2 id="为什么这样设计">为什么这样设计<a class="anchor" href="#为什么这样设计" title="链接到这一节">#</a></h2>
 <ul>
 <li><strong>文档先行</strong>:所有需求和设计写清楚,Claude Code 才知道做什么</li>
 <li><strong>BM25 优先</strong>:比向量检索简单 10 倍,无需下载模型,对中文效果不差</li>
 <li><strong>模块化</strong>:分类器/补交/答疑解耦,后续可以单独迭代</li>
 <li><strong>路径集中</strong>:所有路径在 <code>config.py</code> 一处配置,改一次到处生效</li>
 </ul>
-<2 id="消息前缀过滤">消息前缀过滤<a class="anchor" href="#消息前缀过滤" title="链接到这一节">#</a></2>
+<h2 id="消息前缀过滤">消息前缀过滤<a class="anchor" href="#消息前缀过滤" title="链接到这一节">#</a></h2>
 <p>系统只处理带以下<strong>任一前缀</strong>的消息,其他消息(闲聊、通知等)直接跳过返回 <code>{"type": "skip"}</code>。
 这确保 OpenClaw 转发的都是学生消息,不会把闲聊也当业务处理。</p>
 <p><strong>支持的前缀变体:</strong></p>
@@ -316,15 +419,15 @@ details.mermaid-src pre{margin:.5em 0 0}
 </table></div>
 <p>前缀前允许有前导空格(系统会自动 lstrip)。</p>
 <p>可通过 <code>.env</code> 的 <code>FORWARD_PREFIX</code>(逗号分隔,覆盖全部)或 <code>src/config.py</code> 的 <code>STUDENT_FORWARD_PREFIXES</code> 列表修改/增删前缀变体。</p>
-<2 id="开发约定">开发约定<a class="anchor" href="#开发约定" title="链接到这一节">#</a></2>
+<h2 id="开发约定">开发约定<a class="anchor" href="#开发约定" title="链接到这一节">#</a></h2>
 <ul>
 <li><strong><code>src/</code> 下严禁 print 到 stdout</strong>。所有非致命调试/信息输出必须用 <code>from src.utils.stderr_log import warn as _warn; _warn("...")</code> 输出到 stderr。stdout 是 OpenClaw JSON 解析的唯一通道,禁止污染。</li>
 <li><strong><code>scripts/openclaw_bridge.py</code></strong> 会在执行 <code>process()</code> 期间把 stdout 重定向到 stderr,确保最终只向 OpenClaw 写一行纯 JSON。</li>
 <li><strong>回归测试</strong>:运行 <code>pytest test/test_bridge_stdout_clean.py -v</code> 可验证 bridge stdout 干净。</li>
 </ul>
 <div class="foot">
-  <span>源文件 <code>docs/README.md</code> · 生成于 2026-09-20 21:09</span>
-  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+  <span>源文件 <code>docs/README.md</code> · 内容指纹 <code>e86007b0</code></span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是构建期渲染出来的</span>
 </div>
 </main>
 </div>

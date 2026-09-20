@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.42 961.52"
+     width="268.42" height="961.52" role="img"
+     aria-label="重建语料的八步 —— 虚线是&quot;这两步容易搞反/容易漏&quot;,不是数据流">
+  <title>重建语料的八步 —— 虚线是&quot;这两步容易搞反/容易漏&quot;,不是数据流</title>
+  <desc>flowchart TD
+  %% caption: 重建语料的八步 —— 虚线是&quot;这两步容易搞反/容易漏&quot;,不是数据流
+  A[&quot;① --dry-run&lt;br/&gt;先看要动什么,不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
+  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】,幂等走缓存&quot;]
+  C --&gt; D[&quot;④ OCR → import_textbook&lt;br/&gt;仅教材换了才需要&quot;]
+  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引(FAQ 不用重</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="268.42" height="961.52" fill="#ffffff"/>
+<path d="M 134.21,85.44 L 134.21,116.44 L 134.21,116.44 L 134.21,147.44" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,147.44 131.28,138.93 137.14,138.93" fill="#8c959f"/>
+<path d="M 134.21,206.88 L 134.21,237.88 L 134.21,237.88 L 134.21,268.88" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,268.88 131.28,260.37 137.14,260.37" fill="#8c959f"/>
+<path d="M 134.21,328.32 L 134.21,359.32 L 134.21,359.32 L 134.21,390.32" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,390.32 131.28,381.81 137.14,381.81" fill="#8c959f"/>
+<path d="M 134.21,449.76 L 134.21,480.76 L 134.21,480.76 L 134.21,511.76" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,511.76 131.28,503.25 137.14,503.25" fill="#8c959f"/>
+<path d="M 134.21,571.2 L 134.21,602.2 L 134.21,602.2 L 134.21,633.2" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,633.2 131.28,624.69 137.14,624.69" fill="#8c959f"/>
+<path d="M 134.21,692.64 L 134.21,723.64 L 134.21,723.64 L 134.21,754.64" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,754.64 131.28,746.13 137.14,746.13" fill="#8c959f"/>
+<path d="M 134.21,814.08 L 134.21,845.08 L 134.21,845.08 L 134.21,876.08" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="134.21,876.08 131.28,867.57 137.14,867.57" fill="#8c959f"/>
+<path d="M 134.21,206.88 L 134.21,237.88 L 134.21,237.88 L 134.21,268.88" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4"/>
+<polygon points="134.21,268.88 131.28,260.37 137.14,260.37" fill="#8c959f"/>
+<rect x="58.25" y="227.41" width="151.91" height="20.95" rx="4" fill="#ffffff"/>
+<text x="63.25" y="237.88" font-size="11.5" fill="#1f2328">顺序反了会被跳过,不会覆盖</text>
+<path d="M 134.21,449.76 L 134.21,480.76 L 134.21,480.76 L 134.21,511.76" stroke="#8c959f" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4"/>
+<polygon points="134.21,511.76 131.28,503.25 137.14,503.25" fill="#8c959f"/>
+<rect x="94.71" y="470.28" width="79" height="20.95" rx="4" fill="#ffffff"/>
+<text x="99.71" y="480.76" font-size="11.5" fill="#1f2328">跳过这一大步</text>
+<rect x="26.78" y="26" width="214.86" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="96.05" y="47.36" font-size="13" fill="#1f2328">①</text>
+<text x="104.11" y="47.36" font-size="13" fill="#1f2328"> </text>
+<text x="108.01" y="47.36" font-size="13" fill="#1f2328">--dry-run</text>
+<text x="41.78" y="66.08" font-size="13" fill="#1f2328">先</text>
+<text x="54.78" y="66.08" font-size="13" fill="#1f2328">看</text>
+<text x="67.78" y="66.08" font-size="13" fill="#1f2328">要</text>
+<text x="80.78" y="66.08" font-size="13" fill="#1f2328">动</text>
+<text x="93.78" y="66.08" font-size="13" fill="#1f2328">什</text>
+<text x="106.78" y="66.08" font-size="13" fill="#1f2328">么</text>
+<text x="119.78" y="66.08" font-size="13" fill="#1f2328">,</text>
+<text x="124.2" y="66.08" font-size="13" fill="#1f2328">不</text>
+<text x="137.2" y="66.08" font-size="13" fill="#1f2328">调</text>
+<text x="150.2" y="66.08" font-size="13" fill="#1f2328"> </text>
+<text x="154.1" y="66.08" font-size="13" fill="#1f2328">API</text>
+<text x="174.64" y="66.08" font-size="13" fill="#1f2328">、</text>
+<text x="187.64" y="66.08" font-size="13" fill="#1f2328">不</text>
+<text x="200.64" y="66.08" font-size="13" fill="#1f2328">写</text>
+<text x="213.64" y="66.08" font-size="13" fill="#1f2328">盘</text>
+<rect x="42.25" y="147.44" width="183.92" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="57.25" y="168.8" font-size="13" fill="#1f2328">②</text>
+<text x="65.31" y="168.8" font-size="13" fill="#1f2328"> </text>
+<text x="69.21" y="168.8" font-size="13" fill="#1f2328">import_circuit_theory</text>
+<text x="95.21" y="187.52" font-size="13" fill="#1f2328">落</text>
+<text x="108.21" y="187.52" font-size="13" fill="#1f2328">盘</text>
+<text x="121.21" y="187.52" font-size="13" fill="#1f2328">原</text>
+<text x="134.21" y="187.52" font-size="13" fill="#1f2328">始</text>
+<text x="147.21" y="187.52" font-size="13" fill="#1f2328">语</text>
+<text x="160.21" y="187.52" font-size="13" fill="#1f2328">料</text>
+<rect x="26" y="268.88" width="216.42" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="57.25" y="290.24" font-size="13" fill="#1f2328">③</text>
+<text x="65.31" y="290.24" font-size="13" fill="#1f2328"> </text>
+<text x="69.21" y="290.24" font-size="13" fill="#1f2328">enhance_circuit_basic</text>
+<text x="41" y="308.96" font-size="13" fill="#1f2328">补</text>
+<text x="54" y="308.96" font-size="13" fill="#1f2328">【</text>
+<text x="67" y="308.96" font-size="13" fill="#1f2328">中</text>
+<text x="80" y="308.96" font-size="13" fill="#1f2328">文</text>
+<text x="93" y="308.96" font-size="13" fill="#1f2328">详</text>
+<text x="106" y="308.96" font-size="13" fill="#1f2328">细</text>
+<text x="119" y="308.96" font-size="13" fill="#1f2328">解</text>
+<text x="132" y="308.96" font-size="13" fill="#1f2328">析</text>
+<text x="145" y="308.96" font-size="13" fill="#1f2328">】</text>
+<text x="158" y="308.96" font-size="13" fill="#1f2328">,</text>
+<text x="162.42" y="308.96" font-size="13" fill="#1f2328">幂</text>
+<text x="175.42" y="308.96" font-size="13" fill="#1f2328">等</text>
+<text x="188.42" y="308.96" font-size="13" fill="#1f2328">走</text>
+<text x="201.42" y="308.96" font-size="13" fill="#1f2328">缓</text>
+<text x="214.42" y="308.96" font-size="13" fill="#1f2328">存</text>
+<rect x="41.4" y="390.32" width="185.61" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="56.4" y="411.68" font-size="13" fill="#1f2328">④</text>
+<text x="64.46" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="68.36" y="411.68" font-size="13" fill="#1f2328">OCR</text>
+<text x="92.54" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="96.44" y="411.68" font-size="13" fill="#1f2328">→</text>
+<text x="103.59" y="411.68" font-size="13" fill="#1f2328"> </text>
+<text x="107.5" y="411.68" font-size="13" fill="#1f2328">import_textbook</text>
+<text x="82.21" y="430.4" font-size="13" fill="#1f2328">仅</text>
+<text x="95.21" y="430.4" font-size="13" fill="#1f2328">教</text>
+<text x="108.21" y="430.4" font-size="13" fill="#1f2328">材</text>
+<text x="121.21" y="430.4" font-size="13" fill="#1f2328">换</text>
+<text x="134.21" y="430.4" font-size="13" fill="#1f2328">了</text>
+<text x="147.21" y="430.4" font-size="13" fill="#1f2328">才</text>
+<text x="160.21" y="430.4" font-size="13" fill="#1f2328">需</text>
+<text x="173.21" y="430.4" font-size="13" fill="#1f2328">要</text>
+<rect x="28.73" y="511.76" width="210.96" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="93" y="533.12" font-size="13" fill="#1f2328">⑤</text>
+<text x="101.06" y="533.12" font-size="13" fill="#1f2328"> </text>
+<text x="104.96" y="533.12" font-size="13" fill="#1f2328">build_index</text>
+<text x="43.73" y="551.84" font-size="13" fill="#1f2328">重</text>
+<text x="56.73" y="551.84" font-size="13" fill="#1f2328">建</text>
+<text x="69.73" y="551.84" font-size="13" fill="#1f2328"> </text>
+<text x="73.63" y="551.84" font-size="13" fill="#1f2328">BM25</text>
+<text x="105.87" y="551.84" font-size="13" fill="#1f2328"> </text>
+<text x="109.77" y="551.84" font-size="13" fill="#1f2328">索</text>
+<text x="122.77" y="551.84" font-size="13" fill="#1f2328">引</text>
+<text x="135.77" y="551.84" font-size="13" fill="#1f2328">(FAQ</text>
+<text x="164.37" y="551.84" font-size="13" fill="#1f2328"> </text>
+<text x="168.27" y="551.84" font-size="13" fill="#1f2328">不</text>
+<text x="181.27" y="551.84" font-size="13" fill="#1f2328">用</text>
+<text x="194.27" y="551.84" font-size="13" fill="#1f2328">重</text>
+<text x="207.27" y="551.84" font-size="13" fill="#1f2328">建</text>
+<text x="220.27" y="551.84" font-size="13" fill="#1f2328">)</text>
+<rect x="35.94" y="633.2" width="196.53" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="50.94" y="654.56" font-size="13" fill="#1f2328">⑥</text>
+<text x="59" y="654.56" font-size="13" fill="#1f2328"> </text>
+<text x="62.9" y="654.56" font-size="13" fill="#1f2328">audit_enhanced_numbers</text>
+<text x="69.21" y="673.28" font-size="13" fill="#1f2328">查</text>
+<text x="82.21" y="673.28" font-size="13" fill="#1f2328">大</text>
+<text x="95.21" y="673.28" font-size="13" fill="#1f2328">模</text>
+<text x="108.21" y="673.28" font-size="13" fill="#1f2328">型</text>
+<text x="121.21" y="673.28" font-size="13" fill="#1f2328">有</text>
+<text x="134.21" y="673.28" font-size="13" fill="#1f2328">没</text>
+<text x="147.21" y="673.28" font-size="13" fill="#1f2328">有</text>
+<text x="160.21" y="673.28" font-size="13" fill="#1f2328">改</text>
+<text x="173.21" y="673.28" font-size="13" fill="#1f2328">数</text>
+<text x="186.21" y="673.28" font-size="13" fill="#1f2328">字</text>
+<rect x="33.15" y="754.64" width="202.12" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="48.15" y="776" font-size="13" fill="#1f2328">⑦</text>
+<text x="56.21" y="776" font-size="13" fill="#1f2328"> </text>
+<text x="60.11" y="776" font-size="13" fill="#1f2328">eval_retrieval</text>
+<text x="152.02" y="776" font-size="13" fill="#1f2328"> </text>
+<text x="155.92" y="776" font-size="13" fill="#1f2328">--compare</text>
+<text x="57.51" y="794.72" font-size="13" fill="#1f2328">17</text>
+<text x="73.63" y="794.72" font-size="13" fill="#1f2328"> </text>
+<text x="77.53" y="794.72" font-size="13" fill="#1f2328">条</text>
+<text x="90.53" y="794.72" font-size="13" fill="#1f2328">用</text>
+<text x="103.53" y="794.72" font-size="13" fill="#1f2328">例</text>
+<text x="116.53" y="794.72" font-size="13" fill="#1f2328">,</text>
+<text x="120.95" y="794.72" font-size="13" fill="#1f2328">退</text>
+<text x="133.95" y="794.72" font-size="13" fill="#1f2328">化</text>
+<text x="146.95" y="794.72" font-size="13" fill="#1f2328">则</text>
+<text x="159.95" y="794.72" font-size="13" fill="#1f2328">退</text>
+<text x="172.95" y="794.72" font-size="13" fill="#1f2328">出</text>
+<text x="185.95" y="794.72" font-size="13" fill="#1f2328">码</text>
+<text x="198.95" y="794.72" font-size="13" fill="#1f2328"> </text>
+<text x="202.85" y="794.72" font-size="13" fill="#1f2328">1</text>
+<rect x="67.21" y="876.08" width="134" height="59.44" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="102.23" y="897.44" font-size="13" fill="#1f2328">⑧</text>
+<text x="110.29" y="897.44" font-size="13" fill="#1f2328"> </text>
+<text x="114.19" y="897.44" font-size="13" fill="#1f2328">抽</text>
+<text x="127.19" y="897.44" font-size="13" fill="#1f2328">查</text>
+<text x="140.19" y="897.44" font-size="13" fill="#1f2328">几</text>
+<text x="153.19" y="897.44" font-size="13" fill="#1f2328">问</text>
+<text x="82.21" y="916.16" font-size="13" fill="#1f2328">端</text>
+<text x="95.21" y="916.16" font-size="13" fill="#1f2328">到</text>
+<text x="108.21" y="916.16" font-size="13" fill="#1f2328">端</text>
+<text x="121.21" y="916.16" font-size="13" fill="#1f2328">、</text>
+<text x="134.21" y="916.16" font-size="13" fill="#1f2328">要</text>
+<text x="147.21" y="916.16" font-size="13" fill="#1f2328">人</text>
+<text x="160.21" y="916.16" font-size="13" fill="#1f2328">眼</text>
+<text x="173.21" y="916.16" font-size="13" fill="#1f2328">看</text>
+</svg>

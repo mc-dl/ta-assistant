@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2027.11 1090.9"
+     width="2027.11" height="1090.9" role="img"
+     aria-label="系统设计文档 · 图 3">
+  <title>系统设计文档 · 图 3</title>
+  <desc>sequenceDiagram
+  autonumber
+  participant T as 助教(微信)
+  participant O as OpenClaw
+  participant B as bridge(子进程)
+  participant P as main.process()
+  participant H as Handler
+  participant D as 数据(Excel / FAQ / 索引)
+  participant L as LLM
+
+  T-&gt;&gt;O: 转发消息(必须带前缀)
+  O-&gt;&gt;B: python openclaw_bridge.py --mes</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="2027.11" height="1090.9" fill="#ffffff"/>
+<rect x="16" y="276.9" width="1995.11" height="624" rx="6" fill="#fbfcfd" stroke="#d0d7de" stroke-width="1.2"/>
+<rect x="16" y="276.9" width="46" height="26" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="39" y="289.9" font-size="12" fill="#59636e" text-anchor="middle" font-weight="600">alt</text>
+<rect x="69" y="279.42" width="33" height="20.95" rx="4" fill="#fbfcfd"/>
+<text x="74" y="289.9" font-size="11.5" fill="#1f2328">补交</text>
+<line x1="16" y1="450.9" x2="2011.11" y2="450.9" stroke="#d0d7de" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="69" y="440.42" width="124.89" height="20.95" rx="4" fill="#fbfcfd"/>
+<text x="74" y="450.9" font-size="11.5" fill="#59636e">答疑(事务 + FAQ 命中)</text>
+<line x1="16" y1="668.9" x2="2011.11" y2="668.9" stroke="#d0d7de" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="69" y="658.42" width="97.63" height="20.95" rx="4" fill="#fbfcfd"/>
+<text x="74" y="668.9" font-size="11.5" fill="#59636e">答疑(概念 / 题号)</text>
+<line x1="165.37" y1="56.9" x2="165.37" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="448.1" y1="56.9" x2="448.1" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="730.83" y1="56.9" x2="730.83" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1013.56" y1="56.9" x2="1013.56" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1296.29" y1="56.9" x2="1296.29" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1579.02" y1="56.9" x2="1579.02" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1861.75" y1="56.9" x2="1861.75" y2="1072.9" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<rect x="117.37" y="24" width="96" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="134.94" y="45.91" font-size="13" fill="#1f2328" font-weight="600">助</text>
+<text x="147.94" y="45.91" font-size="13" fill="#1f2328" font-weight="600">教</text>
+<text x="160.94" y="45.91" font-size="13" fill="#1f2328" font-weight="600">(</text>
+<text x="165.36" y="45.91" font-size="13" fill="#1f2328" font-weight="600">微</text>
+<text x="178.36" y="45.91" font-size="13" fill="#1f2328" font-weight="600">信</text>
+<text x="191.36" y="45.91" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="400.1" y="24" width="96" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="419.95" y="45.91" font-size="13" fill="#1f2328" font-weight="600">OpenClaw</text>
+<rect x="671.82" y="24" width="118.01" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="686.82" y="45.91" font-size="13" fill="#1f2328" font-weight="600">bridge(</text>
+<text x="731.41" y="45.91" font-size="13" fill="#1f2328" font-weight="600">子</text>
+<text x="744.41" y="45.91" font-size="13" fill="#1f2328" font-weight="600">进</text>
+<text x="757.41" y="45.91" font-size="13" fill="#1f2328" font-weight="600">程</text>
+<text x="770.41" y="45.91" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="953.97" y="24" width="119.18" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="968.97" y="45.91" font-size="13" fill="#1f2328" font-weight="600">main.process()</text>
+<rect x="1248.29" y="24" width="96" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1272.17" y="45.91" font-size="13" fill="#1f2328" font-weight="600">Handler</text>
+<rect x="1492.32" y="24" width="173.39" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1507.32" y="45.91" font-size="13" fill="#1f2328" font-weight="600">数</text>
+<text x="1520.32" y="45.91" font-size="13" fill="#1f2328" font-weight="600">据</text>
+<text x="1533.32" y="45.91" font-size="13" fill="#1f2328" font-weight="600">(Excel</text>
+<text x="1571.67" y="45.91" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="1575.57" y="45.91" font-size="13" fill="#1f2328" font-weight="600">/</text>
+<text x="1579.99" y="45.91" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="1583.89" y="45.91" font-size="13" fill="#1f2328" font-weight="600">FAQ</text>
+<text x="1608.07" y="45.91" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="1611.97" y="45.91" font-size="13" fill="#1f2328" font-weight="600">/</text>
+<text x="1616.39" y="45.91" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="1620.29" y="45.91" font-size="13" fill="#1f2328" font-weight="600">索</text>
+<text x="1633.29" y="45.91" font-size="13" fill="#1f2328" font-weight="600">引</text>
+<text x="1646.29" y="45.91" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="1813.75" y="24" width="96" height="32.9" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1849.66" y="45.91" font-size="13" fill="#1f2328" font-weight="600">LLM</text>
+<line x1="165.37" y1="82.9" x2="439.1" y2="82.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="448.1,82.9 439.59,85.83 439.59,79.97" fill="#0969da"/>
+<circle cx="185.37" cy="82.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="185.37" y="82.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">1</text>
+<rect x="246.07" y="60.43" width="121.32" height="20.95" rx="4" fill="#ffffff"/>
+<text x="251.07" y="70.9" font-size="11.5" fill="#1f2328">转发消息(必须带前缀)</text>
+<line x1="448.1" y1="134.9" x2="721.83" y2="134.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="730.83,134.9 722.32,137.83 722.32,131.97" fill="#0969da"/>
+<circle cx="468.1" cy="134.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="468.1" y="134.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">2</text>
+<rect x="466.47" y="154.33" width="245.98" height="20.95" rx="4" fill="#ffffff"/>
+<text x="471.47" y="164.8" font-size="11.5" fill="#1f2328">python openclaw_bridge.py --message &quot;…&quot;</text>
+<line x1="730.83" y1="186.9" x2="1004.56" y2="186.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1013.56,186.9 1005.05,189.83 1005.05,183.97" fill="#0969da"/>
+<circle cx="750.83" cy="186.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="750.83" y="186.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">3</text>
+<rect x="831.66" y="164.43" width="81.07" height="20.95" rx="4" fill="#ffffff"/>
+<text x="836.66" y="174.9" font-size="11.5" fill="#1f2328">process(msg)</text>
+<path d="M 1013.56,228.9 L 1047.56,228.9 L 1047.56,248.9 L 1025.56,248.9" stroke="#0969da" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="1013.56,248.9 1005.05,251.83 1005.05,245.97" fill="#0969da"/>
+<circle cx="1030.56" cy="214.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1030.56" y="214.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">4</text>
+<rect x="1054.56" y="228.43" width="182.73" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1059.56" y="238.9" font-size="11.5" fill="#1f2328">前缀路由 → 记录 / 学生转发 / skip</text>
+<line x1="1013.56" y1="302.9" x2="1287.29" y2="302.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1296.29,302.9 1287.78,305.83 1287.78,299.97" fill="#0969da"/>
+<circle cx="1033.56" cy="302.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1033.56" y="302.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">5</text>
+<rect x="1097.08" y="280.42" width="115.69" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1102.08" y="290.9" font-size="11.5" fill="#1f2328">submission.handle()</text>
+<line x1="1296.29" y1="354.9" x2="1570.02" y2="354.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1579.02,354.9 1570.51,357.83 1570.51,351.97" fill="#0969da"/>
+<circle cx="1316.29" cy="354.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1316.29" y="354.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">6</text>
+<rect x="1351.29" y="332.42" width="172.72" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1356.29" y="342.9" font-size="11.5" fill="#1f2328">读花名册校验 + 追加补交表一行</text>
+<line x1="1296.29" y1="406.9" x2="1022.56" y2="406.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="1013.56,406.9 1022.06,403.97 1022.06,409.83" fill="#59636e"/>
+<circle cx="1276.29" cy="406.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1276.29" y="406.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">7</text>
+<rect x="1044.29" y="384.42" width="221.25" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1049.29" y="394.9" font-size="11.5" fill="#1f2328">{type: submission, reply: &quot;✅ 已登记…&quot;}</text>
+<line x1="1013.56" y1="468.9" x2="1287.29" y2="468.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1296.29,468.9 1287.78,471.83 1287.78,465.97" fill="#0969da"/>
+<circle cx="1033.56" cy="468.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1033.56" y="468.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">8</text>
+<rect x="1119.96" y="446.42" width="69.91" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1124.96" y="456.9" font-size="11.5" fill="#1f2328">qa.handle()</text>
+<line x1="1296.29" y1="520.9" x2="1570.02" y2="520.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1579.02,520.9 1570.51,523.83 1570.51,517.97" fill="#0969da"/>
+<circle cx="1316.29" cy="520.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1316.29" y="520.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">9</text>
+<rect x="1352.9" y="498.42" width="169.5" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1357.9" y="508.9" font-size="11.5" fill="#1f2328">FAQ 检索(阈值 4.0 + 实词闸门)</text>
+<line x1="1296.29" y1="572.9" x2="1852.75" y2="572.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1861.75,572.9 1853.24,575.83 1853.24,569.97" fill="#0969da"/>
+<circle cx="1316.29" cy="572.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1316.29" y="572.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">10</text>
+<rect x="1502.37" y="550.42" width="153.29" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1507.37" y="560.9" font-size="11.5" fill="#1f2328">拿 FAQ 原文润色成一句人话</text>
+<line x1="1861.75" y1="624.9" x2="1305.29" y2="624.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="1296.29,624.9 1304.79,621.97 1304.79,627.83" fill="#59636e"/>
+<circle cx="1841.75" cy="624.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1841.75" y="624.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">11</text>
+<rect x="1559.41" y="602.42" width="39.21" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1564.41" y="612.9" font-size="11.5" fill="#1f2328">reply</text>
+<line x1="1013.56" y1="686.9" x2="1287.29" y2="686.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1296.29,686.9 1287.78,689.83 1287.78,683.97" fill="#0969da"/>
+<circle cx="1033.56" cy="686.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1033.56" y="686.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">12</text>
+<rect x="1119.96" y="664.42" width="69.91" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1124.96" y="674.9" font-size="11.5" fill="#1f2328">qa.handle()</text>
+<line x1="1296.29" y1="738.9" x2="1570.02" y2="738.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1579.02,738.9 1570.51,741.83 1570.51,735.97" fill="#0969da"/>
+<circle cx="1316.29" cy="738.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1316.29" y="738.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">13</text>
+<rect x="1379.75" y="716.42" width="115.8" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1384.75" y="726.9" font-size="11.5" fill="#1f2328">BM25 取 top-7 分块</text>
+<line x1="1296.29" y1="790.9" x2="1852.75" y2="790.9" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1861.75,790.9 1853.24,793.83 1853.24,787.97" fill="#0969da"/>
+<circle cx="1316.29" cy="790.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1316.29" y="790.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">14</text>
+<rect x="1500.7" y="768.42" width="156.62" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1505.7" y="778.9" font-size="11.5" fill="#1f2328">分块 + 分档规则塞进 prompt</text>
+<line x1="1861.75" y1="842.9" x2="1305.29" y2="842.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="1296.29,842.9 1304.79,839.97 1304.79,845.83" fill="#59636e"/>
+<circle cx="1841.75" cy="842.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1841.75" y="842.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">15</text>
+<rect x="1559.41" y="820.42" width="39.21" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1564.41" y="830.9" font-size="11.5" fill="#1f2328">reply</text>
+<line x1="1013.56" y1="910.9" x2="739.83" y2="910.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="730.83,910.9 739.33,907.97 739.33,913.83" fill="#59636e"/>
+<circle cx="993.56" cy="910.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="993.56" y="910.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">16</text>
+<rect x="839.71" y="888.42" width="64.97" height="20.95" rx="4" fill="#ffffff"/>
+<text x="844.71" y="898.9" font-size="11.5" fill="#1f2328">一行 JSON</text>
+<line x1="730.83" y1="962.9" x2="457.1" y2="962.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="448.1,962.9 456.6,959.97 456.6,965.83" fill="#59636e"/>
+<circle cx="710.83" cy="962.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="710.83" y="962.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">17</text>
+<rect x="521.33" y="940.42" width="136.27" height="20.95" rx="4" fill="#ffffff"/>
+<text x="526.33" y="950.9" font-size="11.5" fill="#1f2328">stdout(必须只有这一行)</text>
+<line x1="448.1" y1="1014.9" x2="174.37" y2="1014.9" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="165.37,1014.9 173.87,1011.97 173.87,1017.83" fill="#59636e"/>
+<circle cx="428.1" cy="1014.9" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="428.1" y="1014.9" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">18</text>
+<rect x="278.73" y="992.42" width="56" height="20.95" rx="4" fill="#ffffff"/>
+<text x="283.73" y="1002.9" font-size="11.5" fill="#1f2328">微信回复</text>
+</svg>

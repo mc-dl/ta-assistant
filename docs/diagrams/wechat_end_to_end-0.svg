@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2190.81 837.8"
+     width="2190.81" height="837.8" role="img"
+     aria-label="微信端到端跑通手册 · 图 1">
+  <title>微信端到端跑通手册 · 图 1</title>
+  <desc>sequenceDiagram
+  autonumber
+  participant S as 学生(微信)
+  participant T as 助教(微信)
+  participant PL as openclaw-weixin 插件
+  participant AG as OpenClaw agent「main」
+  participant BR as openclaw_bridge.py&lt;br/&gt;(子进程)
+  participant TA as ta-assistant&lt;br/&gt;main.process()
+
+  S-&gt;&gt;T: 提问 / 说&quot;作业漏交了&quot;
+  T-&gt;&gt;PL: 转发(手</desc>
+  <style>
+    text{font-family:"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC",sans-serif;dominant-baseline:middle}
+    .s{font-size:.82em;fill:#59636e}
+  </style>
+  <rect width="2190.81" height="837.8" fill="#ffffff"/>
+<rect x="16" y="397.8" width="2158.81" height="146" rx="6" fill="#fbfcfd" stroke="#d0d7de" stroke-width="1.2"/>
+<rect x="16" y="397.8" width="46" height="26" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="39" y="410.8" font-size="12" fill="#59636e" text-anchor="middle" font-weight="600">alt</text>
+<rect x="69" y="400.32" width="33" height="20.95" rx="4" fill="#fbfcfd"/>
+<text x="74" y="410.8" font-size="11.5" fill="#1f2328">补交</text>
+<line x1="16" y1="467.8" x2="2174.81" y2="467.8" stroke="#d0d7de" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="69" y="457.32" width="33" height="20.95" rx="4" fill="#fbfcfd"/>
+<text x="74" y="467.8" font-size="11.5" fill="#59636e">答疑</text>
+<line x1="202.57" y1="73.8" x2="202.57" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="559.7" y1="73.8" x2="559.7" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="916.84" y1="73.8" x2="916.84" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1273.97" y1="73.8" x2="1273.97" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1631.11" y1="73.8" x2="1631.11" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<line x1="1988.24" y1="73.8" x2="1988.24" y2="819.8" stroke="#d0d7de" stroke-width="1.4" stroke-dasharray="5 5"/>
+<rect x="154.57" y="24" width="96" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="172.15" y="54.36" font-size="13" fill="#1f2328" font-weight="600">学</text>
+<text x="185.15" y="54.36" font-size="13" fill="#1f2328" font-weight="600">生</text>
+<text x="198.15" y="54.36" font-size="13" fill="#1f2328" font-weight="600">(</text>
+<text x="202.57" y="54.36" font-size="13" fill="#1f2328" font-weight="600">微</text>
+<text x="215.57" y="54.36" font-size="13" fill="#1f2328" font-weight="600">信</text>
+<text x="228.57" y="54.36" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="511.7" y="24" width="96" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="529.28" y="54.36" font-size="13" fill="#1f2328" font-weight="600">助</text>
+<text x="542.28" y="54.36" font-size="13" fill="#1f2328" font-weight="600">教</text>
+<text x="555.28" y="54.36" font-size="13" fill="#1f2328" font-weight="600">(</text>
+<text x="559.7" y="54.36" font-size="13" fill="#1f2328" font-weight="600">微</text>
+<text x="572.7" y="54.36" font-size="13" fill="#1f2328" font-weight="600">信</text>
+<text x="585.7" y="54.36" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="837.36" y="24" width="158.96" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="852.36" y="54.36" font-size="13" fill="#1f2328" font-weight="600">openclaw-weixin</text>
+<text x="951.42" y="54.36" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="955.32" y="54.36" font-size="13" fill="#1f2328" font-weight="600">插</text>
+<text x="968.32" y="54.36" font-size="13" fill="#1f2328" font-weight="600">件</text>
+<rect x="1185.07" y="24" width="177.81" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1200.07" y="54.36" font-size="13" fill="#1f2328" font-weight="600">OpenClaw</text>
+<text x="1256.36" y="54.36" font-size="13" fill="#1f2328" font-weight="600"> </text>
+<text x="1260.26" y="54.36" font-size="13" fill="#1f2328" font-weight="600">agent</text>
+<text x="1296.01" y="54.36" font-size="13" fill="#1f2328" font-weight="600">「</text>
+<text x="1309.01" y="54.36" font-size="13" fill="#1f2328" font-weight="600">main</text>
+<text x="1334.88" y="54.36" font-size="13" fill="#1f2328" font-weight="600">」</text>
+<rect x="1555.85" y="24" width="150.51" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1570.85" y="45.91" font-size="13" fill="#1f2328" font-weight="600">openclaw_bridge.py</text>
+<text x="1607.19" y="62.81" font-size="13" fill="#1f2328" font-weight="600">(</text>
+<text x="1611.61" y="62.81" font-size="13" fill="#1f2328" font-weight="600">子</text>
+<text x="1624.61" y="62.81" font-size="13" fill="#1f2328" font-weight="600">进</text>
+<text x="1637.61" y="62.81" font-size="13" fill="#1f2328" font-weight="600">程</text>
+<text x="1650.61" y="62.81" font-size="13" fill="#1f2328" font-weight="600">)</text>
+<rect x="1928.65" y="24" width="119.18" height="49.8" rx="6" fill="#eef2f5" stroke="#d0d7de" stroke-width="1.4"/>
+<text x="1946.71" y="45.91" font-size="13" fill="#1f2328" font-weight="600">ta-assistant</text>
+<text x="1943.65" y="62.81" font-size="13" fill="#1f2328" font-weight="600">main.process()</text>
+<line x1="202.57" y1="99.8" x2="550.7" y2="99.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="559.7,99.8 551.19,102.73 551.19,96.87" fill="#0969da"/>
+<circle cx="222.57" cy="99.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="222.57" y="99.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">1</text>
+<rect x="318.4" y="77.33" width="125.46" height="20.95" rx="4" fill="#ffffff"/>
+<text x="323.4" y="87.8" font-size="11.5" fill="#1f2328">提问 / 说&quot;作业漏交了&quot;</text>
+<line x1="559.7" y1="151.8" x2="907.84" y2="151.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="916.84,151.8 908.33,154.73 908.33,148.87" fill="#0969da"/>
+<circle cx="579.7" cy="151.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="579.7" y="151.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">2</text>
+<rect x="643.11" y="129.33" width="190.32" height="20.95" rx="4" fill="#ffffff"/>
+<text x="648.11" y="139.8" font-size="11.5" fill="#1f2328">转发(手动加前缀【转发学生提问】)</text>
+<line x1="916.84" y1="203.8" x2="1264.97" y2="203.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1273.97,203.8 1265.46,206.73 1265.46,200.87" fill="#0969da"/>
+<circle cx="936.84" cy="203.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="936.84" y="203.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">3</text>
+<rect x="1067.4" y="181.33" width="56" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1072.4" y="191.8" font-size="11.5" fill="#1f2328">投递消息</text>
+<path d="M 1273.97,245.8 L 1307.97,245.8 L 1307.97,265.8 L 1285.97,265.8" stroke="#0969da" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="1273.97,265.8 1265.46,268.73 1265.46,262.87" fill="#0969da"/>
+<circle cx="1290.97" cy="231.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1290.97" y="231.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">4</text>
+<rect x="1314.97" y="237.85" width="133.74" height="35.9" rx="4" fill="#ffffff"/>
+<text x="1319.97" y="248.33" font-size="11.5" fill="#1f2328">读 AGENTS.md 路由规则</text>
+<text x="1353.95" y="263.28" font-size="11.5" fill="#1f2328">+ 技能说明</text>
+<line x1="1273.97" y1="307.8" x2="1622.11" y2="307.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1631.11,307.8 1622.6,310.73 1622.6,304.87" fill="#0969da"/>
+<circle cx="1293.97" cy="307.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1293.97" y="307.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">5</text>
+<rect x="1366.18" y="285.32" width="172.72" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1371.18" y="295.8" font-size="11.5" fill="#1f2328">bash 起子进程 --message &quot;…&quot;</text>
+<line x1="1631.11" y1="359.8" x2="1979.24" y2="359.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="1988.24,359.8 1979.73,362.73 1979.73,356.87" fill="#0969da"/>
+<circle cx="1651.11" cy="359.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1651.11" y="359.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">6</text>
+<rect x="1769.14" y="337.32" width="81.07" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1774.14" y="347.8" font-size="11.5" fill="#1f2328">process(msg)</text>
+<path d="M 1988.24,413.8 L 2022.24,413.8 L 2022.24,433.8 L 2000.24,433.8" stroke="#0969da" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="1988.24,433.8 1979.73,436.73 1979.73,430.87" fill="#0969da"/>
+<circle cx="2005.24" cy="399.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="2005.24" y="399.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">7</text>
+<rect x="2029.24" y="413.32" width="251.27" height="20.95" rx="4" fill="#ffffff"/>
+<text x="2034.24" y="423.8" font-size="11.5" fill="#1f2328">抽学号/姓名/次数 → 读花名册校验 → 追加补交表</text>
+<path d="M 1988.24,475.8 L 2022.24,475.8 L 2022.24,495.8 L 2000.24,495.8" stroke="#0969da" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="1988.24,495.8 1979.73,498.73 1979.73,492.87" fill="#0969da"/>
+<circle cx="2005.24" cy="461.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="2005.24" y="461.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">8</text>
+<rect x="2029.24" y="475.32" width="257.13" height="20.95" rx="4" fill="#ffffff"/>
+<text x="2034.24" y="485.8" font-size="11.5" fill="#1f2328">分档 → FAQ / BM25 检索 → 调 OpenCode Go 润色</text>
+<line x1="1988.24" y1="553.8" x2="1640.11" y2="553.8" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="1631.11,553.8 1639.62,550.87 1639.62,556.73" fill="#59636e"/>
+<circle cx="1968.24" cy="553.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1968.24" y="553.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">9</text>
+<rect x="1742.58" y="531.32" width="134.2" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1747.58" y="541.8" font-size="11.5" fill="#1f2328">一行 JSON(只有这一行!)</text>
+<line x1="1631.11" y1="605.8" x2="1282.97" y2="605.8" stroke="#59636e" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="1273.97,605.8 1282.48,602.87 1282.48,608.73" fill="#59636e"/>
+<circle cx="1611.11" cy="605.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1611.11" y="605.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">10</text>
+<rect x="1428.57" y="583.32" width="47.95" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1433.57" y="593.8" font-size="11.5" fill="#1f2328">stdout</text>
+<line x1="1273.97" y1="657.8" x2="925.84" y2="657.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="916.84,657.8 925.35,654.87 925.35,660.73" fill="#0969da"/>
+<circle cx="1253.97" cy="657.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="1253.97" y="657.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">11</text>
+<rect x="1055.1" y="635.32" width="80.61" height="20.95" rx="4" fill="#ffffff"/>
+<text x="1060.1" y="645.8" font-size="11.5" fill="#1f2328">取 reply 字段</text>
+<line x1="916.84" y1="709.8" x2="568.7" y2="709.8" stroke="#0969da" stroke-width="1.6"/>
+<polygon points="559.7,709.8 568.21,706.87 568.21,712.73" fill="#0969da"/>
+<circle cx="896.84" cy="709.8" r="9.5" fill="#ddf4ff" stroke="#0969da" stroke-width="1"/>
+<text x="896.84" y="709.8" font-size="11" fill="#0969da" text-anchor="middle" font-weight="600">12</text>
+<rect x="710.27" y="687.32" width="56" height="20.95" rx="4" fill="#ffffff"/>
+<text x="715.27" y="697.8" font-size="11.5" fill="#1f2328">微信回复</text>
+<rect x="1233.97" y="737.7" width="437.14" height="48.2" rx="6" fill="#fff8c5" stroke="#d4a72c" stroke-width="1.4"/>
+<text x="1334.89" y="753.75" font-size="11.5" fill="#3d2f00">stdout 被日志污染 → TS 端 JSON.parse 失败</text>
+<text x="1366.29" y="769.85" font-size="11.5" fill="#3d2f00">这是这条链路上最难查的一类故障</text>
+</svg>

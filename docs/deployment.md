@@ -15,46 +15,46 @@
 **只有一条固定方向,反着传会丢业务数据**):
 
 ```mermaid
-flowchart LR
-  subgraph WIN["Windows 11(只编辑,不跑)"]
-    WS["C:\\Users\\…\\Downloads\\ta-assistant<br/><b>源码工作副本</b><br/>(在 Git Bash 里改)"]
-  end
-  subgraph WSL["WSL Ubuntu(真正在跑)"]
-    CODE["~/ta-assistant/<br/>代码 + .venv"]
-    OCL["OpenClaw<br/>(TS Bot,微信网关)"]
-  end
-  subgraph DATA["~/ykt_questions/(数据,不进版本库)"]
-    M["materials/<br/>教学资料"]
-    R["花名册/"]
-    F["常问问题.txt"]
-    X["补交表.xlsx"]
-    CF["课程事务.txt<br/>(还没建)"]
-  end
+flowchart TD
+  %% caption: 代码放在哪、数据放在哪、同步只能往哪个方向走
   WX["学生 / 助教的微信"]
 
-  WS -->|"rsync 单向同步<br/>(改完源码就传一次)"| CODE
+  WS["Windows 11 —— 只编辑,不跑<br/>ta-assistant 源码工作副本"]
+  OCL["WSL Ubuntu —— 真正在跑<br/>OpenClaw(TS Bot,微信网关)"]
+  CODE["WSL Ubuntu —— 真正在跑<br/>~/ta-assistant/ 代码 + .venv"]
+  DATA["~/ykt_questions/ —— 数据,不进版本库<br/>materials/ · 花名册/ · 常问问题.txt<br/>补交表.xlsx · 课程事务.txt"]
+
   WX <--> OCL
   OCL -->|"子进程 + 一行 JSON"| CODE
-  CODE --> M
-  CODE --> R
-  CODE --> F
-  CODE --> X
-  CODE --> CF
+  WS -->|"rsync 单向同步,改完就传一次"| CODE
+  CODE --> DATA
 
-  CODE -.->|"❌ 不要反向覆盖<br/>会拿 Windows 的旧数据盖掉补交记录"| WS
-  DATA -.->|"❌ 不进 materials/:<br/>名单不是教学资料"| M
+  CODE -.->|"❌ 不要反向覆盖:会拿 Windows 的旧数据盖掉补交记录"| WS
 ```
+
+> 原来的画法用了三个 `subgraph` 框 + `flowchart LR`,画出来 1350px 宽、
+> 左半幅还是空的 —— 横排布局会把每层的节点**在竖直方向居中**,
+> 第一层只有一个节点时就孤零零悬在中间。改成竖排、把"跑在哪台机器"
+> 写进节点文字、五个数据文件并成一个节点,现在 734px,一屏能看全。
+
+:::note 为什么名单不能进 materials/
+`materials/` 是 RAG 语料目录,`build_index.py` 会把里面**每个**文件解析进索引。
+名单不是教学资料 —— 它进去之后,学生问"作业什么时候交"可能检索到一份名单。
+:::
 
 > **换学期别忘**:把新名单覆盖 `花名册/电路基础理论课_学生名单.xlsx`,再跑
 > `.venv/bin/python scripts/check_roster.py` —— **退出码 0 才算换好**。
-> (补交表的文件名还是**数电实验**时期的 `数字电路与逻辑设计实验（一）补交表.xlsx`,
-> 那是历史遗留,**不用改名** —— 它现在是"本学期唯一那份补交登记表",
-> 改名要连 `.env`/代码一起动,收益为零。)
+> 补交表跟着名单走(**同目录、同课名**,由名单文件名推导),所以换名单这一处动作
+> 就把两样都换了,不用记得改第二个地方;新学期第一笔补交会自动把表建出来。
+> (这里原来写着"补交表的文件名还是数电时期的,不用改名" —— 那条**已经作废**:
+> 数电那份表在 WSL 里是 `数字电路与逻辑设计实验（一）补交表.xlsx`,已改名为
+> `.tests-polluted-20260920` 归档,里面 398 行**全是单测写的假数据**;
+> 现在的补交表是按课推导出来的新文件。始末见 `knowledge_base.md` §9。)
 
 | | 位置 | 说明 |
 |---|---|---|
 | 代码 | `~/ta-assistant/`(WSL 原生目录) | 在 WSL 里跑,不要直接在 `/mnt/c/...` 下跑 |
-| 数据 | `~/ykt_questions/`(`WINDOWS_ROOT`) | `materials/`(教学资料)+ `花名册/` + `常问问题.txt` + 补交表 + `课程事务.txt`(还没有,见下) |
+| 数据 | `~/ykt_questions/`(`WINDOWS_ROOT`) | `materials/`(教学资料)+ `花名册/`(名单**和补交表**)+ `常问问题.txt` + `课程事务.txt`(还没有,见下) |
 
 > **名单单独放 `花名册/`,不要放进 `materials/`。** `materials/` 是 RAG 语料目录,
 > `build_index.py` 会把里面每个文件解析进索引 —— 名单不是教学资料。
@@ -172,7 +172,7 @@ python -m src.main --message "什么是竞争冒险?怎么消除?"
 
 **离线自检(不联网、不调 API,约 5 秒)**:
 ```bash
-.venv/bin/python -m pytest test/ -q            # 全绿(当前 338 例)
+.venv/bin/python -m pytest test/ -q            # 全绿(当前 389 例)
 .venv/bin/python scripts/eval_retrieval.py --compare   # 退出码 0
 .venv/bin/python scripts/check_roster.py               # 退出码 0,并报出名单人数
 ```
@@ -182,6 +182,26 @@ python -m src.main --message "什么是竞争冒险?怎么消除?"
 > 藏了几个月的(`knowledge_base.md` §8 第 12 条)。换学期换名单之后尤其要跑。
 
 ## 4. OpenClaw 接入
+
+两种接法**功能完全一样**,区别只在"谁来管这个进程":
+
+:::compare
+### 方案 A:子进程(当前在用)
+- 每条消息起一次进程,**无状态**
+- 不用常驻服务,重启机器不用管它
+- 每次都要重新 `import` 一遍,慢一点
+- 挂了就是一条命令失败,退出码和 stderr 都在眼前
+- ✅ **[当前]** 实际接的就是这个
+
+---
+
+### 方案 B:HTTP 服务
+- 常驻进程,长连接
+- 省掉每次启动开销,响应更快
+- 得自己管进程:崩了要有人拉起来
+- 端口被占 / 服务没起来 → 微信那头只表现为"没反应",很难查
+- 当前**没有**在用
+:::
 
 ### 方案 A:子进程调用(最简单,推荐先用这个)
 
@@ -277,10 +297,37 @@ WINDOWS_ROOT=/mnt/c/Users/YOUR_USERNAME/Downloads/ykt_questions
 | 补交表里姓名乱码 | Excel 用 GBK 打开 | 用 Excel 2019+ 或 WPS 打开 |
 | 回复始终是"非学生消息,未处理" | OpenClaw 剥了前缀或字符被 normalize | 查 `data/logs/` 的 `process_input` 事件,对比 `first_20_codepoints` 与 `prefix_used` 的 Unicode;很可能是 OpenClaw TS 层把前缀字符改了或提前剥掉了 |
 | OpenClaw 报 `bridge exited 0: ...日志内容...`? | TS 端把 stderr 当错误了 | bridge 侧保证 stdout 是纯 JSON;TS 侧应只看 exit code + JSON.parse,不要拼接 stderr 内容 |
+| `bash: ... syntax error: unexpected end of file`(脚本内容看着完全正常) | 文件是 **CRLF** 行尾,被 rsync 原样搬到 WSL:shebang 成了 `#!/usr/bin/env bash\r`,bash 还会在别的行上撞到 `\r` | 见下面「行尾必须是 LF」 |
+
+### 行尾必须是 LF
+
+本项目的用法是「Windows 侧编辑 → rsync 到 WSL 侧运行」,**字节是原样过去的**,
+所以行尾不是风格问题,是功能问题:
+
+- **shell 脚本带 CRLF 在 WSL 上跑不起来**。实测 `bash -n scripts/setup.sh` 报
+  `syntax error: unexpected end of file` —— 脚本看上去完全正常,报错却指向文件末尾,
+  这种症状最容易让人往"少了个 `fi`"的方向查,白花时间。
+- **`docs/*.html` 是 `scripts/md2html.py` 生成的**(显式 `newline="\n"`)。
+  如果检出时被转成 CRLF,那"网页层是否和 md 同步"就不能用
+  `python scripts/md2html.py --all docs/ --hub && git diff --stat docs/` 判断了 —— 会满屏是红。
+  这也是页脚印「内容指纹」而不是「生成于 <时刻>」的原因:指纹来自源 md 的字节,
+  md 不变则 HTML 一个字节都不变,上面那条命令才能真正当校验用。
+
+仓库根的 `.gitattributes` 用 `* text=auto eol=lf` 兜住这件事。本机 `core.autocrlf=true`
+(Windows 常见默认)会把检出的文本文件转成 CRLF,**只有显式 `eol=lf` 才盖得住**。
+`test/test_repo_hygiene.py` 另外扫一遍仓库里有没有 CRLF,防止有人用记事本之类
+的工具改完文件又把它带回来。
 
 ## 8. 从零到上线的时间预估
 
-**【当前】首次搭建**:
+:::stats
+- **30–60 分钟** | 首次搭建总计 | 假设知识库**已经建好**
+- **10–20 分钟** | OpenClaw 接入调通 | 全流程里最不可控的一步
+- **47.9 分钟** | 扫描版教材 OCR | 711 页 / 12 进程 —— 这是**另一天**的工作量
+- **1–2 分钟** | `build_index.py` 重建索引 | 视语料大小
+:::
+
+**【当前】首次搭建**(逐项):
 
 | 步骤 | 预估时间 |
 |---|---|
@@ -292,7 +339,9 @@ WINDOWS_ROOT=/mnt/c/Users/YOUR_USERNAME/Downloads/ykt_questions
 | OpenClaw 接入调通 | 10-20 分钟 |
 | **总计** | **30-60 分钟** |
 
-**注意:上面不含"从零建知识库"。** 扫描版教材那种资料要先 OCR
-(711 页 / 12 进程跑 **47.9 分钟**)、再装配、再生成中文详细解析(逐个调大模型),
-那是**另一天的工作量**,见 `knowledge_base.md` §3.5 / §9.5。
-本文假设知识库已经建好。
+:::note 这张表容易读错的地方
+它算的是"**机器和代码都准备好了,把它跑起来**",不是"从一堆 PDF 到能答疑"。
+真正的第一步 —— 把扫描版教材 OCR 进库(47.9 分钟)、装配语料、
+再逐条生成中文详细解析 —— 是**另一天**的工作量,
+见 [`knowledge_base.md`](knowledge_base.md) §3.5 / §9.5。
+:::

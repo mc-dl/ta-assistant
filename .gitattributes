@@ -1,0 +1,24 @@
+# 行尾统一成 LF。
+#
+# 为什么这个仓库必须显式写:本项目的用法是「Windows 侧编辑 / WSL 侧运行」,
+# 同一份文件被 rsync 原样搬过去执行,行尾是**功能性**的,不只是风格:
+#
+#   1) shell 脚本带 CRLF 在 WSL 上根本跑不起来 ——
+#      shebang 变成 `#!/usr/bin/env bash\r`,而且 bash 还会在别的行上撞到 \r,
+#      实测 `bash -n scripts/setup.sh` 报 "syntax error: unexpected end of file"。
+#   2) docs/*.html 是 scripts/md2html.py 生成的(显式 newline="\n")。
+#      如果检出时被转成 CRLF,那么"网页层是否和 md 同步"就没法用
+#      `md2html --all docs/ --hub && git diff --stat docs/` 判断 —— 会满屏是红。
+#
+# 本机 core.autocrlf=true(Windows 常见默认),它会把检出的文本文件转成 CRLF;
+# 只有这里显式声明 eol=lf 才能盖住它,让两边拿到的字节一致。
+* text=auto eol=lf
+
+# 二进制:声明出来免得被当文本处理(图片里任何一个 0x0D 字节都可能被误判成 CRLF)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.xlsx binary
+*.pkl binary
+*.pdf binary

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>交给 Claude Code 的 Prompt</title>
+<meta name="description" content="你好 Claude Code。请在当前目录(ta-assistant/)下帮我完成一个数电课助教自动化工具。">
+<meta name="generator" content="scripts/md2html.py">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
+<style>
+:root{--fg:#1f2328;--muted:#59636e;--border:#d8dee4;--bg:#fff;--page:#f6f8fa;
+      --code-bg:#f6f8fa;--accent:#0969da;--accent-soft:#ddf4ff;
+      --warn-bg:#fff8c5;--warn-bd:#d4a72c;--ok-bg:#dafbe1;--ok-bd:#1a7f37;
+      --bad-bg:#ffebe9;--bad-bd:#cf222e;--shadow:0 1px 3px rgba(27,31,36,.08);
+      --sidebar:264px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--fg);
+     font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",
+                 "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+     font-size:16px;line-height:1.78}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:99}
+.wrap{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);
+      gap:28px;max-width:1280px;margin:0 auto;padding:24px 20px 96px}
+@media (max-width:1080px){.wrap{grid-template-columns:1fr;gap:0}.sidebar{position:static;max-height:none}}
+main{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+     padding:40px 48px 56px;box-shadow:var(--shadow);min-width:0}
+@media (max-width:640px){main{padding:24px 18px 40px}body{font-size:15.5px}.wrap{padding:12px}}
+
+/* ---- 侧边栏:目录 ---- */
+.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);
+         overflow:auto;font-size:.9em}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{margin:.1em 0 .5em;font-size:.95em;border:0;padding:0;color:var(--muted);
+         letter-spacing:.06em}
+.toc ul{list-style:none;margin:.2em 0;padding-left:0}
+.toc ul ul{padding-left:.9em;border-left:1px solid var(--border);margin-left:.35em}
+.toc li{margin:.12em 0}
+.toc a{display:block;padding:.2em .5em;border-radius:5px;color:var(--fg);
+       text-decoration:none;border-left:2px solid transparent}
+.toc a:hover{background:var(--accent-soft)}
+.toc a.active{background:var(--accent-soft);border-left-color:var(--accent);
+              color:var(--accent);font-weight:600}
+.toc .toctitle{display:none}          /* 侧边栏标题由 .card h2 提供,不要重复 */
+.docs-nav a{display:block;padding:.2em .5em;border-radius:5px;text-decoration:none;
+            color:var(--muted);font-size:.95em}
+.docs-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.docs-nav a.here{color:var(--fg);font-weight:600}
+
+/* ---- 正文 ---- */
+h1,h2,h3,h4{line-height:1.35;margin:1.9em 0 .6em;scroll-margin-top:16px}
+h1{font-size:1.9em;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:0}
+h2{font-size:1.45em;border-bottom:1px solid var(--border);padding-bottom:.25em;margin-top:2.2em}
+h3{font-size:1.18em}
+p,li{word-break:break-word}
+a{color:var(--accent)}
+ul,ol{padding-left:1.5em}
+li{margin:.18em 0}
+code{background:var(--code-bg);padding:.15em .4em;border-radius:4px;
+     font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;font-size:.9em}
+pre{background:var(--code-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;
+     border:1px solid var(--border);line-height:1.6}
+pre code{background:none;padding:0;font-size:.88em}
+hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
+.anchor{float:right;color:var(--border);text-decoration:none;font-weight:400;
+        padding-left:.4em;opacity:0;transition:opacity .12s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+
+/* ---- 表格:横向滚动 + 表头吸顶 ---- */
+.table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
+th,td{border:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+      padding:8px 12px;text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:var(--code-bg);font-weight:600;position:sticky;top:0;z-index:1}
+tr:nth-child(even) td{background:#fcfcfd}
+tbody tr:hover td{background:var(--accent-soft)}
+
+/* ---- 提示块(按 emoji 上色) ---- */
+blockquote{margin:1.1em 0;padding:.7em 1.1em;color:var(--muted);
+           border-left:4px solid var(--border);background:#fbfcfd;border-radius:0 6px 6px 0}
+blockquote p{margin:.35em 0}
+blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color:#3d2f00}
+blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
+blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
+
+/* ---- 图:mermaid 与图片 ---- */
+figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
+                          border-radius:8px;background:#fcfcfd}
+figure.diagram .mermaid{overflow-x:auto;text-align:center}
+figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
+     margin-top:.6em;text-align:center}
+figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
+details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src summary{cursor:pointer;color:var(--muted)}
+details.mermaid-src pre{margin:.5em 0 0}
+
+/* ---- 本页速览胶囊 ---- */
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
+.quick a{font-size:.84em;padding:.22em .7em;border:1px solid var(--border);
+         border-radius:999px;text-decoration:none;color:var(--muted);background:var(--bg)}
+.quick a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ---- 页脚与回到顶部 ---- */
+.foot{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);
+      color:var(--muted);font-size:.85em;display:flex;flex-wrap:wrap;gap:.4em 1.2em;
+      justify-content:space-between}
+#totop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;
+       border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;
+       box-shadow:var(--shadow);font-size:17px;display:none}
+#totop.show{display:block}
+
+/* ---- 首页(导航页) ---- */
+.hub-hero{background:linear-gradient(135deg,#0969da11,#0969da05);border:1px solid var(--border);
+          border-radius:12px;padding:26px 28px;margin-bottom:22px}
+.hub-hero h1{border:0;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards a.card-link{display:block;text-decoration:none;color:var(--fg);background:var(--bg);
+     border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);
+     transition:transform .12s,border-color .12s}
+.cards a.card-link:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cards .t{font-weight:600;margin-bottom:.35em;font-size:1.02em}
+.cards .d{color:var(--muted);font-size:.88em;line-height:1.6}
+.cards .m{color:var(--muted);font-size:.78em;margin-top:.6em}
+
+@media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
+  .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
+  .table-wrap{overflow:visible}th{position:static}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<aside class="sidebar">
+<div class="card toc"><h2>本页目录</h2><div class="toc"><span class="toctitle">本页目录</span><ul>
+<li><a href="#从这里开始复制">(从这里开始复制)</a><ul>
+<li><a href="#你的背景信息">你的背景信息</a></li>
+<li><a href="#第一步阅读所有已有文档和代码必做">第一步:阅读所有已有文档和代码(必做)</a></li>
+<li><a href="#第二步按以下顺序完善代码">第二步:按以下顺序完善代码</a></li>
+<li><a href="#第三步测试">第三步:测试</a></li>
+<li><a href="#第四步写一份完成汇报">第四步:写一份完成汇报</a></li>
+<li><a href="#重要约定">重要约定</a></li>
+</ul>
+</li>
+<li><a href="#复制到这里结束">(复制到这里结束)</a></li>
+</ul>
+</div>
+</div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html" class="here">交给 Claude Code 的 Prompt</a></div>
+</aside>
+<main>
+<nav class="quick"><a href="#从这里开始复制">(从这里开始复制)</a><a href="#你的背景信息">你的背景信息</a><a href="#第一步阅读所有已有文档和代码必做">第一步:阅读所有已有文档和代码(必做)</a><a href="#第二步按以下顺序完善代码">第二步:按以下顺序完善代码</a><a href="#第三步测试">第三步:测试</a><a href="#第四步写一份完成汇报">第四步:写一份完成汇报</a><a href="#重要约定">重要约定</a><a href="#复制到这里结束">(复制到这里结束)</a></nav>
+<h1 id="交给-claude-code-的-prompt">交给 Claude Code 的 Prompt</h1>
+<blockquote>
+<p>使用方法:在 <code>C:\Users\YOUR_USERNAME\Downloads\ta-assistant\</code> 目录下打开 Claude Code(命令行 <code>claude</code> 或 VS Code 插件),把下面<strong>全部内容</strong>复制粘贴进去。Claude Code 会按文档完成剩余实现、安装依赖、跑测试。</p>
+<p>⚠️ <strong>时效性(2026-09-20 校订)</strong>
+这是 <strong>2026-04 项目启动时</strong>交给 Claude Code 的那份 prompt,是"当时提了什么"的原始记录。
+<strong>不要再照着重跑一遍</strong> —— 系统早已建成,重跑只会把后来改对的地方改回 4 月的形状。
+其中几处<strong>已经被实测推翻</strong>,现状以 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> 和
+<a href="design.md"><code>design.md</code></a> 为准:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>这份 prompt 要求</th>
+<th>后来怎么改了</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.3 LLM 层只做 MinMax</td>
+<td>默认通道换成 <strong>OpenCode Go</strong>,MinMax 留作回滚</td>
+<td>见 <code>design.md</code> §3.7</td>
+</tr>
+<tr>
+<td>2.6 <code>search(query, top_k=5)</code></td>
+<td>改成 <strong>7</strong>(<code>RAG_TOP_K</code>)</td>
+<td>一份语料的中位分块数是 5、最长 11,取 5 会把同一条解答的后面几块切掉</td>
+</tr>
+<tr>
+<td>2.8 "FAQ 命中就短路"</td>
+<td>只有<strong>事务题</strong>短路;概念题把 FAQ 当<strong>补充材料</strong></td>
+<td>一刀切会让概念题被"作业怎么提交"那条 FAQ 截胡</td>
+</tr>
+<tr>
+<td>第三步 <code>pytest tests/ -v</code></td>
+<td>目录是 <strong><code>test/</code></strong>(单数),现在 <strong>338 个测试</strong></td>
+<td>见根 <code>README.md</code> 的「测试」</td>
+</tr>
+<tr>
+<td>最后一条:中文路径 + <code>mklink</code> 软链接</td>
+<td>数据已搬到 <strong>WSL 原生目录</strong> <code>~/ykt_questions/</code>,不再需要软链接</td>
+<td>见 <code>deployment.md</code> §0 / §5</td>
+</tr>
+<tr>
+<td>"FAQ 命中就短路" 隐含"不调大模型"</td>
+<td>只是<strong>不查资料</strong>,答复<strong>仍由大模型润色</strong></td>
+<td>四份文档曾同时把这句话写反,实测见 <code>knowledge_base.md</code> §5.4</td>
+</tr>
+</tbody>
+</table></div>
+<p>另外:本文从头到尾<strong>没有提向量检索</strong>("可选 sentence-transformers 升级"那句是
+<a href="README.md"><code>README.md</code></a> 技术栈里的旧设想),那个升级<strong>没有做</strong>,也不需要 ——
+检索就是 BM25,只是 IDF 换成了 Lucene 写法(见 <code>knowledge_base.md</code> §3.6)。</p>
+</blockquote>
+<hr />
+<2 id="从这里开始复制">(从这里开始复制)<a class="anchor" href="#从这里开始复制" title="链接到这一节">#</a></2>
+<p>你好 Claude Code。请在当前目录(<code>ta-assistant/</code>)下帮我完成一个数电课助教自动化工具。</p>
+<3 id="你的背景信息">你的背景信息<a class="anchor" href="#你的背景信息" title="链接到这一节">#</a></3>
+<ul>
+<li>我是数电课助教,每周要手工登记作业补交 + 回答学生重复提问,很累</li>
+<li>这个项目的目标是:学生通过微信发消息 → OpenClaw 微信 Bot → 本项目自动分类并处理</li>
+<li>我电脑是 Windows 11,WSL 装了 Ubuntu,OpenClaw 在 WSL 里,本项目也将在 WSL 里跑</li>
+<li>我已经写好了<strong>需求文档</strong>、<strong>设计文档</strong>、<strong>部署文档</strong>、<strong>项目骨架代码</strong>,你的任务是<strong>把骨架代码补全、装依赖、跑通测试</strong></li>
+</ul>
+<3 id="第一步阅读所有已有文档和代码必做">第一步:阅读所有已有文档和代码(必做)<a class="anchor" href="#第一步阅读所有已有文档和代码必做" title="链接到这一节">#</a></3>
+<p>请按顺序读完以下文件,不要跳过:</p>
+<ol>
+<li><code>README.md</code> — 项目概览</li>
+<li><code>docs/requirements.md</code> — 需求文档(权威,以此为准)</li>
+<li><code>docs/design.md</code> — 系统设计</li>
+<li><code>docs/deployment.md</code> — 部署指南</li>
+<li><code>src/config.py</code> — 配置</li>
+<li><code>src/main.py</code> — 主入口骨架</li>
+<li><code>src/handlers/classifier.py</code> — 分类器骨架</li>
+<li><code>src/handlers/submission.py</code> — 补交 Handler 骨架</li>
+<li><code>src/handlers/qa.py</code> — 答疑 Handler 骨架</li>
+<li><code>src/rag/indexer.py</code> — 索引构建</li>
+<li><code>src/rag/retriever.py</code> — 检索</li>
+<li><code>src/llm/minmax.py</code> — MinMax 客户端</li>
+<li><code>src/utils/doc_parser.py</code> — 文档解析</li>
+<li><code>src/utils/excel_ops.py</code> — Excel 操作</li>
+<li><code>scripts/build_index.py</code> — 索引构建脚本</li>
+<li><code>scripts/openclaw_bridge.py</code> — OpenClaw 入口</li>
+<li><code>scripts/setup.sh</code> — 环境安装</li>
+<li><code>requirements.txt</code>、<code>.env.example</code></li>
+</ol>
+<3 id="第二步按以下顺序完善代码">第二步:按以下顺序完善代码<a class="anchor" href="#第二步按以下顺序完善代码" title="链接到这一节">#</a></3>
+<p><strong>顺序很重要,每一步跑通再下一步。</strong></p>
+<h4 id="21-配置层-srcconfigpy">2.1 配置层 (<code>src/config.py</code>)</h4>
+<ul>
+<li>把所有路径、参数、模型名集中在这里</li>
+<li>支持 <code>.env</code> 覆盖(用 <code>python-dotenv</code>)</li>
+<li>用 <code>pathlib.Path</code>,不要用裸字符串</li>
+<li>日志目录、索引目录不存在时自动创建</li>
+</ul>
+<h4 id="22-工具层">2.2 工具层</h4>
+<ul>
+<li><code>utils/doc_parser.py</code>:实现 pdf/docx/doc/xlsx/txt 的文本提取;<code>.doc</code> 调 <code>libreoffice --headless --convert-to docx</code> 先转,再用 <code>python-docx</code></li>
+<li><code>utils/excel_ops.py</code>:</li>
+<li><code>ensure_submission_table(path)</code>:不存在则创建,写表头</li>
+<li><code>load_roster()</code>:从花名册 xlsx 的"学号""姓名"两列(注意表头在第 5 行,学生数据从第 7 行开始,详见我上传的成绩记分册样例)读成 <code>dict[str, str]</code></li>
+<li><code>append_submission_row(path, row)</code>:读-改-存</li>
+</ul>
+<h4 id="23-llm-层-srcllmminmaxpy">2.3 LLM 层 (<code>src/llm/minmax.py</code>)</h4>
+<ul>
+<li>MinMax API 端点:<code>https://api.minimax.chat/v1/text/chatcompletion_v2</code></li>
+<li>实现 <code>chat(system: str, user: str, temperature=0.3, timeout=20) -&gt; str</code></li>
+<li>3 次重试,指数退避;超时返回空字符串并记日志</li>
+<li>所有调用记入 <code>data/logs/llm.log</code>(JSON Lines:入参 hash + 输出长度 + 耗时)</li>
+</ul>
+<h4 id="24-分类器-handlersclassifierpy">2.4 分类器 (<code>handlers/classifier.py</code>)</h4>
+<ul>
+<li>规则优先:关键词 <code>["漏交","补交","没交","忘了交","作业漏","作业没"]</code> ∧ 8 位学号 → <code>submission</code></li>
+<li>含疑问词 → <code>question</code></li>
+<li>否则调 LLM 兜底,prompt 要求返回 JSON <code>{"type": "submission|question|other"}</code></li>
+<li>写 10 个单元测试覆盖常见情况</li>
+</ul>
+<h4 id="25-补交-handler-handlerssubmissionpy">2.5 补交 Handler (<code>handlers/submission.py</code>)</h4>
+<ul>
+<li>抽学号:<code>re.search(r"\b\d{8}\b", msg)</code></li>
+<li>抽姓名:先找"姓名:XXX""我是 XXX"模式,否则用学号反查花名册;姓名必须是 2-4 个中文字符</li>
+<li>抽作业次数:正则匹配<code>第?(\d+|一|二|...)次</code>、<code>实验\s*\d+</code>、<code>作业\s*\d+</code>、<code>chapter\s*\d+</code>(大小写不敏感)</li>
+<li>校验:学号是否在花名册 + 姓名是否匹配</li>
+<li>写补交表,返回成功消息</li>
+<li>写 8 个单元测试</li>
+</ul>
+<h4 id="26-rag-模块-rag">2.6 RAG 模块 (<code>rag/</code>)</h4>
+<ul>
+<li><code>indexer.py</code>:</li>
+<li>遍历 <code>MATERIALS_DIR</code> 下所有支持格式的文件</li>
+<li>解析文本,按段落切块(目标 400 字,重叠 50 字,中文按标点切分)</li>
+<li>每块带元信息 <code>{text, source_file, chunk_id, section_hint}</code></li>
+<li>用 <code>rank_bm25.BM25Okapi</code> + <code>jieba</code> 分词建索引,pickle 到 <code>data/index/bm25_index.pkl</code></li>
+<li><code>retriever.py</code>:加载索引,<code>search(query, top_k=5)</code> 返回带分数和元信息的结果列表</li>
+</ul>
+<h4 id="27-faq-检索">2.7 FAQ 检索</h4>
+<ul>
+<li>在 <code>rag/retriever.py</code> 里另做一个 <code>FAQRetriever</code>,专门吃 <code>常问问题.txt</code></li>
+<li>解析规则:连续的 <code>Q:</code>/<code>A:</code> 块为一条,空行分隔;<code>Q:</code> 可以多行</li>
+<li>单独建 BM25 索引,<strong>不</strong>持久化(每次启动现建,FAQ 很小,快)</li>
+</ul>
+<h4 id="28-答疑-handler-handlersqapy">2.8 答疑 Handler (<code>handlers/qa.py</code>)</h4>
+<ul>
+<li>先 FAQ 搜,<code>faq_score &gt;= FAQ_HIT_THRESHOLD</code> 视为命中</li>
+<li>否则 RAG 搜</li>
+<li>拼 prompt:
+  <code>system = "你是中山大学数字电路与逻辑设计实验课的助教,用简洁中文回答学生问题。
+            优先基于给定资料作答,资料中没有的内容要明确说明。"
+  user = f"【学生问题】{query}\n\n【相关资料】\n{context}\n\n【你的回答】"</code></li>
+<li>调 MinMax,返回答复(末尾追加"参考:{来源}")</li>
+</ul>
+<h4 id="29-主入口-mainpy">2.9 主入口 (<code>main.py</code>)</h4>
+<ul>
+<li>CLI 模式:<code>argparse</code> 接 <code>--message</code>,打印 JSON</li>
+<li>HTTP 模式(可选):FastAPI <code>POST /process</code>,body <code>{"message": "..."}</code>,返回相同 JSON</li>
+<li>所有请求写 <code>data/logs/YYYY-MM.log</code></li>
+</ul>
+<h4 id="210-openclaw-bridge-scriptsopenclaw_bridgepy">2.10 OpenClaw Bridge (<code>scripts/openclaw_bridge.py</code>)</h4>
+<ul>
+<li>极简:读 <code>--message</code>,调 <code>main.process</code>,打印 JSON 到 stdout</li>
+<li>任何异常也以 JSON 形式输出:<code>{"type": "error", "reply": "系统错误,请稍后再试: ..."}</code></li>
+</ul>
+<h4 id="211-脚本">2.11 脚本</h4>
+<ul>
+<li><code>scripts/build_index.py</code>:调 <code>indexer.build_index()</code>,打印进度</li>
+<li><code>scripts/setup.sh</code>:apt 装 libreoffice/poppler-utils,建 venv,pip install,cp .env.example .env</li>
+</ul>
+<3 id="第三步测试">第三步:测试<a class="anchor" href="#第三步测试" title="链接到这一节">#</a></3>
+<pre><code class="language-bash">source .venv/bin/activate
+pytest tests/ -v
+python scripts/build_index.py
+python -m src.main --message &quot;我作业漏交了 张三 20230001 第1次&quot;
+python -m src.main --message &quot;Proteus 在哪下载?&quot;
+python -m src.main --message &quot;什么是竞争冒险?&quot;
+</code></pre>
+<p>三条消息都应该成功返回合理的 JSON。<strong>如果不行,继续调试到能跑通为止。</strong></p>
+<3 id="第四步写一份完成汇报">第四步:写一份完成汇报<a class="anchor" href="#第四步写一份完成汇报" title="链接到这一节">#</a></3>
+<p>在项目根目录写一个 <code>HANDOFF.md</code>,内容:
+- 你改了哪些文件、加了哪些文件
+- 跑测试的输出截图(文字形式)
+- 还有哪些东西需要我手动做(比如填 <code>.env</code> 的 API Key)
+- 已知的风险或 TODO</p>
+<3 id="重要约定">重要约定<a class="anchor" href="#重要约定" title="链接到这一节">#</a></3>
+<ul>
+<li><strong>代码风格</strong>:类型注解 + docstring + 有意义的变量名;每个模块顶部加一行中文注释说明"这个模块干啥"</li>
+<li><strong>不要</strong>擅自改我的需求文档或设计文档。如果需求不明确,在 <code>HANDOFF.md</code> 里写 TODO,不要自行脑补</li>
+<li><strong>不要</strong>装超出 <code>requirements.txt</code> 的重量级依赖(比如不要装 torch、transformers、langchain)。如果需要新依赖,先问我</li>
+<li><strong>不要</strong>把学生真实姓名、学号 hardcode 进代码(除了我给你的测试用例 <code>张三 20230001</code>)</li>
+<li>中文路径问题:如果 WSL 读不到 <code>/mnt/c/Users/YOUR_USERNAME/Downloads/雨课堂问题/</code>,按 <code>docs/deployment.md §5</code> 用 <code>mklink</code> 软链接方案,<strong>在 <code>HANDOFF.md</code> 提醒我去 Windows CMD 里跑那条命令</strong></li>
+</ul>
+<p>准备好了就开始吧,每完成一个模块就 run 一次测试,确认绿再走下一个。谢谢!</p>
+<2 id="复制到这里结束">(复制到这里结束)<a class="anchor" href="#复制到这里结束" title="链接到这一节">#</a></2>
+<div class="foot">
+  <span>源文件 <code>docs/claude_code_prompt.md</code> · 生成于 2026-09-20 21:09</span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+</div>
+</main>
+</div>
+<button id="totop" title="回到顶部">↑</button>
+<script>
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,sh=h.scrollHeight-h.clientHeight;
+    bar.style.width=(sh>0?(h.scrollTop/sh*100):0)+'%';
+    top.classList.toggle('show',h.scrollTop>500);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var heads=[].slice.call(document.querySelectorAll('main h2[id],main h3[id]'));
+  var links={};[].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    links[decodeURIComponent(a.getAttribute('href').slice(1))]=a;});
+  function spy(){
+    var cur=null;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i].getBoundingClientRect().top<=90) cur=heads[i].id; else break;
+    }
+    for(var k in links) links[k].classList.remove('active');
+    if(cur&&links[cur]) links[cur].classList.add('active');
+  }
+  document.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+</body>
+</html>

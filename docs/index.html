@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文档</title>
+<meta name="description" content="">
+<meta name="generator" content="scripts/md2html.py">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
+<style>
+:root{--fg:#1f2328;--muted:#59636e;--border:#d8dee4;--bg:#fff;--page:#f6f8fa;
+      --code-bg:#f6f8fa;--accent:#0969da;--accent-soft:#ddf4ff;
+      --warn-bg:#fff8c5;--warn-bd:#d4a72c;--ok-bg:#dafbe1;--ok-bd:#1a7f37;
+      --bad-bg:#ffebe9;--bad-bd:#cf222e;--shadow:0 1px 3px rgba(27,31,36,.08);
+      --sidebar:264px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--fg);
+     font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",
+                 "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+     font-size:16px;line-height:1.78}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:99}
+.wrap{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);
+      gap:28px;max-width:1280px;margin:0 auto;padding:24px 20px 96px}
+@media (max-width:1080px){.wrap{grid-template-columns:1fr;gap:0}.sidebar{position:static;max-height:none}}
+main{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+     padding:40px 48px 56px;box-shadow:var(--shadow);min-width:0}
+@media (max-width:640px){main{padding:24px 18px 40px}body{font-size:15.5px}.wrap{padding:12px}}
+
+/* ---- 侧边栏:目录 ---- */
+.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);
+         overflow:auto;font-size:.9em}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{margin:.1em 0 .5em;font-size:.95em;border:0;padding:0;color:var(--muted);
+         letter-spacing:.06em}
+.toc ul{list-style:none;margin:.2em 0;padding-left:0}
+.toc ul ul{padding-left:.9em;border-left:1px solid var(--border);margin-left:.35em}
+.toc li{margin:.12em 0}
+.toc a{display:block;padding:.2em .5em;border-radius:5px;color:var(--fg);
+       text-decoration:none;border-left:2px solid transparent}
+.toc a:hover{background:var(--accent-soft)}
+.toc a.active{background:var(--accent-soft);border-left-color:var(--accent);
+              color:var(--accent);font-weight:600}
+.toc .toctitle{display:none}          /* 侧边栏标题由 .card h2 提供,不要重复 */
+.docs-nav a{display:block;padding:.2em .5em;border-radius:5px;text-decoration:none;
+            color:var(--muted);font-size:.95em}
+.docs-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.docs-nav a.here{color:var(--fg);font-weight:600}
+
+/* ---- 正文 ---- */
+h1,h2,h3,h4{line-height:1.35;margin:1.9em 0 .6em;scroll-margin-top:16px}
+h1{font-size:1.9em;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:0}
+h2{font-size:1.45em;border-bottom:1px solid var(--border);padding-bottom:.25em;margin-top:2.2em}
+h3{font-size:1.18em}
+p,li{word-break:break-word}
+a{color:var(--accent)}
+ul,ol{padding-left:1.5em}
+li{margin:.18em 0}
+code{background:var(--code-bg);padding:.15em .4em;border-radius:4px;
+     font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;font-size:.9em}
+pre{background:var(--code-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;
+     border:1px solid var(--border);line-height:1.6}
+pre code{background:none;padding:0;font-size:.88em}
+hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
+.anchor{float:right;color:var(--border);text-decoration:none;font-weight:400;
+        padding-left:.4em;opacity:0;transition:opacity .12s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+
+/* ---- 表格:横向滚动 + 表头吸顶 ---- */
+.table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
+th,td{border:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+      padding:8px 12px;text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:var(--code-bg);font-weight:600;position:sticky;top:0;z-index:1}
+tr:nth-child(even) td{background:#fcfcfd}
+tbody tr:hover td{background:var(--accent-soft)}
+
+/* ---- 提示块(按 emoji 上色) ---- */
+blockquote{margin:1.1em 0;padding:.7em 1.1em;color:var(--muted);
+           border-left:4px solid var(--border);background:#fbfcfd;border-radius:0 6px 6px 0}
+blockquote p{margin:.35em 0}
+blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color:#3d2f00}
+blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
+blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
+
+/* ---- 图:mermaid 与图片 ---- */
+figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
+                          border-radius:8px;background:#fcfcfd}
+figure.diagram .mermaid{overflow-x:auto;text-align:center}
+figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
+     margin-top:.6em;text-align:center}
+figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
+details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src summary{cursor:pointer;color:var(--muted)}
+details.mermaid-src pre{margin:.5em 0 0}
+
+/* ---- 本页速览胶囊 ---- */
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
+.quick a{font-size:.84em;padding:.22em .7em;border:1px solid var(--border);
+         border-radius:999px;text-decoration:none;color:var(--muted);background:var(--bg)}
+.quick a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ---- 页脚与回到顶部 ---- */
+.foot{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);
+      color:var(--muted);font-size:.85em;display:flex;flex-wrap:wrap;gap:.4em 1.2em;
+      justify-content:space-between}
+#totop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;
+       border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;
+       box-shadow:var(--shadow);font-size:17px;display:none}
+#totop.show{display:block}
+
+/* ---- 首页(导航页) ---- */
+.hub-hero{background:linear-gradient(135deg,#0969da11,#0969da05);border:1px solid var(--border);
+          border-radius:12px;padding:26px 28px;margin-bottom:22px}
+.hub-hero h1{border:0;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards a.card-link{display:block;text-decoration:none;color:var(--fg);background:var(--bg);
+     border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);
+     transition:transform .12s,border-color .12s}
+.cards a.card-link:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cards .t{font-weight:600;margin-bottom:.35em;font-size:1.02em}
+.cards .d{color:var(--muted);font-size:.88em;line-height:1.6}
+.cards .m{color:var(--muted);font-size:.78em;margin-top:.6em}
+
+@media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
+  .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
+  .table-wrap{overflow:visible}th{position:static}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<aside class="sidebar">
+<div class="card toc"><h2>本页目录</h2><div class="toc"><span class="toctitle">本页目录</span><ul>
+<li><a href="#一览">一览</a></li>
+</ul>
+</div>
+</div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a><a href="_hub_input.html" class="here">文档</a></div>
+</aside>
+<main>
+
+<h1 id="文档">文档</h1>
+<div class="hub-hero"><h1>助教自动化工具 · 文档</h1><p>共 7 篇。左边随便点一篇都能直接看 —— 图是 mermaid 现渲染的,表是真实的表,目录在右侧跟着滚动高亮。</p></div>
+<div class="cards"><a class="card-link" href="README.html"><div class="t">数电助教自动化助手 (TA Assistant)</div><div class="d">文档目录说明与时效性提示</div><div class="m">7 节 · 6 行表格 · 0 张图 · 约 5 千字</div></a><a class="card-link" href="knowledge_base.html"><div class="t">知识库说明(FAQ + 资料库)</div><div class="d">知识库里到底有什么:语料来源、索引规模、检索参数、每一轮改了什么、已知限制</div><div class="m">9 节 · 301 行表格 · 3 张图 · 约 63 千字</div></a><a class="card-link" href="design.html"><div class="t">系统设计文档</div><div class="d">系统设计:模块划分、数据流、关键取舍(为什么是 BM25、为什么分三档答疑)</div><div class="m">9 节 · 30 行表格 · 2 张图 · 约 21 千字</div></a><a class="card-link" href="deployment.html"><div class="t">部署与 OpenClaw 接入指南</div><div class="d">部署与 OpenClaw 接入:目录放置、换学期怎么换、故障排查表</div><div class="m">9 节 · 33 行表格 · 1 张图 · 约 8 千字</div></a><a class="card-link" href="wechat_end_to_end.html"><div class="t">微信端到端跑通手册</div><div class="d">微信端到端跑通手册:实测记录、逐段排障、TS 侧踩过的坑</div><div class="m">9 节 · 94 行表格 · 1 张图 · 约 33 千字</div></a><a class="card-link" href="requirements.html"><div class="t">需求文档(PRD)</div><div class="d">需求文档:功能清单、验收标准、非功能需求</div><div class="m">7 节 · 20 行表格 · 1 张图 · 约 9 千字</div></a><a class="card-link" href="claude_code_prompt.html"><div class="t">交给 Claude Code 的 Prompt</div><div class="d">2026-04 项目启动时交给 Claude Code 的那份 prompt(历史存档,含被实测推翻之处)</div><div class="m">2 节 · 0 行表格 · 0 张图 · 约 5 千字</div></a></div>
+
+<2 id="一览">一览<a class="anchor" href="#一览" title="链接到这一节">#</a></2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>讲什么</th>
+<th>小节</th>
+<th>表格行</th>
+<th>图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="README.html">数电助教自动化助手 (TA Assistant)</a></td>
+<td>文档目录说明与时效性提示</td>
+<td>7</td>
+<td>6</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a></td>
+<td>知识库里到底有什么:语料来源、索引规模、检索参数、每一轮改了什么、已知限制</td>
+<td>9</td>
+<td>301</td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="design.html">系统设计文档</a></td>
+<td>系统设计:模块划分、数据流、关键取舍(为什么是 BM25、为什么分三档答疑)</td>
+<td>9</td>
+<td>30</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="deployment.html">部署与 OpenClaw 接入指南</a></td>
+<td>部署与 OpenClaw 接入:目录放置、换学期怎么换、故障排查表</td>
+<td>9</td>
+<td>33</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="wechat_end_to_end.html">微信端到端跑通手册</a></td>
+<td>微信端到端跑通手册:实测记录、逐段排障、TS 侧踩过的坑</td>
+<td>9</td>
+<td>94</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="requirements.html">需求文档(PRD)</a></td>
+<td>需求文档:功能清单、验收标准、非功能需求</td>
+<td>7</td>
+<td>20</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></td>
+<td>2026-04 项目启动时交给 Claude Code 的那份 prompt(历史存档,含被实测推翻之处)</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>📘 这些 HTML 都是 <code>python scripts/md2html.py --all docs/ --hub</code> 生成的,<strong>不要手改</strong>;要改内容就改对应的 <code>.md</code> 再重跑一次。</p>
+</blockquote>
+<div class="foot">
+  <span>源文件 <code>docs/_hub_input.md</code> · 生成于 2026-09-20 21:09</span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+</div>
+</main>
+</div>
+<button id="totop" title="回到顶部">↑</button>
+<script>
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,sh=h.scrollHeight-h.clientHeight;
+    bar.style.width=(sh>0?(h.scrollTop/sh*100):0)+'%';
+    top.classList.toggle('show',h.scrollTop>500);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var heads=[].slice.call(document.querySelectorAll('main h2[id],main h3[id]'));
+  var links={};[].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    links[decodeURIComponent(a.getAttribute('href').slice(1))]=a;});
+  function spy(){
+    var cur=null;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i].getBoundingClientRect().top<=90) cur=heads[i].id; else break;
+    }
+    for(var k in links) links[k].classList.remove('active');
+    if(cur&&links[cur]) links[cur].classList.add('active');
+  }
+  document.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+</body>
+</html>

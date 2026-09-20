@@ -9,7 +9,7 @@ import json
 import sys
 from typing import Any
 
-from src.handlers import classifier, qa, submission
+from src.handlers import classifier, qa, record, submission
 from src.llm.minmax import MinMaxClient
 from src.utils.logger import log_event
 from src import config
@@ -24,8 +24,25 @@ def _strip_forward_prefix(message: str) -> tuple[bool, str]:
     return False, message
 
 
+def _safe(fn, tag: str) -> dict[str, Any]:
+    """跑一个 Handler,别让它的异常变成"机器人没回话"。"""
+    try:
+        return fn()
+    except Exception as e:  # noqa: BLE001
+        log_event("handler_error", type=tag, error=str(e))
+        return {
+            "type": "error",
+            "reply": f"系统处理出错,请稍后再试。详情:{e}",
+        }
+
+
 def process(message: str) -> dict[str, Any]:
     """统一处理入口:前缀过滤 → 分类 → 分派 Handler → 返回结果。"""
+    # 【记录】是**助教的元命令**,必须在学生转发闸门**之前**判断。
+    # 顺序反了会怎样:助教发「【记录】问题:…」时不带「【转发学生提问】」前缀,
+    # 于是会被下面那个闸门判成"非学生消息"直接丢掉 —— 入口看着在、其实够不着。
+    is_record, record_body = record.strip_prefix(message)
+
     # === 调试日志:把输入原样记录 ===
     log_event(
         "process_input",
@@ -35,7 +52,13 @@ def process(message: str) -> dict[str, Any]:
         first_20_codepoints=[hex(ord(c)) for c in message[:20]] if message else [],
         starts_with_any_prefix=any(message.lstrip().startswith(p) for p in config.STUDENT_FORWARD_PREFIXES),
         prefix_used=config.STUDENT_FORWARD_PREFIX,
+        is_record=is_record,
     )
+
+    if is_record:
+        result = _safe(lambda: record.handle(record_body), "record")
+        log_event("reply", type=result.get("type"), reply_len=len(result.get("reply", "")))
+        return result
 
     # 前缀过滤:只有带指定前缀的学生转发才处理
     matched, msg = _strip_forward_prefix(message)
@@ -49,17 +72,10 @@ def process(message: str) -> dict[str, Any]:
     msg_type = classifier.classify(msg, llm=llm)
     log_event("classify", message=msg[:200], type=msg_type)
 
-    try:
-        if msg_type == "submission":
-            result = submission.handle(msg)
-        else:  # question 或 unknown 都走答疑
-            result = qa.handle(msg, llm=llm)
-    except Exception as e:  # noqa: BLE001
-        log_event("handler_error", type=msg_type, error=str(e))
-        result = {
-            "type": "error",
-            "reply": f"系统处理出错,请稍后再试。详情:{e}",
-        }
+    if msg_type == "submission":
+        result = _safe(lambda: submission.handle(msg), msg_type)
+    else:  # question 或 unknown 都走答疑
+        result = _safe(lambda: qa.handle(msg, llm=llm), msg_type)
 
     log_event("reply", type=result.get("type"), reply_len=len(result.get("reply", "")))
     return result

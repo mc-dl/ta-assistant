@@ -1,0 +1,796 @@
+{
+  "generated_at": "2026-09-20T15:22:25",
+  "index_chunks": 3166,
+  "top_k": 7,
+  "results": [
+    {
+      "q": "什么是叠加原理",
+      "kind": "concept",
+      "rank": 4,
+      "hit": true,
+      "foreign": [
+        "教材-第17章-傅里叶级数.md",
+        "教材-第5章-运算放大器.md"
+      ],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 9.25,
+          "source": "第10章-正弦稳态分析.md"
+        },
+        {
+          "rank": 2,
+          "score": 8.33,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 3,
+          "score": 8.24,
+          "source": "教材-第10章-正弦稳态分析.md"
+        },
+        {
+          "rank": 4,
+          "score": 8.22,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 5,
+          "score": 7.56,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 6,
+          "score": 7.56,
+          "source": "第10章-正弦稳态分析.md"
+        },
+        {
+          "rank": 7,
+          "score": 7.54,
+          "source": "教材-第5章-运算放大器.md"
+        }
+      ],
+      "note": "用户验收过的提问。残留 2 条跨章命中:第17章讲傅里叶级数时用的'叠加'是谐波叠加(词同义不同),第5章那块是正文顺带提到 —— 词形匹配解决不了,记在这里当已知残留"
+    },
+    {
+      "q": "叠加定理",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 5.44,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 2,
+          "score": 5.37,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 3,
+          "score": 5.22,
+          "source": "教材-第10章-正弦稳态分析.md"
+        },
+        {
+          "rank": 4,
+          "score": 5.14,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 5,
+          "score": 5.14,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 6,
+          "score": 4.99,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 7,
+          "score": 4.86,
+          "source": "教材-第10章-正弦稳态分析.md"
+        }
+      ],
+      "note": "书里用的词。第10章讲它在交流电路里的应用,算相关章"
+    },
+    {
+      "q": "戴维南定理怎么用",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 8.2,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 2,
+          "score": 8.03,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 3,
+          "score": 7.74,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 4,
+          "score": 7.54,
+          "source": "教材-第10章-正弦稳态分析.md"
+        },
+        {
+          "rank": 5,
+          "score": 7.24,
+          "source": "第4章-电路定理.md"
+        },
+        {
+          "rank": 6,
+          "score": 7.15,
+          "source": "教材-第4章-电路定理.md"
+        },
+        {
+          "rank": 7,
+          "score": 7.06,
+          "source": "第4章-电路定理.md"
+        }
+      ],
+      "note": "定理名 + 口语化的'怎么用';第10章有交流电路里的戴维南等效"
+    },
+    {
+      "q": "运算放大器",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 9.49,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 2,
+          "score": 9.44,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 3,
+          "score": 9.34,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 4,
+          "score": 9.17,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 5,
+          "score": 9.12,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 6,
+          "score": 9.11,
+          "source": "教材-第5章-运算放大器.md"
+        },
+        {
+          "rank": 7,
+          "score": 9.08,
+          "source": "教材-第5章-运算放大器.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "一阶电路的时间常数怎么求",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 11.26,
+          "source": "教材-第7章-一阶电路.md"
+        },
+        {
+          "rank": 2,
+          "score": 11.07,
+          "source": "教材-第7章-一阶电路.md"
+        },
+        {
+          "rank": 3,
+          "score": 10.93,
+          "source": "教材-第7章-一阶电路.md"
+        },
+        {
+          "rank": 4,
+          "score": 10.67,
+          "source": "教材-第7章-一阶电路.md"
+        },
+        {
+          "rank": 5,
+          "score": 10.65,
+          "source": "第7章-一阶电路.md"
+        },
+        {
+          "rank": 6,
+          "score": 10.45,
+          "source": "教材-第7章-一阶电路.md"
+        },
+        {
+          "rank": 7,
+          "score": 10.42,
+          "source": "教材-第7章-一阶电路.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "正弦量的相量表示",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 19.72,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 2,
+          "score": 19.43,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 3,
+          "score": 19.29,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 4,
+          "score": 19.16,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 5,
+          "score": 18.33,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 6,
+          "score": 17.42,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 7,
+          "score": 17.41,
+          "source": "教材-第9章-正弦量与相量.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "三相电路",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 5.22,
+          "source": "教材-第12章-三相电路.md"
+        },
+        {
+          "rank": 2,
+          "score": 5.22,
+          "source": "教材-第12章-三相电路.md"
+        },
+        {
+          "rank": 3,
+          "score": 5.18,
+          "source": "教材-第12章-三相电路.md"
+        },
+        {
+          "rank": 4,
+          "score": 5.12,
+          "source": "教材-第12章-三相电路.md"
+        },
+        {
+          "rank": 5,
+          "score": 5.11,
+          "source": "教材-第13章-磁耦合电路.md"
+        },
+        {
+          "rank": 6,
+          "score": 5.05,
+          "source": "教材-第12章-三相电路.md"
+        },
+        {
+          "rank": 7,
+          "score": 5.03,
+          "source": "教材-第12章-三相电路.md"
+        }
+      ],
+      "note": "第13章讲三相变压器,允许作为相关章节出现"
+    },
+    {
+      "q": "拉普拉斯变换",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 9.3,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 2,
+          "score": 9.1,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 3,
+          "score": 9.07,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 4,
+          "score": 9.05,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 5,
+          "score": 8.97,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 6,
+          "score": 8.96,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        },
+        {
+          "rank": 7,
+          "score": 8.95,
+          "source": "教材-第15章-拉普拉斯变换简介.md"
+        }
+      ],
+      "note": "第16章是它的应用"
+    },
+    {
+      "q": "傅里叶级数",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 12.85,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 2,
+          "score": 12.81,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 3,
+          "score": 12.77,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 4,
+          "score": 12.7,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 5,
+          "score": 12.58,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 6,
+          "score": 12.47,
+          "source": "教材-第17章-傅里叶级数.md"
+        },
+        {
+          "rank": 7,
+          "score": 12.45,
+          "source": "教材-第17章-傅里叶级数.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "二端口网络",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 16.58,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 2,
+          "score": 16.49,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 3,
+          "score": 16.43,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 4,
+          "score": 16.43,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 5,
+          "score": 16.26,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 6,
+          "score": 16.24,
+          "source": "教材-第19章-二端口网络.md"
+        },
+        {
+          "rank": 7,
+          "score": 16.21,
+          "source": "教材-第19章-二端口网络.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "电路元件的相量关系",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 11.95,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 2,
+          "score": 11.56,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 3,
+          "score": 11.52,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 4,
+          "score": 11.31,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 5,
+          "score": 10.8,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 6,
+          "score": 10.68,
+          "source": "教材-第9章-正弦量与相量.md"
+        },
+        {
+          "rank": 7,
+          "score": 10.37,
+          "source": "教材-第9章-正弦量与相量.md"
+        }
+      ],
+      "note": "锚点词直接命中(学生可能照 PPT 标题问)"
+    },
+    {
+      "q": "什么是竞争冒险",
+      "kind": "concept",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 20.89,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 2,
+          "score": 20.44,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 3,
+          "score": 18.97,
+          "source": "面试--数电.docx"
+        },
+        {
+          "rank": 4,
+          "score": 18.74,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 5,
+          "score": 18.59,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 6,
+          "score": 17.19,
+          "source": "数电模电电分复习.docx"
+        },
+        {
+          "rank": 7,
+          "score": 16.67,
+          "source": "实验讲义2024.pdf"
+        }
+      ],
+      "note": "数电概念。两门课共用一份索引,不能用电路基础的东西答数电"
+    },
+    {
+      "q": "1.36 怎么做",
+      "kind": "problem",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 12.97,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 2,
+          "score": 12.92,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 3,
+          "score": 12.52,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 4,
+          "score": 12.21,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 5,
+          "score": 12.19,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 6,
+          "score": 10.59,
+          "source": "1.36.md"
+        },
+        {
+          "rank": 7,
+          "score": 10.57,
+          "source": "1.36.md"
+        }
+      ],
+      "note": "题号提问;锚点复制进每一块就是为了这条"
+    },
+    {
+      "q": "13.11 那题怎么做",
+      "kind": "problem",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 13.49,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 2,
+          "score": 11.32,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 3,
+          "score": 11.3,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 4,
+          "score": 11.18,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 5,
+          "score": 10.94,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 6,
+          "score": 10.39,
+          "source": "13.11.md"
+        },
+        {
+          "rank": 7,
+          "score": 10.2,
+          "source": "13.11.md"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "q": "作业里的叠加定理怎么理解",
+      "kind": "problem",
+      "rank": 1,
+      "hit": true,
+      "foreign": [
+        "教材-第7章-一阶电路.md"
+      ],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 9.32,
+          "source": "3.41.md"
+        },
+        {
+          "rank": 2,
+          "score": 8.96,
+          "source": "2.82.md"
+        },
+        {
+          "rank": 3,
+          "score": 8.88,
+          "source": "11.51.md"
+        },
+        {
+          "rank": 4,
+          "score": 8.48,
+          "source": "1.18.md"
+        },
+        {
+          "rank": 5,
+          "score": 8.46,
+          "source": "11.51.md"
+        },
+        {
+          "rank": 6,
+          "score": 7.88,
+          "source": "11.12.md"
+        },
+        {
+          "rank": 7,
+          "score": 7.82,
+          "source": "教材-第7章-一阶电路.md"
+        }
+      ],
+      "note": "学生说的'作业里的',期望命中某个作业题文件。残留 1 条第7章命中"
+    },
+    {
+      "q": "实验报告要写几页",
+      "kind": "admin",
+      "rank": 1,
+      "hit": true,
+      "foreign": [
+        "教材-第4章-电路定理.md"
+      ],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 14.36,
+          "source": "实验报告模板（2026）.pdf"
+        },
+        {
+          "rank": 2,
+          "score": 9.36,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 3,
+          "score": 9.28,
+          "source": "实验报告模板（2026）.pdf"
+        },
+        {
+          "rank": 4,
+          "score": 9.21,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 5,
+          "score": 8.98,
+          "source": "实验讲义2024.pdf"
+        },
+        {
+          "rank": 6,
+          "score": 8.06,
+          "source": "13.93.md"
+        },
+        {
+          "rank": 7,
+          "score": 7.87,
+          "source": "教材-第4章-电路定理.md"
+        }
+      ],
+      "note": "残留 1 条教材第4章命中,靠的是'要/写'这类常用词 —— 词形匹配的固有残留"
+    },
+    {
+      "q": "教材上哪里有印错的地方",
+      "kind": "admin",
+      "rank": 1,
+      "hit": true,
+      "foreign": [],
+      "violated": [],
+      "top": [
+        {
+          "rank": 1,
+          "score": 23.46,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 2,
+          "score": 22.92,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 3,
+          "score": 22.03,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 4,
+          "score": 21.39,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 5,
+          "score": 21.32,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 6,
+          "score": 21.0,
+          "source": "错误集锦.md"
+        },
+        {
+          "rank": 7,
+          "score": 12.25,
+          "source": "教材-第13章-磁耦合电路.md"
+        }
+      ],
+      "note": "错误集锦本身就是按书上页码写的(它引到第13章)"
+    }
+  ]
+}

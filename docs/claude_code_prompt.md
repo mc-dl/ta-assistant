@@ -2,6 +2,25 @@
 
 > 使用方法:在 `C:\Users\YOUR_USERNAME\Downloads\ta-assistant\` 目录下打开 Claude Code(命令行 `claude` 或 VS Code 插件),把下面**全部内容**复制粘贴进去。Claude Code 会按文档完成剩余实现、安装依赖、跑测试。
 
+> ⚠️ **时效性(2026-09-20 校订)**
+> 这是 **2026-04 项目启动时**交给 Claude Code 的那份 prompt,是"当时提了什么"的原始记录。
+> **不要再照着重跑一遍** —— 系统早已建成,重跑只会把后来改对的地方改回 4 月的形状。
+> 其中几处**已经被实测推翻**,现状以 [`knowledge_base.md`](knowledge_base.md) 和
+> [`design.md`](design.md) 为准:
+>
+> | 这份 prompt 要求 | 后来怎么改了 | 为什么 |
+> |---|---|---|
+> | 2.3 LLM 层只做 MinMax | 默认通道换成 **OpenCode Go**,MinMax 留作回滚 | 见 `design.md` §3.7 |
+> | 2.6 `search(query, top_k=5)` | 改成 **7**(`RAG_TOP_K`) | 一份语料的中位分块数是 5、最长 11,取 5 会把同一条解答的后面几块切掉 |
+> | 2.8 "FAQ 命中就短路" | 只有**事务题**短路;概念题把 FAQ 当**补充材料** | 一刀切会让概念题被"作业怎么提交"那条 FAQ 截胡 |
+> | 第三步 `pytest tests/ -v` | 目录是 **`test/`**(单数),现在 **338 个测试** | 见根 `README.md` 的「测试」 |
+> | 最后一条:中文路径 + `mklink` 软链接 | 数据已搬到 **WSL 原生目录** `~/ykt_questions/`,不再需要软链接 | 见 `deployment.md` §0 / §5 |
+> | "FAQ 命中就短路" 隐含"不调大模型" | 只是**不查资料**,答复**仍由大模型润色** | 四份文档曾同时把这句话写反,实测见 `knowledge_base.md` §5.4 |
+>
+> 另外:本文从头到尾**没有提向量检索**("可选 sentence-transformers 升级"那句是
+> [`README.md`](README.md) 技术栈里的旧设想),那个升级**没有做**,也不需要 ——
+> 检索就是 BM25,只是 IDF 换成了 Lucene 写法(见 `knowledge_base.md` §3.6)。
+
 ---
 
 ## (从这里开始复制)

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数电助教自动化助手 (TA Assistant)</title>
+<meta name="description" content="作为中山大学数字电路与逻辑设计实验课助教,每周要处理:">
+<meta name="generator" content="scripts/md2html.py">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
+<style>
+:root{--fg:#1f2328;--muted:#59636e;--border:#d8dee4;--bg:#fff;--page:#f6f8fa;
+      --code-bg:#f6f8fa;--accent:#0969da;--accent-soft:#ddf4ff;
+      --warn-bg:#fff8c5;--warn-bd:#d4a72c;--ok-bg:#dafbe1;--ok-bd:#1a7f37;
+      --bad-bg:#ffebe9;--bad-bd:#cf222e;--shadow:0 1px 3px rgba(27,31,36,.08);
+      --sidebar:264px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--fg);
+     font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",
+                 "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+     font-size:16px;line-height:1.78}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:99}
+.wrap{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);
+      gap:28px;max-width:1280px;margin:0 auto;padding:24px 20px 96px}
+@media (max-width:1080px){.wrap{grid-template-columns:1fr;gap:0}.sidebar{position:static;max-height:none}}
+main{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+     padding:40px 48px 56px;box-shadow:var(--shadow);min-width:0}
+@media (max-width:640px){main{padding:24px 18px 40px}body{font-size:15.5px}.wrap{padding:12px}}
+
+/* ---- 侧边栏:目录 ---- */
+.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);
+         overflow:auto;font-size:.9em}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{margin:.1em 0 .5em;font-size:.95em;border:0;padding:0;color:var(--muted);
+         letter-spacing:.06em}
+.toc ul{list-style:none;margin:.2em 0;padding-left:0}
+.toc ul ul{padding-left:.9em;border-left:1px solid var(--border);margin-left:.35em}
+.toc li{margin:.12em 0}
+.toc a{display:block;padding:.2em .5em;border-radius:5px;color:var(--fg);
+       text-decoration:none;border-left:2px solid transparent}
+.toc a:hover{background:var(--accent-soft)}
+.toc a.active{background:var(--accent-soft);border-left-color:var(--accent);
+              color:var(--accent);font-weight:600}
+.toc .toctitle{display:none}          /* 侧边栏标题由 .card h2 提供,不要重复 */
+.docs-nav a{display:block;padding:.2em .5em;border-radius:5px;text-decoration:none;
+            color:var(--muted);font-size:.95em}
+.docs-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.docs-nav a.here{color:var(--fg);font-weight:600}
+
+/* ---- 正文 ---- */
+h1,h2,h3,h4{line-height:1.35;margin:1.9em 0 .6em;scroll-margin-top:16px}
+h1{font-size:1.9em;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:0}
+h2{font-size:1.45em;border-bottom:1px solid var(--border);padding-bottom:.25em;margin-top:2.2em}
+h3{font-size:1.18em}
+p,li{word-break:break-word}
+a{color:var(--accent)}
+ul,ol{padding-left:1.5em}
+li{margin:.18em 0}
+code{background:var(--code-bg);padding:.15em .4em;border-radius:4px;
+     font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;font-size:.9em}
+pre{background:var(--code-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;
+     border:1px solid var(--border);line-height:1.6}
+pre code{background:none;padding:0;font-size:.88em}
+hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
+.anchor{float:right;color:var(--border);text-decoration:none;font-weight:400;
+        padding-left:.4em;opacity:0;transition:opacity .12s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+
+/* ---- 表格:横向滚动 + 表头吸顶 ---- */
+.table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
+th,td{border:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+      padding:8px 12px;text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:var(--code-bg);font-weight:600;position:sticky;top:0;z-index:1}
+tr:nth-child(even) td{background:#fcfcfd}
+tbody tr:hover td{background:var(--accent-soft)}
+
+/* ---- 提示块(按 emoji 上色) ---- */
+blockquote{margin:1.1em 0;padding:.7em 1.1em;color:var(--muted);
+           border-left:4px solid var(--border);background:#fbfcfd;border-radius:0 6px 6px 0}
+blockquote p{margin:.35em 0}
+blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color:#3d2f00}
+blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
+blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
+
+/* ---- 图:mermaid 与图片 ---- */
+figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
+                          border-radius:8px;background:#fcfcfd}
+figure.diagram .mermaid{overflow-x:auto;text-align:center}
+figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
+     margin-top:.6em;text-align:center}
+figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
+details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src summary{cursor:pointer;color:var(--muted)}
+details.mermaid-src pre{margin:.5em 0 0}
+
+/* ---- 本页速览胶囊 ---- */
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
+.quick a{font-size:.84em;padding:.22em .7em;border:1px solid var(--border);
+         border-radius:999px;text-decoration:none;color:var(--muted);background:var(--bg)}
+.quick a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ---- 页脚与回到顶部 ---- */
+.foot{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);
+      color:var(--muted);font-size:.85em;display:flex;flex-wrap:wrap;gap:.4em 1.2em;
+      justify-content:space-between}
+#totop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;
+       border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;
+       box-shadow:var(--shadow);font-size:17px;display:none}
+#totop.show{display:block}
+
+/* ---- 首页(导航页) ---- */
+.hub-hero{background:linear-gradient(135deg,#0969da11,#0969da05);border:1px solid var(--border);
+          border-radius:12px;padding:26px 28px;margin-bottom:22px}
+.hub-hero h1{border:0;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards a.card-link{display:block;text-decoration:none;color:var(--fg);background:var(--bg);
+     border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);
+     transition:transform .12s,border-color .12s}
+.cards a.card-link:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cards .t{font-weight:600;margin-bottom:.35em;font-size:1.02em}
+.cards .d{color:var(--muted);font-size:.88em;line-height:1.6}
+.cards .m{color:var(--muted);font-size:.78em;margin-top:.6em}
+
+@media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
+  .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
+  .table-wrap{overflow:visible}th{position:static}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<aside class="sidebar">
+<div class="card toc"><h2>本页目录</h2><div class="toc"><span class="toctitle">本页目录</span><ul>
+<li><a href="#项目目标">项目目标</a></li>
+<li><a href="#快速上手5-步">快速上手(5 步)</a></li>
+<li><a href="#目录结构">目录结构</a></li>
+<li><a href="#技术栈">技术栈</a></li>
+<li><a href="#为什么这样设计">为什么这样设计</a></li>
+<li><a href="#消息前缀过滤">消息前缀过滤</a></li>
+<li><a href="#开发约定">开发约定</a></li>
+</ul>
+</div>
+</div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="README.html" class="here">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
+</aside>
+<main>
+<nav class="quick"><a href="#项目目标">项目目标</a><a href="#快速上手5-步">快速上手(5 步)</a><a href="#目录结构">目录结构</a><a href="#技术栈">技术栈</a><a href="#为什么这样设计">为什么这样设计</a><a href="#消息前缀过滤">消息前缀过滤</a><a href="#开发约定">开发约定</a></nav>
+<h1 id="数电助教自动化助手-ta-assistant">数电助教自动化助手 (TA Assistant)</h1>
+<blockquote>
+<p>一个轻量级的数电课助教工作自动化工具,配合 OpenClaw 微信 Bot 使用,基于 RAG + 规则分类实现作业补交自动登记 + 学生提问智能回答。</p>
+<p>⚠️ <strong>时效性(2026-09-20 校订)</strong>
+这是 <strong>2026-04 版的 README</strong>。项目现在的 README 在<strong>仓库根目录 <a href="../README.md"><code>../README.md</code></a></strong>,
+那份才是权威。本文<strong>保留原样</strong>当作"当时怎么写的"的记录,但<strong>下面几条照做会出错</strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>本文写的</th>
+<th>现状</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目目标、快速上手 5 步</td>
+<td>照做会装错 —— 先看根 <a href="../README.md"><code>README.md</code></a> 的「快速开始」</td>
+</tr>
+<tr>
+<td>运行环境"文件通过 <code>/mnt/c/...</code> 访问 Windows 路径"</td>
+<td>代码和数据都在 <strong>WSL 原生目录</strong>(<code>~/ta-assistant/</code> + <code>~/ykt_questions/</code>),<code>/mnt/c</code> 那份只是<strong>编辑源码的工作副本</strong>;见 <a href="deployment.md"><code>deployment.md</code></a> §0</td>
+</tr>
+<tr>
+<td>LLM:MinMax API(已配置)</td>
+<td>默认通道已换成 <strong>OpenCode Go</strong>;MinMax 降为<strong>回滚通道</strong>;见 <a href="design.md"><code>design.md</code></a> §3.7</td>
+</tr>
+<tr>
+<td>检索:"BM25 + 可选 sentence-transformers 升级"</td>
+<td>就是 BM25(不需要向量模型),但 <strong>IDF 换成了 Lucene 写法</strong>;见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §3.6</td>
+</tr>
+<tr>
+<td>脚本树里没有 <code>md2html.py</code>(把文档转成 HTML 那个)</td>
+<td>完整清单<strong>以根 README 的树为准</strong> —— 这两棵树对不上时,信根目录那份</td>
+</tr>
+<tr>
+<td>没有「测试」一节</td>
+<td>现在有 <strong>338 个测试</strong> + 检索评测基线,见根 README 的「测试」</td>
+</tr>
+<tr>
+<td>没有 <code>src/handlers/record.py</code>、<code>src/utils/course_facts.py</code></td>
+<td>后来加的:<code>【记录】</code>(助教在微信里写 FAQ)与课程事务事实表,见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §5.5 / §6.6</td>
+</tr>
+<tr>
+<td>LLM 只有 MinMax</td>
+<td>默认通道是 <strong>OpenCode Go</strong>,MinMax 降为回滚通道,见 <a href="design.md"><code>design.md</code></a> §3.7</td>
+</tr>
+<tr>
+<td>目录树只列了 5 个 md</td>
+<td>还有 <code>wechat_end_to_end.md</code> / <code>knowledge_base.md</code>,且<strong>每篇都有网页版 <code>docs/*.html</code></strong> —— 见 <a href="index.html"><code>index.html</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<p>(目录树里的 <code>data/samples/</code> 之类的<strong>仍然准确</strong>,不用疑心。)</p>
+</blockquote>
+<2 id="项目目标">项目目标<a class="anchor" href="#项目目标" title="链接到这一节">#</a></2>
+<p>作为中山大学数字电路与逻辑设计实验课助教,每周要处理:</p>
+<ol>
+<li><strong>作业补交</strong>:学生在微信里发"我作业漏交了",发截图、姓名、学号。需要手工登记到 Excel。</li>
+<li><strong>答疑</strong>:学生问重复性问题(Proteus 在哪下载、PPT 在哪里、作业怎么批改等)或数电课本相关问题。需要翻资料、打字回复。</li>
+</ol>
+<p>本项目通过 OpenClaw(微信 Bot)+ 本地 Python 服务实现全自动化。</p>
+<2 id="快速上手5-步">快速上手(5 步)<a class="anchor" href="#快速上手5-步" title="链接到这一节">#</a></2>
+<ol>
+<li><strong>阅读文档</strong>:<code>docs/requirements.md</code> 和 <code>docs/design.md</code></li>
+<li><strong>放置项目</strong>:将整个 <code>ta-assistant/</code> 文件夹移动到 <code>C:\Users\YOUR_USERNAME\Downloads\</code></li>
+<li><strong>交给 Claude Code</strong>:打开 Claude Code,粘贴 <code>docs/claude_code_prompt.md</code> 里的内容,让它自动完成剩余实现和环境配置</li>
+<li><strong>WSL 首次部署</strong>:在 WSL Ubuntu 里运行 <code>bash /mnt/c/Users/YOUR_USERNAME/Downloads/ta-assistant/scripts/deploy.sh</code></li>
+<li><strong>接入 OpenClaw(微信端到端)</strong>:<code>bash scripts/install_openclaw_skill.sh</code>,完整链路与排障见 <code>docs/wechat_end_to_end.md</code>(也见 <code>docs/deployment.md</code> 的接入章节)</li>
+</ol>
+<2 id="目录结构">目录结构<a class="anchor" href="#目录结构" title="链接到这一节">#</a></2>
+<pre><code>ta-assistant/
+├── README.md                   本文件
+├── docs/                       所有设计文档
+│   ├── index.html              **文档首页(导航页)**,双击看这个
+│   ├── requirements.md         需求文档(PRD)
+│   ├── design.md               系统设计文档
+│   ├── deployment.md           部署 &amp; OpenClaw 接入指南
+│   ├── wechat_end_to_end.md    微信端到端跑通手册(实测记录)
+│   ├── knowledge_base.md       知识库说明(资料/FAQ 来源、重建步骤、已知限制)
+│   ├── claude_code_prompt.md   交给 Claude Code 的 prompt
+│   └── *.html                  上面每一篇的**网页版**(`scripts/md2html.py` 生成,别手改)
+├── src/                        源代码
+│   ├── config.py               配置(路径、API Key)
+│   ├── main.py                 主入口(命令行 &amp; HTTP)
+│   ├── handlers/               业务处理器
+│   │   ├── classifier.py       消息分类:补交 / 提问 / 其他
+│   │   ├── submission.py       补交登记逻辑
+│   │   └── qa.py               答疑逻辑
+│   ├── rag/                    检索增强
+│   │   ├── indexer.py          构建知识库索引
+│   │   └── retriever.py        从索引检索相关片段
+│   ├── llm/
+│   │   └── minmax.py           MinMax API 封装
+│   └── utils/
+│       ├── doc_parser.py       解析 pdf / docx / doc / xlsx / pptx / txt
+│       └── excel_ops.py        读写 Excel
+├── scripts/
+│   ├── build_index.py          一次性:构建 RAG 索引
+│   ├── import_circuit_basic.py 英文版作业答案 → 带中文锚点的语料
+│   ├── import_circuit_theory.py 中文版作业答案 + 课堂讲义 + 错误集锦 → 语料
+│   ├── enhance_circuit_basic.py 调大模型补【中文详细解析】
+│   ├── audit_enhanced_numbers.py 审计:解析里的数字有没有被改
+│   ├── ocr_textbook.py         扫描版教材 OCR(需 /home/jj/ocr-venv)
+│   ├── import_textbook.py      OCR 结果 → 分章语料 + 印刷页码标记
+│   ├── eval_retrieval.py       检索质量评测(--save-baseline / --compare)
+│   ├── openclaw_bridge.py      OpenClaw 调用入口
+│   ├── setup.sh                一键安装依赖(WSL Ubuntu)
+│   └── deploy.sh               一键部署脚本(WSL,同步代码+装依赖+建索引)
+├── data/
+│   ├── index/                  RAG 索引(自动生成)
+│   ├── logs/                   运行日志
+│   └── samples/                测试样本
+├── test/                       单元测试
+├── requirements.txt            Python 依赖
+├── .env.example                环境变量模板
+└── .gitignore
+</code></pre>
+<2 id="技术栈">技术栈<a class="anchor" href="#技术栈" title="链接到这一节">#</a></2>
+<ul>
+<li><strong>语言</strong>:Python 3.10+</li>
+<li><strong>运行环境</strong>:WSL Ubuntu(文件通过 <code>/mnt/c/...</code> 访问 Windows 路径)</li>
+<li><strong>文档解析</strong>:<code>pdfplumber</code> / <code>python-docx</code> / <code>openpyxl</code></li>
+<li><strong>OCR</strong>(仅扫描版教材,独立 venv):RapidOCR(ONNX Runtime),纯 pip、CPU 可跑</li>
+<li><strong>检索</strong>:BM25(轻量,无需下载模型) + 可选 sentence-transformers 升级</li>
+<li><strong>LLM</strong>:MinMax API(已配置)</li>
+<li><strong>接入层</strong>:OpenClaw(微信)→ 本项目</li>
+</ul>
+<2 id="为什么这样设计">为什么这样设计<a class="anchor" href="#为什么这样设计" title="链接到这一节">#</a></2>
+<ul>
+<li><strong>文档先行</strong>:所有需求和设计写清楚,Claude Code 才知道做什么</li>
+<li><strong>BM25 优先</strong>:比向量检索简单 10 倍,无需下载模型,对中文效果不差</li>
+<li><strong>模块化</strong>:分类器/补交/答疑解耦,后续可以单独迭代</li>
+<li><strong>路径集中</strong>:所有路径在 <code>config.py</code> 一处配置,改一次到处生效</li>
+</ul>
+<2 id="消息前缀过滤">消息前缀过滤<a class="anchor" href="#消息前缀过滤" title="链接到这一节">#</a></2>
+<p>系统只处理带以下<strong>任一前缀</strong>的消息,其他消息(闲聊、通知等)直接跳过返回 <code>{"type": "skip"}</code>。
+这确保 OpenClaw 转发的都是学生消息,不会把闲聊也当业务处理。</p>
+<p><strong>支持的前缀变体:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>【转发学生提问】</code></td>
+<td>标准前缀</td>
+</tr>
+<tr>
+<td><code>【转发同学提问】</code></td>
+<td>兼容"同学"打字习惯</td>
+</tr>
+<tr>
+<td><code>【转发学生消息】</code></td>
+<td>兼容"消息"变体</td>
+</tr>
+<tr>
+<td><code>[转发学生提问]</code></td>
+<td>半角方括号兼容</td>
+</tr>
+</tbody>
+</table></div>
+<p>前缀前允许有前导空格(系统会自动 lstrip)。</p>
+<p>可通过 <code>.env</code> 的 <code>FORWARD_PREFIX</code>(逗号分隔,覆盖全部)或 <code>src/config.py</code> 的 <code>STUDENT_FORWARD_PREFIXES</code> 列表修改/增删前缀变体。</p>
+<2 id="开发约定">开发约定<a class="anchor" href="#开发约定" title="链接到这一节">#</a></2>
+<ul>
+<li><strong><code>src/</code> 下严禁 print 到 stdout</strong>。所有非致命调试/信息输出必须用 <code>from src.utils.stderr_log import warn as _warn; _warn("...")</code> 输出到 stderr。stdout 是 OpenClaw JSON 解析的唯一通道,禁止污染。</li>
+<li><strong><code>scripts/openclaw_bridge.py</code></strong> 会在执行 <code>process()</code> 期间把 stdout 重定向到 stderr,确保最终只向 OpenClaw 写一行纯 JSON。</li>
+<li><strong>回归测试</strong>:运行 <code>pytest test/test_bridge_stdout_clean.py -v</code> 可验证 bridge stdout 干净。</li>
+</ul>
+<div class="foot">
+  <span>源文件 <code>docs/README.md</code> · 生成于 2026-09-20 21:09</span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+</div>
+</main>
+</div>
+<button id="totop" title="回到顶部">↑</button>
+<script>
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,sh=h.scrollHeight-h.clientHeight;
+    bar.style.width=(sh>0?(h.scrollTop/sh*100):0)+'%';
+    top.classList.toggle('show',h.scrollTop>500);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var heads=[].slice.call(document.querySelectorAll('main h2[id],main h3[id]'));
+  var links={};[].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    links[decodeURIComponent(a.getAttribute('href').slice(1))]=a;});
+  function spy(){
+    var cur=null;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i].getBoundingClientRect().top<=90) cur=heads[i].id; else break;
+    }
+    for(var k in links) links[k].classList.remove('active');
+    if(cur&&links[cur]) links[cur].classList.add('active');
+  }
+  document.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+</body>
+</html>

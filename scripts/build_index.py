@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""一次性:扫描数电资料,构建 BM25 索引。资料更新后重跑即可。"""
+"""一次性:扫描资料目录,构建 BM25 索引。资料更新后重跑即可。
+
+资料目录是 MATERIALS_DIR(默认 ~/ykt_questions/materials),现在同时装着
+两门课的资料:数电实验的讲义/模板,以及「电路基础」的作业答案语料
+(后者由 scripts/import_circuit_basic.py 生成)。
+"""
 from __future__ import annotations
 
 import sys
@@ -10,9 +15,10 @@ sys.path.insert(0, str(ROOT))
 
 
 def main() -> int:
+    from src import config
     from src.rag.indexer import build_index
     print("=" * 60)
-    print("构建数电资料 BM25 索引")
+    print(f"构建资料 BM25 索引:{config.MATERIALS_DIR}")
     print("=" * 60)
     try:
         n = build_index(verbose=True)
@@ -20,7 +26,7 @@ def main() -> int:
         return 0
     except FileNotFoundError as e:
         print(f"\n❌ {e}")
-        print("请检查 src/config.py 里的 MATERIALS_DIR 是否正确。")
+        print("请检查 src/config.py 里的 MATERIALS_DIR(或 .env 里的 WINDOWS_ROOT)是否正确。")
         return 1
     except Exception as e:  # noqa: BLE001
         print(f"\n❌ 构建失败:{e}")

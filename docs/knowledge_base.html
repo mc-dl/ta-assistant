@@ -1,0 +1,2894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>知识库说明(FAQ + 资料库)</title>
+<meta name="description" content="本文说明 ta-assistant 的知识库有哪些内容、从哪来、怎么重建、边界在哪。">
+<meta name="generator" content="scripts/md2html.py">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
+<style>
+:root{--fg:#1f2328;--muted:#59636e;--border:#d8dee4;--bg:#fff;--page:#f6f8fa;
+      --code-bg:#f6f8fa;--accent:#0969da;--accent-soft:#ddf4ff;
+      --warn-bg:#fff8c5;--warn-bd:#d4a72c;--ok-bg:#dafbe1;--ok-bd:#1a7f37;
+      --bad-bg:#ffebe9;--bad-bd:#cf222e;--shadow:0 1px 3px rgba(27,31,36,.08);
+      --sidebar:264px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--fg);
+     font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",
+                 "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+     font-size:16px;line-height:1.78}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:99}
+.wrap{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);
+      gap:28px;max-width:1280px;margin:0 auto;padding:24px 20px 96px}
+@media (max-width:1080px){.wrap{grid-template-columns:1fr;gap:0}.sidebar{position:static;max-height:none}}
+main{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+     padding:40px 48px 56px;box-shadow:var(--shadow);min-width:0}
+@media (max-width:640px){main{padding:24px 18px 40px}body{font-size:15.5px}.wrap{padding:12px}}
+
+/* ---- 侧边栏:目录 ---- */
+.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);
+         overflow:auto;font-size:.9em}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{margin:.1em 0 .5em;font-size:.95em;border:0;padding:0;color:var(--muted);
+         letter-spacing:.06em}
+.toc ul{list-style:none;margin:.2em 0;padding-left:0}
+.toc ul ul{padding-left:.9em;border-left:1px solid var(--border);margin-left:.35em}
+.toc li{margin:.12em 0}
+.toc a{display:block;padding:.2em .5em;border-radius:5px;color:var(--fg);
+       text-decoration:none;border-left:2px solid transparent}
+.toc a:hover{background:var(--accent-soft)}
+.toc a.active{background:var(--accent-soft);border-left-color:var(--accent);
+              color:var(--accent);font-weight:600}
+.toc .toctitle{display:none}          /* 侧边栏标题由 .card h2 提供,不要重复 */
+.docs-nav a{display:block;padding:.2em .5em;border-radius:5px;text-decoration:none;
+            color:var(--muted);font-size:.95em}
+.docs-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.docs-nav a.here{color:var(--fg);font-weight:600}
+
+/* ---- 正文 ---- */
+h1,h2,h3,h4{line-height:1.35;margin:1.9em 0 .6em;scroll-margin-top:16px}
+h1{font-size:1.9em;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:0}
+h2{font-size:1.45em;border-bottom:1px solid var(--border);padding-bottom:.25em;margin-top:2.2em}
+h3{font-size:1.18em}
+p,li{word-break:break-word}
+a{color:var(--accent)}
+ul,ol{padding-left:1.5em}
+li{margin:.18em 0}
+code{background:var(--code-bg);padding:.15em .4em;border-radius:4px;
+     font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;font-size:.9em}
+pre{background:var(--code-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;
+     border:1px solid var(--border);line-height:1.6}
+pre code{background:none;padding:0;font-size:.88em}
+hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
+.anchor{float:right;color:var(--border);text-decoration:none;font-weight:400;
+        padding-left:.4em;opacity:0;transition:opacity .12s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+
+/* ---- 表格:横向滚动 + 表头吸顶 ---- */
+.table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
+th,td{border:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+      padding:8px 12px;text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:var(--code-bg);font-weight:600;position:sticky;top:0;z-index:1}
+tr:nth-child(even) td{background:#fcfcfd}
+tbody tr:hover td{background:var(--accent-soft)}
+
+/* ---- 提示块(按 emoji 上色) ---- */
+blockquote{margin:1.1em 0;padding:.7em 1.1em;color:var(--muted);
+           border-left:4px solid var(--border);background:#fbfcfd;border-radius:0 6px 6px 0}
+blockquote p{margin:.35em 0}
+blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color:#3d2f00}
+blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
+blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
+
+/* ---- 图:mermaid 与图片 ---- */
+figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
+                          border-radius:8px;background:#fcfcfd}
+figure.diagram .mermaid{overflow-x:auto;text-align:center}
+figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
+     margin-top:.6em;text-align:center}
+figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
+details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src summary{cursor:pointer;color:var(--muted)}
+details.mermaid-src pre{margin:.5em 0 0}
+
+/* ---- 本页速览胶囊 ---- */
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
+.quick a{font-size:.84em;padding:.22em .7em;border:1px solid var(--border);
+         border-radius:999px;text-decoration:none;color:var(--muted);background:var(--bg)}
+.quick a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ---- 页脚与回到顶部 ---- */
+.foot{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);
+      color:var(--muted);font-size:.85em;display:flex;flex-wrap:wrap;gap:.4em 1.2em;
+      justify-content:space-between}
+#totop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;
+       border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;
+       box-shadow:var(--shadow);font-size:17px;display:none}
+#totop.show{display:block}
+
+/* ---- 首页(导航页) ---- */
+.hub-hero{background:linear-gradient(135deg,#0969da11,#0969da05);border:1px solid var(--border);
+          border-radius:12px;padding:26px 28px;margin-bottom:22px}
+.hub-hero h1{border:0;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards a.card-link{display:block;text-decoration:none;color:var(--fg);background:var(--bg);
+     border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);
+     transition:transform .12s,border-color .12s}
+.cards a.card-link:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cards .t{font-weight:600;margin-bottom:.35em;font-size:1.02em}
+.cards .d{color:var(--muted);font-size:.88em;line-height:1.6}
+.cards .m{color:var(--muted);font-size:.78em;margin-top:.6em}
+
+@media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
+  .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
+  .table-wrap{overflow:visible}th{position:static}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<aside class="sidebar">
+<div class="card toc"><h2>本页目录</h2><div class="toc"><span class="toctitle">本页目录</span><ul>
+<li><a href="#1-两条召回通路">1. 两条召回通路</a></li>
+<li><a href="#2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 .env 里配的那个)</a></li>
+<li><a href="#3-资料库里现在有什么">3. 资料库里现在有什么</a><ul>
+<li><a href="#31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)</a></li>
+<li><a href="#32-电路基础">3.2 电路基础</a></li>
+<li><a href="#33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)</a></li>
+<li><a href="#34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进每一块,不能只放第一块</a></li>
+<li><a href="#341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件不进索引(2026-09-20 晚)</a></li>
+<li><a href="#342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上学生的说法,不能只写书面语</a></li>
+<li><a href="#35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)</a></li>
+<li><a href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)</a></li>
+</ul>
+</li>
+<li><a href="#4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被故意排除了(不是遗漏)</a></li>
+<li><a href="#5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回</a><ul>
+<li><a href="#51-格式">5.1 格式</a></li>
+<li><a href="#52-阈值与实词闸门">5.2 阈值与"实词闸门"</a></li>
+<li><a href="#521-实词闸门拦不住的那种截胡带题号就先去查资料">5.2.1 实词闸门拦不住的那种截胡:带题号就先去查资料</a></li>
+<li><a href="#53-脱敏规则重要新增条目前先读这段">5.3 脱敏规则(重要,新增条目前先读这段)</a></li>
+<li><a href="#54-勘误faq-快路快在不查资料不是不调大模型">5.4 勘误:"FAQ 快路"快在不查资料,不是"不调大模型"</a></li>
+<li><a href="#55-助教自己在微信里加-faq记录">5.5 助教自己在微信里加 FAQ:【记录】</a></li>
+<li><a href="#56-从日志里挖下一条-faq-该写什么">5.6 从日志里挖"下一条 FAQ 该写什么"</a></li>
+</ul>
+</li>
+<li><a href="#6-大模型侧的三档规则资料里没有时怎么办">6. 大模型侧的三档规则(资料里没有时怎么办)</a><ul>
+<li><a href="#61-走过的一段弯路">6.1 走过的一段弯路</a></li>
+<li><a href="#62-现在的三档">6.2 现在的三档</a></li>
+<li><a href="#63-为什么②③必须单独钉住">6.3 为什么②③必须单独钉住</a></li>
+<li><a href="#64-实测2026-09-20">6.4 实测(2026-09-20)</a></li>
+<li><a href="#641-教材进库后的复测2026-09-20-晚同一批提问">6.4.1 教材进库后的复测(2026-09-20 晚,同一批提问)</a></li>
+<li><a href="#65-还有一条不要用-markdown">6.5 还有一条:不要用 Markdown</a></li>
+<li><a href="#66-②-档多了一层会过期的口径课程事务事实表">6.6 ② 档多了一层"会过期的口径":课程事务事实表</a></li>
+</ul>
+</li>
+<li><a href="#7-资料更新后怎么重建日常运维">7. 资料更新后怎么重建(日常运维)</a><ul>
+<li><a href="#71-三条不碰索引的日常操作">7.1 三条"不碰索引"的日常操作</a></li>
+<li><a href="#72-文档怎么重新生成改了-md-之后">7.2 文档怎么重新生成(改了 md 之后)</a></li>
+</ul>
+</li>
+<li><a href="#8-已知限制与待办">8. 已知限制与待办</a></li>
+<li><a href="#9-改动清单2026-09-20">9. 改动清单(2026-09-20)</a><ul>
+<li><a href="#91-第一轮搭建知识库">9.1 第一轮:搭建知识库</a></li>
+<li><a href="#92-第二轮修136-答不出来-加中文详细解析">9.2 第二轮:修"1.36 答不出来" + 加中文详细解析</a></li>
+<li><a href="#93-第三轮概念题不该一律回我不确定">9.3 第三轮:概念题不该一律回"我不确定"</a></li>
+<li><a href="#94-第四轮中文版作业答案为准-讲义-错误集锦">9.4 第四轮:中文版作业答案为准 + 讲义 + 错误集锦</a></li>
+<li><a href="#95-第五轮扫描版中文教材-ocr-进库">9.5 第五轮:扫描版中文教材 OCR 进库</a></li>
+<li><a href="#96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测">9.6 第六轮:教材语料审计 + 修 BM25 的 IDF 兜底 + 建常驻评测</a></li>
+<li><a href="#97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷">9.7 第七轮:FAQ 从"手改 txt"变成"能记";顺带收掉三处静默缺陷</a></li>
+<li><a href="#98-第八轮花名册修好顺带撞出补交表被单测写了-398-行">9.8 第八轮:花名册修好,顺带撞出"补交表被单测写了 398 行"</a></li>
+<li><a href="#99-第九轮文档长出网页层-全仓一致性审计">9.9 第九轮:文档长出"网页层" + 全仓一致性审计</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html" class="here">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
+</aside>
+<main>
+<nav class="quick"><a href="#1-两条召回通路">1. 两条召回通路</a><a href="#2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 .env 里配的那个)</a><a href="#3-资料库里现在有什么">3. 资料库里现在有什么</a><a href="#31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)</a><a href="#32-电路基础">3.2 电路基础</a><a href="#33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)</a><a href="#34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进每一块,不能只放第一块</a><a href="#341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件不进索引(2026-09-20 晚)</a><a href="#342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上学生的说法,不能只写书面语</a><a href="#35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)</a><a href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)</a><a href="#4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被故意排除了(不是遗漏)</a><a href="#5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回</a><a href="#51-格式">5.1 格式</a></nav>
+<h1 id="知识库说明faq-资料库">知识库说明(FAQ + 资料库)</h1>
+<blockquote>
+<p>建立:2026-09-20 · 起因:新增「电路基础」(张曰理老师)理论课的作业答案与群聊问答
+最近一轮:<strong>第九轮</strong> —— 文档长出"网页层"(HTML 里有架构图/流程图/时序图/饼图,
+不是 markdown 的翻版),外加一次全仓一致性审计。改动清单见 §9.9。
+(上一轮 = 第八轮:花名册终于读得出来,顺带撞出"补交表被单测写了 398 行",§9.8)</p>
+</blockquote>
+<p>本文说明 ta-assistant 的知识库<strong>有哪些内容、从哪来、怎么重建、边界在哪</strong>。
+日常运维只需要看<strong>第 2 节、第 7 节(含 §7.1 三条"不碰索引"的操作)</strong>。</p>
+<p><strong>要加一条 FAQ</strong>,别手改 txt —— 微信里发 <code>【记录】问题:… 标准答案:…</code>,见 §5.5。
+<strong>要改截止时间/提交方式这类事务口径</strong>,编辑 <code>~/ykt_questions/课程事务.txt</code>,见 §6.6。
+<strong>换学期要换花名册</strong>,覆盖 <code>~/ykt_questions/花名册/电路基础理论课_学生名单.xlsx</code> 这个
+文件名即可,然后跑一次 <code>python scripts/check_roster.py</code> 确认人数对不对,见 §8 第 12 条。</p>
+<p><strong>改动检索相关的东西之前,请先读 §3.6。</strong> 那里记着一个反直觉的坑:
+<code>rank_bm25</code> 会把"半数以上文档都含"的词的 IDF 兜底成<strong>同一个正数</strong>,
+于是 <code>的/是/原理</code> 这类虚词变成"正证据"、把无关章节顶到正确章节前面。
+现在的修法是 <code>apply_lucene_idf()</code>,而且<strong>不许用到 FAQ 通路</strong>(那会偷偷改掉 4.0 阈值)。</p>
+<hr />
+<2 id="1-两条召回通路">1. 两条召回通路<a class="anchor" href="#1-两条召回通路" title="链接到这一节">#</a></2>
+<p>ta-assistant 的答疑是<strong>两路串联</strong>,不是一路:</p>
+<figure class="diagram">
+<div class="mermaid">flowchart TD
+  Q[&quot;学生提问&quot;] --&gt; K{&quot;_classify() 分档&quot;}
+
+  K --&gt;|&quot;problem&lt;br/&gt;带题号 1.36 / 第5题&quot;| RAGONLY[&quot;只走②资料通路&lt;br/&gt;FAQ 连补充都不加&quot;]
+  K --&gt;|&quot;admin&lt;br/&gt;提交/截止/成绩/考试&quot;| FAQHIT{&quot;① FAQ 命中?&lt;br/&gt;阈值 4.0 + 实词闸门&quot;}
+  K --&gt;|&quot;concept&lt;br/&gt;概念/原理,以及没命中任何关键词的默认档&quot;| BOTH
+
+  FAQHIT --&gt;|&quot;命中&quot;| FAST[&quot;① FAQ 当依据&lt;br/&gt;不查资料,交给大模型润色&quot;]
+  FAQHIT --&gt;|&quot;未命中&quot;| RAGONLY
+
+  BOTH[&quot;② 资料通路&quot;] --&gt; MERGE{&quot;① FAQ 也命中?&quot;}
+  MERGE --&gt;|&quot;命中&quot;| SUPP[&quot;FAQ 一并当补充材料喂进去&quot;]
+  MERGE --&gt;|&quot;没命中&quot;| ONLYDOC[&quot;只喂资料&quot;]
+
+  RAGONLY --&gt; BM[&quot;BM25 over ~/ykt_questions/materials/&lt;br/&gt;取 top-RAG_TOP_K(默认 7)块&quot;]
+  SUPP --&gt; BM
+  ONLYDOC --&gt; BM
+  BM --&gt; ANS[&quot;大模型作答&quot;]
+
+  FAST --&gt; ANS</div>
+<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart TD
+  Q[&quot;学生提问&quot;] --&gt; K{&quot;_classify() 分档&quot;}
+
+  K --&gt;|&quot;problem&lt;br/&gt;带题号 1.36 / 第5题&quot;| RAGONLY[&quot;只走②资料通路&lt;br/&gt;FAQ 连补充都不加&quot;]
+  K --&gt;|&quot;admin&lt;br/&gt;提交/截止/成绩/考试&quot;| FAQHIT{&quot;① FAQ 命中?&lt;br/&gt;阈值 4.0 + 实词闸门&quot;}
+  K --&gt;|&quot;concept&lt;br/&gt;概念/原理,以及没命中任何关键词的默认档&quot;| BOTH
+
+  FAQHIT --&gt;|&quot;命中&quot;| FAST[&quot;① FAQ 当依据&lt;br/&gt;不查资料,交给大模型润色&quot;]
+  FAQHIT --&gt;|&quot;未命中&quot;| RAGONLY
+
+  BOTH[&quot;② 资料通路&quot;] --&gt; MERGE{&quot;① FAQ 也命中?&quot;}
+  MERGE --&gt;|&quot;命中&quot;| SUPP[&quot;FAQ 一并当补充材料喂进去&quot;]
+  MERGE --&gt;|&quot;没命中&quot;| ONLYDOC[&quot;只喂资料&quot;]
+
+  RAGONLY --&gt; BM[&quot;BM25 over ~/ykt_questions/materials/&lt;br/&gt;取 top-RAG_TOP_K(默认 7)块&quot;]
+  SUPP --&gt; BM
+  ONLYDOC --&gt; BM
+  BM --&gt; ANS[&quot;大模型作答&quot;]
+
+  FAST --&gt; ANS</code></pre></details>
+</figure>
+<blockquote>
+<p>下面是同一张图的 <strong>ASCII 版</strong> —— 终端里、<code>git diff</code> 里、以及不渲染 mermaid 的地方看这份。</p>
+</blockquote>
+<pre><code>学生提问
+   │
+   ├─ 先分档:_classify() → problem / admin / concept       ← 2026-09-20 晚新增
+   │    │
+   │    ├─ problem(带题号:1.36 / 第5题 / 题10.46)
+   │    │     → 只查②资料通路,FAQ 连补充都不加
+   │    │        (问 1.36 时 FAQ 里那条&quot;作业怎么提交&quot;纯属噪声)
+   │    │
+   │    ├─ admin(课程事务:提交/截止/成绩/考试/考勤/雨课堂…)
+   │    │     ├─ ① FAQ 命中 → **不查资料,FAQ 当依据交给大模型润色**
+   │    │     └─ 未命中 → ② 资料通路
+   │    │
+   │    └─ concept(学科概念/原理,以及**没命中任何关键词的默认档**)
+   │          → ② 资料通路 + ① FAQ 命中则**当补充材料一并喂进去**
+   │            (概念讲解要能展开,短路会把&quot;讲得更透&quot;一起掐掉)
+   │
+   └─ ② 资料通路:RAG,BM25 over ~/ykt_questions/materials/ 下的分块
+         取 top-RAG_TOP_K(默认 7)块塞进 prompt,由大模型作答
+</code></pre>
+<p><strong>FAQ 命中就短路,不会再走资料通路</strong> —— 所以 FAQ 里写一条不准确的答案,
+代价比资料里写错还大,它没有任何"再检查一次"的机会。
+(注意"短路"指的是<strong>不走资料通路</strong>,不是"不调大模型" ——
+这句话以前被读歪过,见 §5.4 的勘误。)
+<strong>"带题号就先去查资料"这条规则,是为了不让 FAQ 短路掉具体题目</strong>(§5.2.1);
+<strong>"只有事务题才走 FAQ 快路"这条,是为了不让 FAQ 短路掉概念讲解</strong>(§6)。</p>
+<p><strong>为什么 FAQ 要卡阈值 + 实词闸门</strong>:见第 5 节,那里记了一次真实的误召回。</p>
+<hr />
+<2 id="2-知识库落在哪以及为什么不是-env-里配的那个">2. 知识库落在哪(以及为什么不是 <code>.env</code> 里配的那个)<a class="anchor" href="#2-知识库落在哪以及为什么不是-env-里配的那个" title="链接到这一节">#</a></2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>东西</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>业务数据根目录</td>
+<td><code>/home/jj/ykt_questions/</code>(WSL 里,即 <code>~/ykt_questions</code>)</td>
+</tr>
+<tr>
+<td>FAQ</td>
+<td><code>~/ykt_questions/常问问题.txt</code></td>
+</tr>
+<tr>
+<td>资料目录</td>
+<td><code>~/ykt_questions/materials/</code></td>
+</tr>
+<tr>
+<td><strong>花名册</strong>(不是资料,见 §8 第 12 条)</td>
+<td><code>~/ykt_questions/花名册/</code></td>
+</tr>
+<tr>
+<td>补交表</td>
+<td><code>~/ykt_questions/数字电路与逻辑设计实验（一）补交表.xlsx</code></td>
+</tr>
+<tr>
+<td>索引文件</td>
+<td><code>~/ta-assistant/data/index/bm25_index.pkl</code>(gitignore,不版本化)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>src/config.py</code> 的 <code>WINDOWS_ROOT</code> <strong>默认就是 <code>~/ykt_questions</code></strong>,<code>.env</code> 里<strong>没有</strong>覆盖它 —— 
+也就是说,当前跑的就是默认值,不用改任何配置。</p>
+<p>⚠️ 但要注意<strong>历史上还有一份旧知识库</strong>在
+<code>C:\Users\52880\Downloads\ykt_questions\</code>(WSL 路径 <code>/mnt/c/Users/52880/Downloads/ykt_questions/</code>):</p>
+<ul>
+<li>它里面有数电的 <code>materials/</code>(7 个文件)和一份旧 <code>常问问题.txt</code>;</li>
+<li><strong>它不再是运行时读取的那份</strong>。2026-09-17 那次实测时,后端在 <code>~/ykt_questions/</code> 下
+  新建了补交表(<code>补交表.xlsx</code>,工作表名 <code>补交记录</code>,9 行),说明运行时用的就是 <code>~/ykt_questions</code>;</li>
+<li>2026-09-20 本次更新,已把旧库里的数电资料<strong>拷贝</strong>进 <code>~/ykt_questions/materials/</code>,
+  两份合流,所以现在运行时那一份是完整的。</li>
+</ul>
+<p><code>docs/design.md</code> / <code>docs/deployment.md</code> 里写的 <code>WINDOWS_ROOT=/mnt/c/Users/.../Downloads/ykt_questions</code>
+是<strong>旧部署方式的遗留说明</strong>,与现在的实际运行状态不一致;真要改回 Windows 侧,得先把
+<code>~/ykt_questions/补交表.xlsx</code> 里的补交记录合并过去,不然会丢记录。</p>
+<hr />
+<2 id="3-资料库里现在有什么">3. 资料库里现在有什么<a class="anchor" href="#3-资料库里现在有什么" title="链接到这一节">#</a></2>
+<p>重建后的索引:<strong>114 个文件 / 3165 个分块</strong>。
+电路基础里<strong>教材占 2105 块(全库 67%)</strong> —— 是 2026-09-20 晚 OCR 进来的,见 §3.5。</p>
+<blockquote>
+<p>比上一版少 <strong>1 个文件、1 块</strong>:那份成绩记分册原先躺在 <code>materials/</code> 里,被
+<code>build_index.py</code> 当成教学资料解析进了索引(名单不是资料)。已移到 <code>花名册/</code>,
+见 §8 第 12、13 条。移动前后跑了 <code>eval_retrieval.py --compare</code>:17 条用例全中、
+0 条回归,§3.6 那张 df 表<strong>逐个数复量过,一个都没动</strong>(那块里没有那些词)。</p>
+</blockquote>
+<p>分块构成(从实际索引里数的,不是估的;<code>pickle</code> 里 <code>path</code> 按目录归类):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>块数</th>
+<th>文件数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数电实验(§3.1)</td>
+<td>231</td>
+<td>6</td>
+</tr>
+<tr>
+<td>电路基础 · <strong>教材</strong>(§3.5)</td>
+<td><strong>2105</strong></td>
+<td>21</td>
+</tr>
+<tr>
+<td>电路基础 · 各章作业答案(含中文详细解析)</td>
+<td>491</td>
+<td>68</td>
+</tr>
+<tr>
+<td>电路基础 · 课堂讲义</td>
+<td>288</td>
+<td>11</td>
+</tr>
+<tr>
+<td>电路基础 · 参考答案(docx)</td>
+<td>44</td>
+<td>7</td>
+</tr>
+<tr>
+<td>电路基础 · 错误集锦</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td><strong>3165</strong></td>
+<td><strong>114</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>同一份数据画成图(教材一块就占三分之二 —— 这是"概念题为什么答得像教材"的直接原因):</p>
+<figure class="diagram">
+<div class="mermaid">pie showData title 索引 3165 块的来源
+  &quot;电路基础·教材&quot; : 2105
+  &quot;电路基础·各章作业答案&quot; : 491
+  &quot;电路基础·课堂讲义&quot; : 288
+  &quot;数电实验&quot; : 231
+  &quot;电路基础·参考答案&quot; : 44
+  &quot;电路基础·错误集锦&quot; : 6</div>
+<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>pie showData title 索引 3165 块的来源
+  &quot;电路基础·教材&quot; : 2105
+  &quot;电路基础·各章作业答案&quot; : 491
+  &quot;电路基础·课堂讲义&quot; : 288
+  &quot;数电实验&quot; : 231
+  &quot;电路基础·参考答案&quot; : 44
+  &quot;电路基础·错误集锦&quot; : 6</code></pre></details>
+</figure>
+<blockquote>
+<p>教材一块的 21 个文件里,最大的是 <code>教材-第14章-频率响应.md</code>(159 块),
+最小的是 <code>教材-译者序-符号与国标差异.md</code>(5 块)和附录(48 块)。
+(比上一版少 1 块 = 2026-09-20 语料审计丢掉的那张扫描仪元信息页,见 §3.5.1。)</p>
+</blockquote>
+<3 id="31-数电实验原有本次只是搬进来">3.1 数电实验(原有,本次只是搬进来)<a class="anchor" href="#31-数电实验原有本次只是搬进来" title="链接到这一节">#</a></3>
+<p>原来那份索引里的 7 个文件,分块 232 个:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>分块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实验讲义2024.pdf</td>
+<td>188</td>
+</tr>
+<tr>
+<td>实验仪器与教学软件的使用_202503.pdf</td>
+<td>16</td>
+</tr>
+<tr>
+<td>数电模电电分复习.docx</td>
+<td>11</td>
+</tr>
+<tr>
+<td>面试--数电.docx</td>
+<td>7</td>
+</tr>
+<tr>
+<td>数电.docx</td>
+<td>6</td>
+</tr>
+<tr>
+<td>实验报告模板(2026).pdf</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>原来这里还有一行「成绩记分册 1 块」,现在没有了。</strong> 那份 xlsx 是<strong>名单</strong>,
+不该当教学资料 —— 已挪到 <code>~/ykt_questions/花名册/</code>(§8 第 12 条)。
+顺带记一笔:它进索引时其实<strong>只贡献了标题那一格</strong>(140 个学生一个都没进去),
+不是因为有人拦它,而是因为 <code>doc_parser</code> 用了 <code>read_only=True</code>,而那份工作簿的
+<code>&lt;dimension ref="A1"/&gt;</code> 撒了谎 —— <strong>是被同一个 bug 意外挡住的</strong>,不是设计。</p>
+</blockquote>
+<3 id="32-电路基础">3.2 电路基础<a class="anchor" href="#32-电路基础" title="链接到这一节">#</a></3>
+<p>由 <code>scripts/import_circuit_theory.py</code> + <code>scripts/enhance_circuit_basic.py</code> 从
+<code>C:\Users\52880\Downloads\202509电路理论基础\</code>(张老师课件 + 中文版作业答案)与
+<code>C:\Users\52880\Downloads\电路基础课后作业答案\</code>(英文版 Soln)一起生成,
+再加上 <code>scripts/import_textbook.py</code> 装配的<strong>扫描版教材</strong>(见 §3.5),
+进索引共 <strong>2935 个分块 / 108 个文件</strong>(构成见 §3 的表)。六个来源:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>产出</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Z第N章 作业题目及答案.pdf</code>(9 份,中文版作业用书)</td>
+<td><code>materials/电路基础/&lt;章节目录&gt;/&lt;题号&gt;.md</code></td>
+<td><strong>权威版</strong>,56 题</td>
+</tr>
+<tr>
+<td>65 个 <code>SolnNNNNN.pdf</code>(英文版 Soln)</td>
+<td>同上(<strong>同题号覆盖</strong>)或独立成篇</td>
+<td>中文版没布置的 12 题保持独立</td>
+</tr>
+<tr>
+<td><code>第N章-xxx.pdf</code>(11 份课堂讲义)</td>
+<td><code>materials/电路基础/讲义/第N章-&lt;章名&gt;.md</code></td>
+<td>课堂提纲,<strong>概念题的权威依据之一</strong></td>
+</tr>
+<tr>
+<td><code>电路基础-中文版-原书第6版（扫描版）.pdf</code>(711 页)</td>
+<td><code>materials/电路基础/教材/教材-第N章-&lt;章名&gt;.md</code>(19 章 + 附录 + 译者序)</td>
+<td>OCR 出来的教材正文,<strong>概念与公式最细的依据</strong>;见 §3.5</td>
+</tr>
+<tr>
+<td><code>电路理论基础---错误集锦*.pptx</code></td>
+<td><code>materials/电路基础/错误集锦.md</code></td>
+<td>教材勘误,含"此题不用做"</td>
+</tr>
+<tr>
+<td><code>2-4 / 5-7 参考答案R.docx</code></td>
+<td><code>materials/电路基础/参考答案/...</code></td>
+<td>张老师的中文参考答案</td>
+</tr>
+<tr>
+<td>全部资料清单</td>
+<td><code>materials/电路基础/00_资料总目录.md</code></td>
+<td>给人看的,<strong>不进索引</strong>(见 §3.4.1)</td>
+</tr>
+<tr>
+<td>生成清单(可追溯)</td>
+<td><code>materials/电路基础/_manifest.json</code>、<code>_manifest_theory.json</code>、<code>_manifest_textbook.json</code></td>
+<td>不进索引</td>
+</tr>
+</tbody>
+</table></div>
+<p>覆盖章节(作业答案):1、2、3、4、6、7、8、9、10、11、13、14、19 章。
+教材则是<strong>全书 19 章</strong>都有。</p>
+<p><strong>关键设计一:每份语料都带一段中文标题头。</strong> 原因是英文版原答案是<strong>英文</strong>的
+(Alexander &amp; Sadiku 6th ed. 习题解答),而学生提问是<strong>中文</strong> —— jieba 切中文和切英文
+是两套词,英文正文里没有「第十章」「作业」「答案」这些词,直接索引的话中文提问
+召不回对应片段。所以生成时把中文锚点显式写了进去:</p>
+<pre><code>【电路基础 第10章 习题 10.46 参考答案(中文版)】任课老师:张曰理
+来源:Z第10第10章 作业答案).pdf(中文版《电路基础》(原书第 6 版)配套作业用书,**参数与结论以本版为准**)
+检索:电路基础 作业 答案 习题 解答 参考 中文版 第10章 CH10 10.46 题10.46 详细解析 讲解 ...
+
+【中文详细解析】
+...
+【原文(核对用,未经改动)】
+10.46 ...
+【英文版对照(仅参考)】
+⚠️ 这是**国际版**教材的解答,**个别题目的参数/单位与中文版不同**(例如公里与英里)。
+**数值、单位、结论一律以中文版为准**;本段只用于对照两版差异。
+</code></pre>
+<p><strong>关键设计二:中文版与英文版按"输出路径"合并,中文版是正文。</strong>
+助教明确要求:国际版与中文版<strong>个别题目的参数不同</strong>(公里被换成英里),
+所以<strong>课后题答案以中文版为准</strong>。做法是让中文版写到和英文版<strong>同一个文件路径</strong>
+(<code>materials/电路基础/&lt;章节目录&gt;/&lt;题号&gt;.md</code>,例:<code>1第一章/1.36.md</code>)——
+路径本身就是合并键,不需要额外维护映射表。于是:</p>
+<ul>
+<li>中英都有的 53 题 → 一个文件,中文版是正文与结论,<strong>英文原文降级</strong>成文末的
+  「英文版对照(仅参考)」块,并写明数值以中文版为准;</li>
+<li>中文版独有 3 题(11.12、14.0、6.62)→ 只有中文;</li>
+<li>英文版独有 12 题(第 13、19 章全部,以及 11.2、6.65)→ <strong>原样保留</strong>,不动。</li>
+</ul>
+<p><strong>冲突处理是"结构性的",不靠提示词自觉。</strong> 因为同一个文件里中文在前、英文在注明
+"仅参考"的块里,大模型读到两套数字时,优先级写在文件结构里(而且提示词里也钉了一遍,
+见 §6)。若反过来靠提示词说"注意别用错版本",迟早会漏。</p>
+<p><strong>题号以正文自述为准,不用文件名。</strong> 文件名那串数字<strong>不可靠</strong>:
+<code>Soln11012.pdf</code> 对应的正文是 <code>Solution 11.2</code>、<code>Soln13007.pdf</code> 是 <code>Solution 13.7</code>。
+脚本先读正文前 120 字符里的 <code>Solution X.Y</code>,读不到才退回文件名,并在不一致时打警告。</p>
+<p><strong>中文版切题踩过的四个坑</strong>(都在 <code>test/test_split_cn_problems.py</code> 里钉住了):</p>
+<ol>
+<li><strong>题号正则结尾不能用 <code>\b</code></strong>。Python 的 <code>\w</code> 把中文也算进去,<code>2.74下图所示电路</code>
+   里 <code>4</code> 和 <code>下</code> 都是 <code>\w</code>,用 <code>\b</code> 判词尾会<strong>整题漏掉</strong>(实测漏掉 2.74)。
+   改成"后面不能跟数字"。</li>
+<li><strong>行首的纯数值不是题号</strong>。<code>10.5 V</code>、<code>0.25</code> 这类也会落在行首,靠"题号后十几个字里
+   必须有中文"滤掉。</li>
+<li><strong>按文件名声明过滤章号</strong>。第 10 章的文件里会冒出行首的 <code>3.92</code>、第 11 章里冒 <code>13.7</code>
+   (都是引用别题)。用 <code>Z第10第10章...</code> 里读出的"这份文件只该有第 10 章"一过滤就干净了。</li>
+<li><strong>同一题号出现多次取正文最长的那段</strong>。第 14 章开头有一行"作业题 14.0 … 14.4 …"的清单,
+   pdfplumber 换行后清单项也落在行首,先匹配到的是清单而不是正文;取最长的就自然选中正文。</li>
+</ol>
+<p><strong>第 6 章整章写 <code>6-11</code> 而不是 <code>6.11</code></strong>,所以切题时统一归一成点号,
+否则中文版的 6-11 就没法和英文版的 <code>6.11.md</code> 合并。</p>
+<3 id="33-中文详细解析2026-09-20-加的-llm-增强">3.3 中文详细解析(2026-09-20 加的 LLM 增强)<a class="anchor" href="#33-中文详细解析2026-09-20-加的-llm-增强" title="链接到这一节">#</a></3>
+<p><strong>原解析太简略,检索到了也答不了疑。</strong> 1.36 题原文全文就两行:</p>
+<pre><code>(a) I = 20/0.25 = 80 amps.
+(b) days = (20/0.002)/24 = 416.7 days.
+</code></pre>
+<p>学生看不懂 <code>0.25</code> 是哪来的(15 分钟 = 0.25 小时)。所以逐题调大模型,
+把英文原解答<strong>翻译并展开</strong>成中文详细解析,写回同一个语料文件:</p>
+<pre><code>【电路基础 第1章 习题 1.36 参考答案】任课老师:张曰理     ← 标题头(检索锚点)
+来源:Soln01036.pdf(...)
+检索:电路基础 作业 答案 ... 1.36 题1.36 详细解析 讲解 思路 步骤 方法 怎么做 ...
+
+【中文详细解析】                                        ← 大模型生成,学生看这个
+【题目要求】/【已知条件】/【解题思路】/【详细步骤】/【最终答案】
+
+【原文(核对用,未经改动)】                              ← 原文一字不动地附在后面
+Solution 1.36 ...
+</code></pre>
+<p>生成器:<code>scripts/enhance_circuit_basic.py</code>(抽出逻辑复用 <code>import_circuit_basic</code> /
+<code>import_circuit_theory</code>,不重复实现)。<strong>75 题全部增强成功</strong>,耗时 5 分 51 秒,并发 5。</p>
+<p><strong>三类源共用一套缓存,新增源不重复花钱。</strong> 缓存键是
+<code>sha1(PROMPT_VERSION, kind, 原文)</code>,<code>kind</code> 就是命名空间:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>kind</th>
+<th>源</th>
+<th>本次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cn-v1</code></td>
+<td>中文版作业用书(<strong>权威版</strong>)</td>
+<td><strong>56 题新生成</strong></td>
+</tr>
+<tr>
+<td><code>pdf</code></td>
+<td>英文版 Soln(中文版没布置的题)</td>
+<td>12 题命中缓存,不重跑</td>
+</tr>
+<tr>
+<td><code>docx</code></td>
+<td>张老师中文参考答案 docx</td>
+<td>7 题命中缓存,不重跑</td>
+</tr>
+</tbody>
+</table></div>
+<p>于是加中文版这件事只花了 56 次调用 —— 只有英文版的题(第 13、19 章等)沿用原解析,
+它们本来也不该被中文版覆盖。反过来说:有中文版的 53 题<strong>必须重新生成</strong>,
+因为旧解析是照<strong>英文版</strong>原文写的,数字可能正是错的那一版。改中文版提示词时,
+把 kind 从 <code>cn-v1</code> 换成 <code>cn-v2</code> 就能让这部分精确失效。</p>
+<p>三条纪律(改脚本前先读):</p>
+<ol>
+<li><strong>不许改数值</strong>。提示词明确要求保留所有数字/单位/结论,原文没写的推导不许补。</li>
+<li><strong>原文必须原样附在文件末尾</strong>。大模型出错时,原文是唯一的事实来源,
+   助教可以逐行核对。这是"不许删原文"的原因。</li>
+<li><strong>提示词版本化</strong>。改了提示词就 bump <code>PROMPT_VERSION</code>(或换 kind,如 <code>cn-v1</code>→<code>cn-v2</code>)。</li>
+</ol>
+<p><strong>文件路径与格式只有一个来源。</strong> <code>import_circuit_theory.py</code> 定义 <code>Spec</code>(写去哪、
+标题头、正文、文末附加块)和 <code>render()</code>;增强脚本<strong>不自己拼文件内容</strong>,而是调
+<code>render(spec, 中文解析)</code>。这样重写文件时<strong>不可能漏掉英文对照块</strong> —— 它压根不自己拼。
+<code>_collect_jobs</code> 里也据此跳过被中文版覆盖的英文题号,否则两个 job 会写同一个文件、
+谁后写谁赢。</p>
+<p><strong>中文版原文的两种 PDF 失真,提示词里明确交代了</strong>(只在解释里还原,<strong>不许动数值</strong>):</p>
+<ul>
+<li><strong>上下标被甩到下一行</strong>:正文写 <code>R 、R 、R</code>,下一行是 <code>1 2 3</code>,实为 R₁、R₂、R₃;</li>
+<li><strong>公式符号丢失</strong>:如 4.15 原文 <code>p = i2R = (1.875)23 = 10.55w</code>,实为 <code>p = i²R = (1.875)²×3</code>。</li>
+</ul>
+<p>实测 4.15 的中文解析<strong>主动报出了原文的一处不一致</strong>:"原文此处 13/2 与上一行 13/3 不一致,
+且按 13/2 代入得不到 3/8,疑为抽取失真或笔误;按上一行 13/3 理解…与原文结论一致,
+请对照作业册"。这种"照实说不确定"比编一个通顺解释有价值得多。</p>
+<p><strong>数字保留审计(每次增强后都要跑)</strong>:
+<code>./.venv/bin/python scripts/audit_enhanced_numbers.py --context</code>。
+把原文里所有"有意义的数字"(≥3 位或带小数点)抠出来,逐个查是否出现在中文解析里。
+本次结果 <strong>75 份中 69 份数字全部保留</strong>,剩 6 份逐条人工看过,<strong>没有一处是大模型改错</strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>别题的题号(图注 <code>For Probs. 19.18 and 19.37</code>)</td>
+<td><code>11.12</code> <code>19.37</code> <code>10.60</code></td>
+</tr>
+<tr>
+<td>PDF 丢了上标 → <code>10⁹</code> 变 <code>109</code></td>
+<td><code>109</code>(<code>8.883x109</code>) <code>103</code></td>
+</tr>
+<tr>
+<td>PDF 把分数/乘号拍平</td>
+<td><code>7030</code>(=70∥30) <code>205</code>(=20∥5) <code>22.5</code>(=<code>ω²2.5</code>)</td>
+</tr>
+<tr>
+<td>纯精度差异(不是错误)</td>
+<td>原文 <code>13.51342 – j48.9189</code> → 解析写 <code>13.513 - j48.919</code></td>
+</tr>
+<tr>
+<td>MATLAB 输出表格被概括</td>
+<td>13.11 的 <code>1.0e+003 * 0.2000 + 1.2000i</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>审计脚本自己也修过一处<strong>盲区</strong>:中文版题的原文后面跟着「英文版对照」块,而两版
+数字本就可能不同 —— 原来把英文那段也算进"原文",于是"中文解析里没有英文版独有的数"
+全被报成缺失,把真正该看的几行淹没了(57 份"可疑" → 修好后 6 份)。
+现在按 <code>【英文版对照(仅参考)】</code> 截断,只审<strong>中文原文</strong>。
+同理,<code>讲义/</code> 与 <code>错误集锦.md</code> 本来就不该有解析,已从审计范围里排除。</p>
+</blockquote>
+<p>最后一条特意核过:13.11 的中文解析写 <code>I1 = 0.1390 − j0.7242 A</code>、<code>I_x = 0.4619∠−80.26°</code>,
+与原文 <code>I = 0.1390 - 0.7242i</code>、<code>461.9cos(600t–80.26˚) mA</code> <strong>一致</strong> ——
+说明是<strong>读出来的</strong>,不是模型自己算的。</p>
+<blockquote>
+<p>能力边界:题图是图片,大模型看不到。提示词要求它在该处注明
+"(此处依赖题图,请对照作业册或原始 PDF)",<strong>禁止凭空描述电路长什么样</strong>。
+实测 9.67、13.11 等题都正确写了这句。想让它能讲图,得先做 OCR/视觉方案(见 §8)。</p>
+</blockquote>
+<3 id="34-检索锚点必须复制进每一块不能只放第一块">3.4 检索:锚点必须复制进<strong>每一块</strong>,不能只放第一块<a class="anchor" href="#34-检索锚点必须复制进每一块不能只放第一块" title="链接到这一节">#</a></3>
+<p>这是增强之后暴露出来的、比"内容简略"更隐蔽的问题(2026-09-20)。</p>
+<p>学生问「电路基础第一章作业的1.36怎么做」,修好 FAQ 截胡后资料通路终于被调用了,
+可模型回答的却是"<strong>资料里只有题目,没有收录解题步骤</strong>"。查分块得分,真相是:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th><code>1.36.md</code> 的分块</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 0 块(锚点行 + 题目要求)</td>
+<td><strong>20.77</strong> ← 只有它带着 <code>检索:</code> 锚点行</td>
+</tr>
+<tr>
+<td>第 1 块(已知条件)</td>
+<td>2.27</td>
+</tr>
+<tr>
+<td>第 2 块(<strong>详细步骤</strong>)</td>
+<td><strong>0.00</strong></td>
+</tr>
+<tr>
+<td>第 3 块(最终答案)</td>
+<td>5.90</td>
+</tr>
+<tr>
+<td>第 4 块(英文原文)</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>于是 top-5 被<strong>别的文件的第 0 块</strong>占满(它们都含「电路基础/作业/答案/第N章」,
+各得约 12.5 分),模型只拿到"题目要求"。<strong>检索没召回解答,再详细的内容也没用。</strong></p>
+<p><strong>修法</strong>:<code>src/rag/indexer.py</code> 里把文档开头的 <code>检索:</code> 锚点行<strong>复制进每一块</strong>。
+副作用是好的 —— 锚点里的通用词(电路基础/作业/答案/习题)因此在所有块里都出现,
+IDF 自动趋近 0,真正有区分度的<strong>题号</strong>反而更突出。修完的得分:</p>
+<pre><code>1.36  问:top-5 = 19.49 / 17.20(目录) / 16.14 / 15.49 / 15.17   ← 4 块都是 1.36.md
+10.46 问:top-5 全部来自 10.46.md
+</code></pre>
+<p>同一次还调了 <code>RAG_TOP_K</code>:<strong>5 → 7</strong>。一份电路基础语料的分块数中位数是 5、最长 11,
+只取 5 块会把同一条解答的后面几块切掉(实测问 10.46 时模型只拿到前两问的推导,
+如实回答"第三项资料未给详细步骤")。取 7 能覆盖 93% 的题目文件(68/73)。</p>
+<p><code>_anchor_of()</code> <strong>只认文档开头 400 字符内的 <code>检索:</code> 行</strong>,避免误抓正文深处偶然的同名文字;
+数电的原始 PDF 没有锚点行,行为完全不变。</p>
+<blockquote class="warn">
+<p>⚠️ <strong>这个"好的副作用"有个上限,教材进库后被撞到了。</strong> 同一套机制在<strong>作业答案</strong>上有效
+(通用词被摊平、题号突出),但教材的锚点里除了通用词还有一串<strong>通用词尾巴</strong>
+(<code>定义 概念 原理 定理 公式 推导 讲解 详解 怎么理解 为什么</code>)——
+它们被复制进每一个教材分块,等于给全部 19 章同时发了一张"什么都能答"的通行证。
+真正的代价不在尾巴本身,而在当时 <code>原理</code> 这类词的 IDF 被兜底成一个<strong>正数</strong>(1.70):
+见 §3.6。<strong>结论:锚点复制这个机制没错,但"往锚点里多塞词"不是免费的。</strong></p>
+</blockquote>
+<3 id="341-目录清单类文件不进索引2026-09-20-晚">3.4.1 目录/清单类文件<strong>不进索引</strong>(2026-09-20 晚)<a class="anchor" href="#341-目录清单类文件不进索引2026-09-20-晚" title="链接到这一节">#</a></3>
+<p>加完讲义后复测,发现<strong>每个问题的第一名都是 <code>00_资料总目录.md</code></strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>提问</th>
+<th><code>00_资料总目录.md</code> 得分</th>
+<th>本该命中的文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>什么是叠加原理</td>
+<td><strong>13.6</strong>(第 1 名)</td>
+<td>第4章-电路定理.md 第 11 名</td>
+</tr>
+<tr>
+<td>作业里的叠加定理怎么理解</td>
+<td><strong>15.0</strong>(第 1 名)</td>
+<td>第4章-电路定理.md 第 18 名</td>
+</tr>
+<tr>
+<td>教材上哪里有印错的地方</td>
+<td><strong>16.2</strong>(第 1 名)</td>
+<td>错误集锦.md 第 9 名</td>
+</tr>
+</tbody>
+</table></div>
+<p>原因是结构性的:目录里<strong>列着每个题号和章节名</strong>,于是任何带题号或章节词的提问
+它都能拿高分 —— 而它的正文只是一份清单,对回答毫无营养,还占掉 7 个名额里的 1 个。
+<strong>修法</strong>:<code>_iter_files()</code> 里跳过 <code>00_</code> 开头(人工目录)和 <code>_</code> 开头(生成清单)的文件。
+它们是给人看的,不是给人问的。改完 1064 → 1061 块,第一名全部还给真正的资料。</p>
+<3 id="342-锚点里要写上学生的说法不能只写书面语">3.4.2 锚点里要写上<strong>学生的说法</strong>,不能只写书面语<a class="anchor" href="#342-锚点里要写上学生的说法不能只写书面语" title="链接到这一节">#</a></3>
+<p>同一批复测里暴露的第二种失败:问「教材上<strong>哪里有印错</strong>的地方」,错误集锦排第 9、
+大模型答"我这边没有拿到那份清单的内容";把问法换成「教材哪里<strong>印错了</strong>」,同一份资料
+排第 <strong>2</strong>。一模一样的意图,一个答得上一个答不上 —— 因为锚点里写的是
+<code>印刷 错误 勘误</code>,而学生说的是 <code>印错</code>。</p>
+<p><strong>修法</strong>:错误集锦的检索行补上口语句式(<code>印错 印错了 写错 错字 哪里有错 哪里印错
+教材错误 书上错了</code>)。改完同一问的得分:</p>
+<pre><code>错误集锦.md  26.24 / 25.05 / 23.47 / 23.28 / 21.49 / 21.08   ← 前 6 名全是它
+</code></pre>
+<p>同理给讲义锚点补了 <code>作业 习题</code> 两个词:学生问「<strong>作业里的</strong>叠加定理怎么理解」时,
+讲义原本一个词都对不上这两个字,只能靠"定理"勉强挤进前 20;补完后
+「什么是叠加原理」那一问里第4章-电路定理.md 从第 11 名升到第 8 名。</p>
+<blockquote>
+<p>教训:锚点是<strong>手写的同义词表</strong>,它的价值全在"覆盖学生真实的问法"。
+每遇到一次"资料明明在库里却答不出",先看分块得分,再看锚点缺了哪个词。</p>
+</blockquote>
+<p><strong>2026-09-20 晚补的第五条证据(教材上线的副产品)。</strong> 学生问「虚短和虚断是什么意思」,
+而<strong>教材正文里根本没有"虚短""虚断"这两个词</strong> —— 全 19 章 grep 下来只在
+<code>教材-第5章-运算放大器.md</code> 里各出现 1 次,而且都在<strong>我注入的锚点行</strong>上,正文一个都没有。
+教材(译本)的说法是"开环增益无穷大""输入电阻无穷大"(第 166、171、736 行)。</p>
+<p>也就是说:<code>CONCEPTS[5]</code> 里写 <code>虚短虚断</code>,是<strong>唯一</strong>让第 5 章能对这个问题召回的机制。
+去掉它,这一问就只能靠大模型的通用知识答。</p>
+<p>顺带确认了这个机制<strong>不会</strong>假装成功:召回的第 5 章分块里并没有解释这两个词,
+所以大模型照实说了「下面这版讲法是通用教材知识,供参考;教材第5章(从P134起)专门讲
+运算放大器,可以对照着看」—— 该收的声明收了,该给的页码给了。
+<strong>锚点负责"召得回",不负责"块里真有答案";后者由提示词第①档的声明规则兜住。</strong></p>
+<3 id="35-扫描版中文教材ocr-进库2026-09-20-晚">3.5 扫描版中文教材(OCR 进库,2026-09-20 晚)<a class="anchor" href="#35-扫描版中文教材ocr-进库2026-09-20-晚" title="链接到这一节">#</a></3>
+<p><code>电路基础-中文版-原书第6版（扫描版）.pdf</code>(711 页 / 266 MB)一直是唯一一个
+"资料就在手里但进不了库"的东西。<strong>它是纯扫描件</strong>:每页一张 1904×2944 的图
+(<code>Pdg2Pic</code> + <code>FreePic2Pdf</code> 生成),<code>get_text()</code> 全文只有 115 个字符(还是元数据里的书名)。
+<code>pdfplumber</code> 一个字都抽不出来,所以 §4 一直把它记成"排除项"。</p>
+<p>现在它进来了:<strong>21 个文件 / 2105 个分块</strong>,索引从 1061 涨到 3166 块(教材占 66%)。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>产出</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>教材-第N章-&lt;章名&gt;.md</code>(19 份)</td>
+<td>全书正文,每章一个文件</td>
+</tr>
+<tr>
+<td><code>教材-附录-奇数编号习题答案(P670-P695).md</code></td>
+<td>书后附录,<strong>只有最终答案没有过程</strong></td>
+</tr>
+<tr>
+<td><code>教材-译者序-符号与国标差异.md</code></td>
+<td>导线交叉处<strong>有没有黑点</strong>的含义与国标相反,学生照国标读图会读错</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>引擎:RapidOCR(ONNX),不是因为效果好,是因为别的走不通。</strong>
+服务器 <code>sudo</code> 要密码 → <code>apt install tesseract-ocr</code> 直接没戏;RapidOCR 是纯 pip 依赖、
+自带中英文模型、CPU 就能跑,中文识别明显好过 tesseract-chi_sim。
+711 页 12 进程跑 <strong>47.9 分钟</strong>(约 3.2 秒/页),结果 743,562 字符。</p>
+<p><strong>DPI 用 300,是量出来的不是拍的。</strong> 实测 200 DPI 相比 300 DPI:
+正文行<strong>一行不少</strong>,只是少数公式碎片会丢(<code>β=</code>、<code>M</code>、<code>-j20</code>、<code>WM</code>),
+而耗时只省 15%(55s vs 65s/页)。省这点时间换公式碎片不划算,所以留 300。</p>
+<p><strong>三个必须记住的设计点:</strong></p>
+<ol>
+<li><strong>书前 16 页(封面/版权/出版者的话/译者序/前言/作者简介/</strong>目录<strong>)不进正文。</strong>
+   目录页尤其:它列着全部章名和页码 —— 正是 §3.4.1 说的那种"谁提问它都高分"的清单。
+   封面、版权页、作者简介同理。</li>
+<li><strong><code>印刷页 = PDF 页 − 16</code>。</strong> 这个偏移错了,答案里引用的"教材 P188"就会指到别的题上去
+   (错误集锦写的就是<strong>书上页码</strong>)。偏移是<strong>三个独立来源交叉验证</strong>出来的 —— 书前页的罗马
+   数字(PDF 12→XI、16→XV)、正文书眉(PDF 19/20/21 印着 3/4/5)、目录里写的章节起始页 ——
+   而且 <code>import_textbook.py</code> 会<strong>逐页用书眉自查</strong>,不一致的页在结尾报出来。
+   全 711 页跑下来<strong>零不一致</strong>(<code>_manifest_textbook.json</code> 里 <code>bad_page_headers</code> 是空数组)。</li>
+<li><strong>每页开头插 <code>[教材 P{印刷页}]</code> 标记。</strong> 这是教材比讲义强的地方:讲义是 PPT 导出,
+   <strong>没有页码</strong>;教材有页码,大模型才能答"教材 P188 这道题印错了",学生翻书能直接对上。</li>
+</ol>
+<p><strong>文件名必须带 <code>教材-</code> 前缀,这不是洁癖。</strong> <code>讲义/</code> 里的文件名格式<strong>一模一样</strong>
+(<code>第1章-基本概念.md</code>、<code>第4章-电路定理.md</code>…与教材章名逐字相同),而索引里的 <code>source</code>
+字段<strong>只存文件名不含目录</strong> —— 不加前缀,学生看到「参考:第4章-电路定理.md」就分不出
+那是课堂 PPT 还是教材正文。<code>test/test_import_textbook.py</code> 里有一条测试专门钉住这个不重名。</p>
+<p><strong>踩到的两个坑(都已修,并留了测试):</strong></p>
+<ul>
+<li><strong>译者序取错了页。</strong> 原本写 <code>TRANSLATOR_NOTE_PDFS = (4, 5)</code>,但 PDF 4 是
+  <strong>「出版者的话」</strong>(讲这套丛书的历史,与电路无关),PDF 5 才是「译者序」。
+  产出物开头是"出版者的话"却在标题里自称"符号与国标差异" ——
+  一个<strong>自称讲 A 实际是 B</strong> 的文件比没有文件更糟,大模型会拿它去答符号问题。改成 <code>(5,)</code>。</li>
+<li><strong>书前页算出了负页码。</strong> 书前 16 页用<strong>罗马数字</strong>页码,套 <code>pdf − 16</code> 得到 <code>[教材 P-12]</code>,
+  学生按它翻书永远翻不到。修法:书前页一律不加页码标记,并抽成 <code>_translator_note()</code>
+  单独可测(<code>test_translator_note_never_gets_a_negative_page_marker</code>)。</li>
+</ul>
+<p><strong>概念词进锚点是手写的,不是从正文自动抽的。</strong> <code>--report-sections</code> 试过自动抽节标题,
+噪声大到不能用 —— 正文里公式行、图注也长成 <code>3.4 xxx</code> 的样子,抽出来有
+<code>1.6 X10- = 25 000(V) 4</code> 这种;而且<strong>真的节会漏</strong>(1.8 解题方法、3.6、3.9 都没抽到)。
+所以 <code>CONCEPTS</code> 是按书的目录<strong>人工核对</strong>写死的,并有一条测试禁止把
+「本章小结」「复习题」「PSpice」这类<strong>结构性标题</strong>混进去(它们没有检索价值)。</p>
+<p><strong>OCR 出来的公式是乱的,这一点必须让学生知道。</strong> 正文识别得很准,但公式、上下标、矩阵
+常有乱码(如 <code>C = εA/d</code> 变成 <code>C= EA d</code>)。所以提示词里加了一条:<strong>引用教材时说清页码,
+看到明显不成句的公式就照实说"这里 OCR 得不清楚,请对照教材 P某页",不要猜一个看起来
+通顺的公式</strong>。附录那种"只有答案没有过程"的也同理,锚点里已经把这件事写明了。</p>
+<h4 id="351-教材语料审计2026-09-20-深夜教材上线后立刻做的">3.5.1 教材语料审计(2026-09-20 深夜,教材上线后立刻做的)</h4>
+<p>教材一进来就占了索引 66%,所以它不是"多加了一份资料",而是<strong>重新定义了整个检索环境</strong>。
+于是先做了一轮审计:<strong>先量现状,再决定改什么</strong>,没有凭感觉动。三件事,两改一不改。</p>
+<p><strong>① 扫描仪元信息页 —— 删掉。</strong> OCR 结果里有 1 页全是 <code>SS号</code>、<code>页数</code>、<code>扫描日期</code>
+这类扫描软件写进去的字段。它跟目录页、<code>00_*.md</code> 是同一类东西:<strong>一段谁提问都能命中的清单</strong>,
+而且它落在某一章的正文里,会以"教材第 N 章"的身份被引用出去。整页丢弃,索引少 1 块
+(2106 → 2105,也就是 §3 表里那个差 1)。</p>
+<p><strong>② <code>Ω</code> 被 OCR 认成 <code>Q</code> —— 按上下文改回来,1932 处。</strong> 这是本轮<strong>最值得修</strong>的一条:
+  电阻单位写错等于把题改了。修法是<strong>只认上下文,不做全库替换</strong> ——
+  正则 <code>(\d(?:[kKmMμnGgTt])?)Q(?![0-9A-Za-z值点参因品])</code> 要求
+  "数字(可带 k/M/m 等倍率前缀)+ Q + 后面不是字母/数字/汉字",
+  这样 <code>5Q</code>→<code>5Ω</code>、<code>2.2kQ</code>→<code>2.2kΩ</code>,而 <code>Q</code> 点(三极管/逻辑里的 Q)、<code>Q值</code>、<code>品质因数Q</code>
+  一个都不会被误伤(负向断言里那几个汉字就是为它们留的)。
+  含 <code>Ω</code> 的分块从 999 涨到 <strong>1125</strong>。改动处数记在 <code>_manifest_textbook.json</code> 的
+  <code>ohm_symbol_fixes</code> 里,可追溯。</p>
+<p><strong>③ 页码标记只覆盖了 35.8% —— 修到 99.7%,这条最影响可用性。</strong>
+  <code>[教材 P{印刷页}]</code> 是教材相对讲义<strong>唯一</strong>的优势(讲义是 PPT 导出,没有页码)。
+  第一版只在这一页"看起来像是新的一页开始"时才插标记(靠书眉),结果 2106 块里
+  只有 754 块带页码 —— 学生看到"教材 P188 有讲"却翻不到,等于这个优势没兑现。
+  改成<strong>逐页传递</strong>:标记跟着 <code>cur_page</code> 走,每一块都继承它所在页的页码。
+  覆盖率 754/2106(<strong>35.8%</strong>)→ <strong>2099/2105(99.7%)</strong>。</p>
+<p>剩下 6 块没页码,全部有明确原因,<strong>不是漏</strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>例外</th>
+<th>块数</th>
+<th>为什么合理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>教材-译者序-符号与国标差异.md</code></td>
+<td>5</td>
+<td>书前页用<strong>罗马数字</strong>页码,套 <code>pdf − 16</code> 会得到负数,按 §3.5 的坑一律不加(留有测试)</td>
+</tr>
+<tr>
+<td>附录的标题块</td>
+<td>1</td>
+<td>那一块只有附录标题本身,还没进正文,原书也没给页码</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>一个已知的外观瑕疵</strong>:附录文件名仍叫 <code>教材-附录-奇数编号习题答案(P670-P695).md</code>,
+而 P695 那页(就是上面删掉的扫描仪页)已经不在库里了。<strong>故意不改名</strong> ——
+文件名进了索引 <code>source</code> 字段、进了基线 JSON、也被学生的历史对话引用,
+为了对齐一个页码去重命名,换来的是一致的假象而不是一致。记在这里,不修。</p>
+</blockquote>
+<3 id="36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜">3.6 BM25 的 IDF 兜底:虚词被当成"正证据"(2026-09-20 深夜)<a class="anchor" href="#36-bm25-的-idf-兜底虚词被当成正证据2026-09-20-深夜" title="链接到这一节">#</a></3>
+<p><strong>症状。</strong> 用户验收过的提问「什么是叠加原理」,第 4 名才是 <code>教材-第4章-电路定理.md</code>
+(13.47 分),而 <code>教材-第5章-运算放大器.md</code>(13.53 分)、<code>教材-第17章-傅里叶级数.md</code>
+挤在它前面。<strong>"运算放大器"和"叠加原理"没有任何关系</strong> —— 这不是"排序不太好",是错的。</p>
+<p><strong>根因是库的兜底,不是语料。</strong> <code>rank_bm25.BM25Okapi</code> 算
+<code>idf = log(N - df + 0.5) - log(df + 0.5)</code>:词出现在<strong>半数以上</strong>分块里时这个值是<strong>负的</strong>,
+而它把负数<strong>统一兜底</strong>成 <code>epsilon × average_idf</code>(epsilon = 0.25)。实测本库:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>词</th>
+<th>df(共 3165 块)</th>
+<th>旧 IDF</th>
+<th>换 Lucene 后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>的</code></td>
+<td>2959</td>
+<td>1.6994</td>
+<td>0.09</td>
+</tr>
+<tr>
+<td><code>怎么</code></td>
+<td>2595</td>
+<td>1.6994</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>是</code></td>
+<td>2453</td>
+<td>1.6994</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>原理</code></td>
+<td>2401</td>
+<td><strong>1.6994</strong></td>
+<td><strong>0.28</strong></td>
+</tr>
+<tr>
+<td><code>叠加</code>(真关键词)</td>
+<td>38</td>
+<td>4.40</td>
+<td>4.41</td>
+</tr>
+<tr>
+<td><code>叠加定理</code></td>
+<td>225</td>
+<td>2.57</td>
+<td>2.64</td>
+</tr>
+</tbody>
+</table></div>
+<p>关键在于:<strong><code>原理</code> 和 <code>的</code> 的权重一模一样,而且是个正数,只比真关键词 <code>叠加</code> 小 2.6 倍。</strong>
+于是「什么是叠加原理」里的 <code>什么</code>+<code>是</code>+<code>原理</code> 给<strong>每一章白送 7.3 分</strong>
+(实测第 5 章那块 13.53 分里 7.3 分来自这三个词)。
+<strong>"什么词都匹配"变成了正证据</strong>,这才是"无关章节挤进 top-7"的机制。</p>
+<p>而 §3.5 提到的<strong>锚点通用词尾巴</strong>(<code>定义 概念 原理 定理 公式 推导 讲解 详解 怎么理解 为什么</code>)
+把这个效应<strong>放大</strong>了:那串词被复制进<strong>每一个</strong>教材分块,等于给全部 19 章
+同时发了一张"什么都能答"的通行证。教材一进库,这个尾巴的代价才第一次变明显。</p>
+<p><strong>修法:换成 Lucene 的 IDF 写法</strong> <code>log(1 + (N - df + 0.5) / (df + 0.5))</code> ——
+单调递减、<strong>恒为正、不兜底</strong>。见 <code>src/rag/retriever.py:apply_lucene_idf</code>。
+效果是"稀有词不被削、常见词被压平",正是 IDF 该干的事。</p>
+<p><strong>为什么不清零。</strong> 清零(把常见词直接踢出打分)会让"问句只由虚词组成"时全库 0 分、
+一条都召不回 —— 比噪声更糟。Lucene 版留了很小一点权重,排序意义不变而噪声基本消失。</p>
+<p><strong>为什么不在 <code>load()</code> 里"顺手也修一下 FAQ"。</strong> <code>FAQRetriever</code> 的 4.0 阈值<strong>就是按旧 IDF
+标定的</strong>,换公式等于<strong>偷偷改阈值</strong>:实测「这周电路基础有作业吗」5.11 → 1.88、
+「Proteus 在哪下载」5.48 → 3.03,真命中会掉到阈值以下、FAQ 通路直接哑掉。
+FAQ 那边解决同一个问题靠的是"实词闸门"(<code>_FAQ_STOPWORDS</code>),不是改打分。
+<code>test/test_idf.py::test_faq_retriever_keeps_the_original_idf</code> 专门钉住这条边界。</p>
+<p><strong>装载时也会修一遍。</strong> 老索引 pickle 里存的是旧 IDF。<code>BM25Retriever.load()</code> 里也调
+<code>apply_lucene_idf</code>,所以<strong>不重建索引也能去掉虚词噪声</strong>;重建是为了让磁盘上的那份也干净。
+(这条有个副作用值得记:拿"修复前的索引"做突变测试<strong>测不出差别</strong> —— 装载时被修好了。
+第一次跑突变测试就因为这个假绿,后来改成"旧索引 <strong>+</strong> 注释掉装载时的调用"才复现出失败。)</p>
+<p><strong>效果(实测,不是估的)。</strong> 17 条用例命中 <strong>17/17</strong>、MRR <strong>0.956</strong> 前后不变,
+ch4/ch5 的名次反转被纠正。但要如实说清楚:严格表上的"无关教材章"总数只从 <strong>8 条降到 7 条</strong>,
+没有归零。剩下的跨章命中<strong>是真正的词形匹配</strong>,不是打分的锅:</p>
+<ul>
+<li>第 17 章讲傅里叶级数时用的"叠加"是<strong>谐波叠加</strong>,词同一个、意思不同;</li>
+<li>第 10 章(正弦稳态)里有<strong>交流电路里的戴维南等效/叠加应用</strong>,算相关章,已写进 <code>allow_ch</code>;</li>
+<li>第 5 章那块是正文顺带提到 —— 词形匹配解决不了,记作已知残留。</li>
+</ul>
+<p>表里后来又从 7 条降到 4 条,那是<strong>逐条核对 <code>allow_ch</code></strong>(把"确实相关的章"正名)的结果,
+<strong>不是打分变好了</strong>。这个区别必须分清,否则下次会以为"再调调 IDF 还能降"。</p>
+<hr />
+<2 id="4-有这几类文件被故意排除了不是遗漏">4. 有这几类文件被<strong>故意排除</strong>了(不是遗漏)<a class="anchor" href="#4-有这几类文件被故意排除了不是遗漏" title="链接到这一节">#</a></2>
+<p><code>import_circuit_basic.py</code> 里用 <code>KNOWN_SKIP</code> 逐个写明原因,每次运行都会打印。依据都是实测:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>为什么不要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~~<code>电路基础-中文版-原书第6版(扫描版).pdf</code>(266 MB,711 页)~~</td>
+<td>~~<strong>纯扫描件,没有文本层</strong>~~ → <strong>2026-09-20 晚已 OCR 进库</strong>,见 §3.5</td>
+</tr>
+<tr>
+<td><code>Fundamentals of Electric Circuits (4th Ed.) Solution Manual*.pdf</code>(两份,各 1972 页)</td>
+<td><strong>版次不符</strong>。作业用的是<strong>第 6 版</strong>(单题解答页脚是 <code>Copyright © 2017</code>),这两份是<strong>第 4 版</strong>,题号会串。实测在 4th 手册里<strong>搜不到</strong> <code>Solution 10.46</code>。照它答会答错题</td>
+</tr>
+<tr>
+<td>英文教材正文(993 页/1.7M 字符)</td>
+<td>英文正文对中文提问几乎无召回,1.7M 字符还会把 BM25 结果稀释掉。<strong>不是不能加,是要加就得先给它配中文小节标题</strong>(见第 8 节待办)。中文版教材 OCR 进库后,这一项的必要性进一步下降了</td>
+</tr>
+<tr>
+<td><code>微信图片_20251011164912_70_519.jpg</code></td>
+<td><code>src/utils/doc_parser.py</code> <strong>不支持图片</strong>,无 OCR</td>
+</tr>
+<tr>
+<td><code>00_*.md</code> / <code>_*.md</code></td>
+<td>人工目录与生成清单,<strong>不进索引</strong>(理由见 §3.4.1)。注意"排除"发生在索引阶段而不是导入阶段 —— 文件仍然生成,人还能翻</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>教训:一个"看起来全是资料"的目录,直接整个 rglob 进索引是危险的。
+版次不同的答案手册比没有答案更糟 —— 它会自信地给出错题的解答。</p>
+<p>另一条教训(扫描版教材那条):<strong>"排除"这个结论要写清依据,也要定期回头看。</strong>
+当初记的是"没有文本层,要索引必须先 OCR" —— 依据没错,但"先 OCR"这个前提
+后来被当成了"做不到"。真正卡住的从来不是可行性,是<strong>没去量 OCR 的成本</strong>(实测 48 分钟)。</p>
+</blockquote>
+<hr />
+<2 id="5-faq-文件格式阈值和一次真实的误召回">5. FAQ 文件:格式、阈值,和一次真实的误召回<a class="anchor" href="#5-faq-文件格式阈值和一次真实的误召回" title="链接到这一节">#</a></2>
+<3 id="51-格式">5.1 格式<a class="anchor" href="#51-格式" title="链接到这一节">#</a></3>
+<p><code>~/ykt_questions/常问问题.txt</code>,条目间空行分隔;解析器是
+<code>src/rag/retriever.py</code> 的 <code>_parse_faq()</code>:</p>
+<pre><code>Q:
+&lt;问题,可以多行&gt;
+A:
+&lt;答案,可以多行&gt;
+
+Q:
+...
+</code></pre>
+<p>文件开头可以写注释(解析器遇到 <code>Q:</code> 之前的内容会跳过)。
+<strong>不要</strong>在答案里出现行首的 <code>Q:</code>。当前 <strong>37 条</strong>:数电 7 条 + 电路基础 30 条。</p>
+<3 id="52-阈值与实词闸门">5.2 阈值与"实词闸门"<a class="anchor" href="#52-阈值与实词闸门" title="链接到这一节">#</a></3>
+<p><code>FAQ_HIT_THRESHOLD = 4.0</code>。2026-09-20 加了第二道闸门,原因是实测踩到的假召回:</p>
+<p>加入电路基础 FAQ 后,<code>什么是竞争冒险</code>(数电概念题)以 <strong>4.83 分</strong>命中了
+<code>电路基础作业的截止时间是什么时候?</code> —— 因为中文疑问句里 <code>是</code>、<code>什么</code>、<code>的</code>
+几乎每句都有,BM25 就被这些虚词凑够了分。FAQ 命中会<strong>短路掉资料通路</strong>,
+于是学生会拿到一份"作业截止时间"去回答"什么是竞争冒险"。</p>
+<p><strong>第一次修法是错的,记在这里免得再走一遍</strong>:把停用词从<strong>打分</strong>里删掉。
+结果虚假命中没了,但真实命中一起掉到阈值以下 ——
+<code>这周电路基础有作业吗</code> 5.11 → <strong>1.88</strong>、<code>Proteus 在哪下载</code> 5.48 → <strong>3.03</strong>。
+因为 4.0 这个阈值本来就是按原分词标定的,动分词等于偷偷动了阈值。</p>
+<p><strong>现在的做法</strong>:停用词只当<strong>闸门</strong>,不参与打分。
+打分照旧(原 jieba 分词,阈值含义不变),但要求命中的那条 FAQ
+<strong>至少共享一个实词</strong>;一个都不共享就当作没命中,退回落 RAG。
+实测:真命中分数<strong>一分没变</strong>,假命中归零。</p>
+<pre><code class="language-python">scores = self.bm25.get_scores(list(jieba.cut(query)))   # 打分:原分词
+q_content = _faq_content_tokens(query)                  # 闸门:只留实词
+if not (self.content_tokens[i] &amp; q_content):            # 无实词交集 → 不算命中
+    continue
+</code></pre>
+<p>停用词表在 <code>src/rag/retriever.py</code> 的 <code>_FAQ_STOPWORDS</code>,加了 <code>这/那/这题/那题</code> 这类
+指代词(它们没有话题信息,但 <code>那题</code> 曾让 <code>10.46 那题怎么做</code> 误命中 1.23 那条 FAQ)。</p>
+<blockquote>
+<p><strong>这道闸门原来有两条"测试",但它们永远不会红</strong> —— 2026-09-20 深夜才发现。
+原因很隐蔽:测试只用<strong>一条</strong> FAQ 语料,而 <code>rank_bm25</code> 对 df &gt; N/2 的词的 IDF 兜底是
+<code>epsilon × average_idf</code>;单条语料下 <code>average_idf</code> 是<strong>负的</strong>,兜底值也为负,
+分数会被 <code>scores[i] &gt; 0</code> 先滤掉 —— <strong>要复现的病根本没机会出现</strong>。
+现在的做法是两段式:<code>test/test_faq.py</code> 里搭一份<strong>合成的多篇语料</strong>把病造出来,
+再拿<strong>真实的 <code>常问问题.txt</code></strong> 钉住那个被记录下来的假命中。
+并且做了<strong>突变测试</strong>:把闸门删掉,两条测试必须红 —— 红了才算真测试(§9.6)。</p>
+</blockquote>
+<3 id="521-实词闸门拦不住的那种截胡带题号就先去查资料">5.2.1 实词闸门<strong>拦不住</strong>的那种截胡:带题号就先去查资料<a class="anchor" href="#521-实词闸门拦不住的那种截胡带题号就先去查资料" title="链接到这一节">#</a></3>
+<p>闸门只挡"纯虚词凑分"。但下面这种情况它挡不住,因为两边<strong>共享的确实是实词</strong>:</p>
+<pre><code>学生问:电路基础第一章作业的1.36怎么做？        ← 2026-09-20 用户实测报的这个
+FAQ 命中:电路基础理论的作业怎么提交？要交给学委吗？   得分 5.61(阈值 4.0)
+</code></pre>
+<p><code>电路/基础/作业/怎么</code> 四个实词两边都有,于是 FAQ 命中 → <strong>短路掉资料通路</strong> →
+学生拿到"作业在雨课堂提交",外加一句"这个我不确定"。
+而 <strong>1.36 的解答就在知识库里</strong>(检索得分 19.49)。</p>
+<p>根因是 FAQ 通路的前提「FAQ 命中就不必查资料」在<strong>具体题目</strong>上不成立:
+「电路基础+作业+怎么做」这几个词,既属于"怎么交作业",也属于"这题怎么做"。</p>
+<p><strong>规则改成:提问里带题号 → 认定问的是具体题目 → 先查资料,FAQ 只兜底。</strong>
+判定正则 <code>_PROBLEM_REF</code> 在 <code>src/handlers/qa.py</code>,能认出 <code>1.36</code> / <code>第5题</code> / <code>题10.46</code>。</p>
+<p>必须<strong>既准又稳</strong>,两类误判都有代价,所以专门有回归测试 <code>test/test_problem_ref.py</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>判成"问题目"(该查资料)</th>
+<th>判成"普通问题"(该走 FAQ)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1.36 怎么做</code> <code>第5题的参考答案</code> <code>第一章 1.23 的答案</code></td>
+<td><code>作业怎么提交</code> <code>这周有作业吗</code> <code>雨课堂怎么加入</code></td>
+</tr>
+<tr>
+<td><code>10.46 那题怎么做</code> <code>题10.46怎么解</code></td>
+<td><code>第1次作业没交</code>(<strong>"第N次"不是题号</strong>)</td>
+</tr>
+<tr>
+<td><code>1.23 最后是算电还是电费</code></td>
+<td><code>2026-09-20 的作业</code>(日期不能当成题号)</td>
+</tr>
+</tbody>
+</table></div>
+<p>最后两条是重点:<code>第1次作业没交</code> 若被误判成"问题目",补交登记就会被推去查资料;
+<code>2026-09-20</code> 若被误判,任何带日期的提问都会绕开 FAQ。</p>
+<blockquote>
+<p>副作用(是好的):<code>1.23最后是算电还是电费</code> 以前命中那条窄 FAQ,只回答电费那一点;
+现在走资料,学生拿到的是<strong>完整解答</strong>。这正是 §8 旧限制 #4 的解法。</p>
+</blockquote>
+<p><strong>同一天晚些时候又往前走了一步</strong>:FAQ 快路(命中就不查资料)现在<strong>只留给事务题</strong>,
+概念题即使命中 FAQ 也照常查资料,把 FAQ 当补充材料一起喂进去。
+原因是概念题要能展开讲解,短路会把"讲得更透"一起掐掉。见 §6。
+分档判据 <code>_classify()</code> 收在 <code>src/handlers/qa.py</code>,回归测试 <code>test/test_query_kind.py</code>。</p>
+<3 id="53-脱敏规则重要新增条目前先读这段">5.3 脱敏规则(重要,新增条目前先读这段)<a class="anchor" href="#53-脱敏规则重要新增条目前先读这段" title="链接到这一节">#</a></3>
+<p>本次从两份微信群聊记录里提取问答,<strong>公开规则</strong>是:</p>
+<ul>
+<li>✅ <strong>可以出现</strong>:<code>张曰理</code>(任课老师姓名)、<code>mcdl</code>(助教网名)</li>
+<li>❌ <strong>必须脱敏</strong>:其他所有同学的姓名与网名</li>
+</ul>
+<p>具体处理:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>情况</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>群里的学生真实姓名(19 个)</td>
+<td>一律不写进 FAQ;确实需要指代时用「某同学」</td>
+</tr>
+<tr>
+<td>群里的学生网名/昵称(约 26 个)</td>
+<td>同上,一律不写</td>
+</tr>
+<tr>
+<td>2 班未加雨课堂的<strong>名单</strong>那一条</td>
+<td>整条<strong>丢掉</strong>(它是点名用的,不是问答)</td>
+</tr>
+<tr>
+<td>学生自我介绍 + 点名舍友的那一段</td>
+<td>整段丢掉(纯身份信息)</td>
+</tr>
+<tr>
+<td>助教真实姓名(群昵称里带)</td>
+<td>用 <code>mcdl</code> 代替 —— 白名单只放行了网名</td>
+</tr>
+<tr>
+<td>旧数电 FAQ 里出现的「某同学姓名 + 学号」</td>
+<td>改为「某同学」(已脱敏)</td>
+</tr>
+<tr>
+<td>旧数电 FAQ 里的另一位助教姓名、另一位老师的姓名</td>
+<td>改为「另一位助教」「任课老师」</td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong>连"举例说明脱敏了什么"也不要写出真名</strong>。本文档初稿在这里列了被删掉的具体姓名,
+等于换个地方又公开了一遍 —— 已在 2026-09-20 改掉。要记录就得记成上面这样的类别描述。</p>
+<p>顺带修掉了仓库里的一处同类问题:<code>deploy/openclaw/…/SKILL.md</code> 的"手工自检"示例
+原本用的是一组<strong>真实姓名 + 学号</strong>,已换成 <code>测试同学 20259999999</code>。</p>
+<blockquote>
+<p>注:<code>~/ta-assistant/data/logs/2026-04.log</code> 和 <code>.claude/settings.local.json</code> 里也有这组
+真实姓名学号,但它们在 <code>.gitignore</code> 里(不进版本库),且日志本身就是业务记录的用途,未改动。</p>
+<p>⚠️ <strong>黑名单扫一遍 ≠ 干净(2026-09-20 实测)。</strong> 那天做全库脱敏扫描,结果报"0 命中"——
+但那是<strong>假的安全感</strong>:名单本身<strong>漏了一位同学</strong>,是顺着 <code>.claude/settings.local.json</code> 里
+一条历史批准记录才发现黑名单不全的。<strong>denylist 只能证明"已知的这些没有",证明不了"没有"。</strong>
+补全之后重扫,tracked 文件里的真实姓名/学号确实是 0 —— 而<strong>真正让它成立的是另外两条</strong>:
+① 名单/记分册/补交表<strong>本体绝不进版本库</strong>(查过,工作树里一个都没有);
+② 允许出现 PII 的只有<strong>被 gitignore 的文件</strong>(<code>data/logs/</code>、<code>.claude/settings.local.json</code>)。
+所以以后做这类检查,<strong>先确认"名单类文件有没有混进会被提交的目录",再看黑名单</strong>。
+扫描时也只打印<strong>位置</strong>、不打印命中内容 —— 姓名学号本身不该被复述到任何地方。</p>
+</blockquote>
+<3 id="54-勘误faq-快路快在不查资料不是不调大模型">5.4 勘误:"FAQ 快路"快在<strong>不查资料</strong>,不是"不调大模型"<a class="anchor" href="#54-勘误faq-快路快在不查资料不是不调大模型" title="链接到这一节">#</a></3>
+<p><strong>一句话</strong>:事务题命中 FAQ 时,系统<strong>跳过资料通路、仍然调大模型润色</strong>。</p>
+<p>这条本来不值得单开一节,但<strong>四份文档同时写错了</strong>,而且错得<strong>方向相反</strong> ——
+照错的写去"修",会修出一个事务答复直接裸奔的快路:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>原来写的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本文 §1 的流程图</td>
+<td><code>FAQ 命中 → 直接发答案,不调大模型(唯一的快路)</code></td>
+</tr>
+<tr>
+<td><code>design.md</code> §2.2 / §3.4</td>
+<td><code>事务题 + FAQ 命中 → 直接发 FAQ 答案,不调大模型</code></td>
+</tr>
+<tr>
+<td><code>requirements.md</code> F-4</td>
+<td><code>直接发 FAQ 答案、不调大模型</code></td>
+</tr>
+<tr>
+<td><code>wechat_end_to_end.md</code></td>
+<td><code>FAQ 快路(命中就不调大模型)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>代码里从来没有这个 <code>return</code></strong> —— <code>qa.py</code> 那一段只是把 <code>context</code> 换成 FAQ,
+往下走照样 <code>llm.chat(...)</code>。注释和文档说的是一回事,代码是另一回事,而且<strong>没人会发现</strong>:
+两种行为在回执上长得一模一样。</p>
+<p><strong>那到底该补 <code>return</code> 还是该改注释?量过再定的:</strong></p>
+<p>拿 <strong>28 条</strong>能自命中的事务类 FAQ 逐条走真实通路,比对"FAQ 原文里的数字"和"模型答复里的数字"
+(<code>scripts/eval_admin_fidelity.py</code>,<strong>会真调 API</strong>):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAQ 里有、答复里<strong>丢了</strong>的数字</td>
+<td><strong>0 条</strong> ← 这才是"失真",它是 0</td>
+</tr>
+<tr>
+<td>答复里<strong>多出</strong>的数字</td>
+<td><strong>18 条</strong>(逐条看过上下文,见下)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>"丢 = 0" 是关键</strong>:28 条里没有一条把 FAQ 的事实弄丢,所以<strong>保留润色的决定成立</strong>。</p>
+<blockquote class="warn">
+<p>⚠️ <strong>但结论不能写成"数字原样不动" —— 我第一版就是这么写的,是错的。</strong>
+那 18 条里,数字<strong>确实会被改写</strong>。分三类:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类</th>
+<th>例子</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 同义换算 / 写法归正</td>
+<td>零→<code>0</code>、「一周」→「七天」、「十」→<code>10</code></td>
+<td>语义没变,只换了写法</td>
+</tr>
+<tr>
+<td>② 中文数字当普通字用</td>
+<td>「一下」「一起」「对不上」</td>
+<td><strong>误报</strong>,本来就不是数字(比对脚本的固有噪声)</td>
+</tr>
+<tr>
+<td>③ <strong>模型自己补的</strong></td>
+<td>「打印到 <strong>A4</strong> 纸」、举例「<code>10.46</code> 怎么做」</td>
+<td><strong>不在助教审过的口径里</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>准确的说法是:<strong>润色不丢信息(28/28),但会增补</strong> —— 而增补的东西不受口径控制。
+第 ③ 类就是下面那条观察项的一般形式。</p>
+</blockquote>
+<p><strong>所以保留调用,只把注释和这四份文档改对。</strong></p>
+<p>⚠️ <strong>但那不等于"润色可以随便加东西"。</strong> 2026-09-20 晚在 OpenClaw 侧做自检时看到过一例:
+问「Proteus 在哪下载?」(FAQ 里有这条),答复里<strong>多带了一个微信公众号文章的链接</strong> ——
+那是模型从自己的知识里补的,FAQ 原文没有。链接本身未必有害,但它<strong>不在助教审过的口径里</strong>。
+这是"润色"和"自由发挥"的边界,现在只靠提示词约束(事务类不许用自己知识补充一个字),
+<strong>没有机制去挡</strong>。记在这里,留作观察项。</p>
+<p><strong>这条不进单测</strong>,因为它验的是<strong>模型的输出</strong>,不是代码逻辑 ——
+单测里那个"模型"是桩,桩不会改写数字。要复核就手动跑上面那个脚本。</p>
+<3 id="55-助教自己在微信里加-faq记录">5.5 助教自己在微信里加 FAQ:<code>【记录】</code><a class="anchor" href="#55-助教自己在微信里加-faq记录" title="链接到这一节">#</a></3>
+<p><strong>在这之前,加一条 FAQ 只有一条路:开编辑器手改 <code>常问问题.txt</code>。</strong>
+那份文件没有版本库兜底、没有格式校验、写错一个行首 <code>A:</code> 就会把条目截成两半,
+而且<strong>改完没有任何反馈</strong>。<code>【记录】</code>就是给这件事补的入口。</p>
+<pre><code>【记录】问题:仿真软件 Proteus 在哪下载?
+标准答案:课程群文件里有个压缩包,解压后按说明装。
+</code></pre>
+<p>回执 <code>✅ 已记录,FAQ 现在能被检索到 38 条</code>,或者 <code>❌ 没记: &lt;为什么&gt;</code>。</p>
+<p><strong>四条设计约束,针对的都是"错了很难查"的那类错:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>约束</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>拒收时一个字节都不写</strong></td>
+<td>每条拒收路径的测试都断言"文件内容未变"。"写一半"比"没写"糟得多</td>
+</tr>
+<tr>
+<td><strong>拿不准就拒,让助教重发</strong></td>
+<td>两条粘在一起、答案里有行首 <code>A:</code> —— 猜错的代价是<strong>一条内容错位的 FAQ 被安静地写进去</strong>:学生问 A 拿到 B 的答案,谁都不会发现</td>
+</tr>
+<tr>
+<td><strong>写前读、写后回读校验,不过就按原字节回滚</strong></td>
+<td><code>_parse_faq</code> 是行首 <code>Q:</code>/<code>A:</code> 驱动的,写进去的东西<strong>未必读得出来</strong>;不校验等于把"写成功"当成"写对了"</td>
+</tr>
+<tr>
+<td><strong>FAQ 文件不存在就拒,绝不自动创建</strong></td>
+<td>路径配错时"自动创建"会造出一份空 FAQ 并从此<strong>安静地分流</strong>,比报错难查得多</td>
+</tr>
+</tbody>
+</table></div>
+<p>拒收的四类:<strong>含个人信息</strong>(8 位以上连续数字 / 花名册里的姓名)、<strong>太长</strong>(问题 &gt;200 字、答案 &gt;1000 字)、
+<strong>格式拿不准</strong>、<strong>与现有条目重复</strong>(近乎重复则写进去但在回执里提醒)。</p>
+<blockquote>
+<p><strong>回执里不复述正文</strong>:提到学号只会说"问题里有学号(共 11 位)",不把号码打回去;
+日志同理,只记 <code>reason=</code>。拒收的理由就是"它不该被留痕",再回显一遍等于白拒。
+<strong>已知未做</strong>:<code>process_input</code> 那条日志仍会记原始输入,所以<strong>被拒的记录正文仍会进日志</strong>;
+并发写有竞态(助教不会并发,同 <code>requirements.md</code> R-4)。</p>
+</blockquote>
+<p><strong>"立刻生效"不是"大概会生效",是测过的。</strong> <code>FAQRetriever</code> 每次调用都重新读文件,
+没有常驻缓存,所以记完<strong>不用重建索引</strong>;<code>test_record.py</code> 里有一条测试就是
+"记一条 → 用真 <code>FAQRetriever</code> 查 → 必须 top-1 且过阈值"。</p>
+<blockquote class="warn">
+<p>⚠️ <strong>写这条测试踩到一个坑,值得记下来:测试语料必须按生产规模搭。</strong>
+最初用 3 条 FAQ 的小语料,自命中只有 <strong>1.02 分</strong>(阈值 4.0),测试<strong>假红</strong>。
+原因不是功能坏了,是 <strong>BM25 的 IDF 随语料条数 N 变化</strong> —— 语料太小,分数整体就低。
+实测真文件(37 条):自命中<strong>最低 10.75、中位 25.44</strong>,全部过阈值。
+所以 fixture 改成 40 条,并且把量出来的数字写进测试文件里 ——
+<strong>免得以后有人靠"调低阈值"把这个假红修掉</strong>(那会把真命中一起放进来)。
+一条<strong>假红</strong>比没有测试更糟:它会诱人去改对的东西。</p>
+</blockquote>
+<p><strong>实现与部署:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/handlers/record.py</code></td>
+<td>解析 / 四道检查 / 原子追加 / 回读回滚。<code>handle()</code> 返回 <code>{"type": "record", …}</code></td>
+</tr>
+<tr>
+<td><code>src/main.py</code></td>
+<td>闸门在<strong>学生转发闸门之前</strong>;顺序反了会被判成"非学生消息"丢掉,而且<strong>看起来一切正常</strong></td>
+</tr>
+<tr>
+<td><code>src/config.py</code></td>
+<td><code>RECORD_PREFIX</code>,刻意<strong>不放进</strong> <code>STUDENT_FORWARD_PREFIXES</code></td>
+</tr>
+<tr>
+<td><code>test/test_record.py</code></td>
+<td>49 例。<code>conftest.py</code> 的 <code>isolated_faq</code> 是 autouse 的,默认指向一个<strong>不存在</strong>的临时文件 —— 所以"文件不存在就拒"这条规则<strong>每次跑测试都在被执行</strong></td>
+</tr>
+<tr>
+<td><code>deploy/openclaw/…/SKILL.md</code>、<code>AGENTS.md</code></td>
+<td>加了第五种返回值 <code>record</code>;约定 <code>✅</code>=记上了、<code>❌</code>=没记上,<strong>禁止</strong>在 <code>❌</code> 时回"已经记下了"</td>
+</tr>
+<tr>
+<td><code>scripts/install_openclaw_skill.sh</code></td>
+<td>带版本标记(<code>ta-assistant-route: v2</code>)—— <strong>改接入件内容必须 bump 它</strong>;装到别人的 <code>AGENTS.md</code> 上时只追加、不肯改既有的段落</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>验真用的是突变测试</strong>:22 个变异抓住 21 个,漏掉的那个经核对是<strong>等价变异</strong>
+(标记词正则都是 <code>^</code> 锚定的,<code>^\s*答案\s*[:：]</code> 不可能匹配 <code>标准答案:</code>,分支顺序颠倒不改变行为)。
+顺带纠正了我在源码里写错的一句注释 —— 原来写"顺序有讲究",是变异测试试出来那句话不成立。</p>
+<3 id="56-从日志里挖下一条-faq-该写什么">5.6 从日志里挖"下一条 FAQ 该写什么"<a class="anchor" href="#56-从日志里挖下一条-faq-该写什么" title="链接到这一节">#</a></3>
+<p><code>scripts/mine_faq_candidates.py</code>(2026-09-20 新增)。读 <code>data/logs/*.log</code> 里的 <code>qa_kind</code> 事件,
+把<strong>学生真问过、但 FAQ 没接住</strong>的问法挖出来:<code>faq_hit=False</code> 且被反复问的 →
+<strong>该补 FAQ 条目</strong>(它的主产出);<code>top_score</code> 很低的 → 该补语料。
+它只读日志、只打印,不写任何东西。</p>
+<p><strong>一条量出来的教训(决定了它的算法):</strong> 干净日志里 474 条问句,去掉空白标点后
+<strong>只有 25 种不同写法</strong>,而其中一条问法的<strong>同一种写法被问了 158 次</strong>。
+所以这份日志的主要信息是"同一句话被反复问",<strong>不是</strong>"同一件事有很多种说法"——
+于是<strong>数的是"被问过多少次",不是"有几种写法"</strong>。
+(先前数的是写法数,那条被问 158 次的问题因为"只有 1 种写法"被 <code>--min-count 2</code>
+判成"只问过一次"<strong>整条丢掉</strong> —— 最该补的那条恰恰是唯一被丢的。)</p>
+<blockquote>
+<p><strong>这个脚本有个前提,踩过一次:</strong> 生产日志被<strong>测试</strong>写脏过
+(<code>process_input</code> 事件 + <code>raw</code> 字段),于是挖出来的"高频问题"全是测试用例 ——
+实测 543 条问句里 <strong>521 条(95.9%)</strong> 的原文恰好等于 <code>test/</code> 里的字符串字面量。
+现在 <code>test_log_isolation.py</code>(autouse)守着这件事;污染过的那段日志<strong>没有删,是改名归档</strong>:
+<code>data/logs/2026-09.log.tests-polluted-20260920</code> ——
+新名字不匹配挖矿脚本的 <code>[0-9]{4}-[0-9]{2}.log</code>,自动不再被读,而<strong>字节一个没少</strong>,
+回滚就是 <code>mv</code> 回来一句。<strong>跑挖矿前先看一眼日志里有没有 <code>raw_repr</code> 的测试残留。</strong></p>
+</blockquote>
+<hr />
+<2 id="6-大模型侧的三档规则资料里没有时怎么办">6. 大模型侧的三档规则(资料里没有时怎么办)<a class="anchor" href="#6-大模型侧的三档规则资料里没有时怎么办" title="链接到这一节">#</a></2>
+<p><code>src/handlers/qa.py</code> 的 <code>_SYSTEM_PROMPT</code>。这里记的是<strong>为什么这么写</strong>,改提示词前先读。</p>
+<3 id="61-走过的一段弯路">6.1 走过的一段弯路<a class="anchor" href="#61-走过的一段弯路" title="链接到这一节">#</a></3>
+<p>第一版提示词是"<strong>只依据资料作答,资料里没有就回答『这个我不确定,建议问任课老师』</strong>"。
+写它的原因是实测问<code>什么是叠加定理</code>时,模型在资料里没有的情况下<strong>凭自己的知识讲了一整段</strong>,
+而本项目的定位是答疑以资料为准。</p>
+<p>这条规则治好了"瞎讲",但<strong>做过头了</strong>:当时知识库里只有<strong>作业答案</strong>、没有教材正文
+(课堂讲义是 §9.4 那一轮才加进来的),
+于是所有概念题(什么是叠加原理、为什么功率因数要补偿)都被一刀切成"我不确定,建议问任课老师"。
+学生问概念得到的是一堵墙 —— 这正是助教 2026-09-20 反馈要改的。</p>
+<3 id="62-现在的三档">6.2 现在的三档<a class="anchor" href="#62-现在的三档" title="链接到这一节">#</a></3>
+<p>把"资料里没有"拆成三种情况,提示词里逐条写明:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>档</th>
+<th>例子</th>
+<th>资料里没有时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① <strong>学科概念/原理</strong></td>
+<td>什么是叠加原理、为什么功率因数要补偿</td>
+<td><strong>先看资料里有没有教材(中文版第 6 版)或课堂讲义</strong> —— 有就以它为准讲(不必加声明);两者都没有才用自己的通用教材知识讲,且必须先说一句「以下讲解是通用教材知识,供参考」</td>
+</tr>
+<tr>
+<td>② <strong>课程事务</strong></td>
+<td>怎么交作业、截止时间、补交规则、评分、考试安排、名单、成绩</td>
+<td><strong>一个字都不许猜</strong>,只回答"这个我不确定,建议问任课老师"。写错截止日期比不回答严重得多</td>
+</tr>
+<tr>
+<td>③ <strong>具体题号</strong></td>
+<td>1.36 怎么做</td>
+<td>只认资料里那道题的解答。资料里没有就明说没找到,<strong>不许自己解</strong> —— 教材版次不同题号会串(见 §4),自己解可能给出别的题的答案</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>① 档里的教材与讲义谁优先(2026-09-20 晚定,教材进库后改的):</strong>
+两者都有时 —— <strong>以教材的细节为准,用讲义的口径来组织</strong>。
+教材(§3.5)有推导、有页码、覆盖全书 19 章,但它是<strong>译本</strong>;
+讲义是张老师课堂上的讲法,但<strong>只是 PPT 提纲、往往只有结论没有推导</strong>。
+所以不是"二选一",是"用老师熟悉的口径,讲书上更细的内容"。</p>
+<p>外加一条【尽量结合作业】:<strong>讲概念时,如果资料里有相关作业题,就写出题号拿它当例子</strong>,
+讲清楚"这个概念在作业里怎么用"。同时明确禁止它编造题目内容、禁止说
+"作业里第几题考了这个"(它看不到作业册,不知道里面有什么)。</p>
+<p><strong>还有一条【中文版优先】</strong>(2026-09-20 晚加):一道题里同时有
+<code>【…参考答案(中文版)】</code> 和 <code>【英文版对照(仅参考)】</code> 时,
+<strong>数字、单位、最终结论一律用中文版那段的</strong>,英文版那段只用来对照两版差异,
+<strong>不许拿它的数字去回答</strong>。这是把 §3.2 的文件结构约定在提示词里再钉一遍 ——
+两处都写,是因为"用错版本"正是助教点名的那类错误。</p>
+<p><strong>教材进库后又加了一条【引用教材时要给页码】</strong>(见 §3.5)。两个要点:</p>
+<ol>
+<li><strong>引用教材讲解时要说清页码</strong>(「教材第188页讲了这一点」)。
+   教材段落里带着 <code>[教材 P188]</code> 这种<strong>书上印刷页码</strong>标记,指着它<strong>下面</strong>那段内容。
+   教材比讲义强就强在这里 —— 讲义是 PPT 导出,<strong>没有页码</strong>,学生翻不到。</li>
+<li><strong>OCR 出来的公式不要硬解。</strong> 教材是扫描件 OCR 的,公式/上下标/矩阵常有乱码,
+   指示模型"看到明显不成句的公式就照实说『这里 OCR 得不清楚,请对照教材 P某页』,
+   <strong>不要猜一个看起来通顺的公式</strong>"。
+   这一条比第一条重要:<strong>猜出来的公式看起来是对的,学生不会去核对。</strong></li>
+</ol>
+<3 id="63-为什么②③必须单独钉住">6.3 为什么②③必须单独钉住<a class="anchor" href="#63-为什么②③必须单独钉住" title="链接到这一节">#</a></3>
+<p>因为<strong>幻觉的代价不对等</strong>。概念讲得浅一点、用词不完全是老师的说法,学生自己看书也能纠正;
+但<strong>编一个截止日期、编一道题的解答</strong>,学生会照着做 —— 后者就像 §4 里那份 4th 版答案手册,
+"自信地给出错题的解答"。所以放开①的前提,是把②③写死。</p>
+<3 id="64-实测2026-09-20">6.4 实测(2026-09-20)<a class="anchor" href="#64-实测2026-09-20" title="链接到这一节">#</a></3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>提问</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>什么是叠加原理</code></td>
+<td>讲了定义 → 四步用法 → 四个易错点(受控源要保留 / 功率不能叠加 / 只适用线性电路 / 参考方向),末尾<strong>自动挂上讲义</strong>:"张老师的讲义在第10章正弦稳态分析里专门讲了这一点(10.4 叠加原理)"</td>
+</tr>
+<tr>
+<td><code>作业里的叠加定理怎么理解</code></td>
+<td>概念讲解 + 用库里的 <strong>4.15</strong> 举例(设 i = i₁+i₂+i₃ 分别是 20V 源、2A 源、16V 源单独作用),并提醒对照作业册自己画单源电路</td>
+</tr>
+<tr>
+<td><code>1.36 怎么做</code></td>
+<td>只用 <code>1.36.md</code> 一份资料,答的是<strong>中文版</strong>的数字(20A∙h、12V、80A、416.7),并把 <code>0.25</code> 的来历讲清(15 分钟 = 0.25 小时)</td>
+</tr>
+<tr>
+<td><code>教材上哪里有印错的地方</code></td>
+<td>逐章列出勘误(P9 应为 115 V、P166 新版书漏了 2 μF、<strong>P188 这题本身有错不用做</strong>…)。修锚点之前这一问是答"我这边没有拿到那份清单"的</td>
+</tr>
+<tr>
+<td><code>什么是竞争冒险?</code></td>
+<td>数电资料里<strong>有</strong>相关内容 → 直接用资料答,而且<strong>没有</strong>加"通用教材知识"那句前缀(资料里有就不该加)</td>
+</tr>
+<tr>
+<td><code>13.11 那题怎么做</code>(英文版独有)</td>
+<td>正常按 <code>13.11.md</code> 答(ω=600、j480/j360/j720、−j138.89 Ω),说明中文版没布置这题也不影响</td>
+</tr>
+<tr>
+<td><code>电路基础期末考试考什么范围</code></td>
+<td>事务题:先明说"我这边没有正式通知,请以张老师说明为准",再把复习资料里的要点<strong>标注清楚</strong>列出来当参考,结尾再强调"不等于考试范围"</td>
+</tr>
+<tr>
+<td><code>期中考试什么时候</code></td>
+<td>事务题:资料里没有 → 明说没有考试安排信息、建议问老师,<strong>没有编日期</strong></td>
+</tr>
+<tr>
+<td><code>电路基础第12章 12.99 怎么做</code></td>
+<td>库里没有 → "这道题我没有找到对应的参考答案,建议问任课老师",并解释教材版次不同题号会串、所以不替你推</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>核实过引用没有编。</strong> 上面 <code>什么是叠加原理</code> 那句挂靠是真是假,直接去讲义里查了:
+<code>讲义/第10章-正弦稳态分析.md</code> 第 142 行确实有 <code>10.4 叠加原理</code>,第 145 行还写着
+"若电路中有几个不同工作频率的电源,则叠加原理…"。
+<code>4.15</code> 那段提到的 20-V / 2-A / 16-V 三个电源、3Ω 电阻、i = 1.875 A、p = 10.55 W
+也全都能在 <code>4第四章/4.15.md</code> 原文里找到。<strong>引用是读出来的,不是编的</strong> ——
+这两条每次改完提示词都值得再抽查一遍。</p>
+<3 id="641-教材进库后的复测2026-09-20-晚同一批提问">6.4.1 教材进库后的复测(2026-09-20 晚,同一批提问)<a class="anchor" href="#641-教材进库后的复测2026-09-20-晚同一批提问" title="链接到这一节">#</a></3>
+<p>教材从"资料里没有"变成"资料里最细的那份",① 档的口径随之改了(§6.2),
+所以同一批问题又跑了一遍:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>提问</th>
+<th>教材进库前</th>
+<th>教材进库后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>什么是叠加原理</code></td>
+<td>讲义一句 + 通用知识</td>
+<td><strong>教材第4章(线性性质/齐次性/叠加性)+ 第10章(不同频率要分开)</strong>,并指出<strong>功率不能叠加</strong>;末尾自动挂上讲义 10.4</td>
+</tr>
+<tr>
+<td><code>虚短和虚断是什么意思</code></td>
+<td>—</td>
+<td>诚实声明"以下是通用教材知识,供参考",<strong>同时给出教材页码</strong>:"教材第5章(从P134起)专门讲运算放大器" —— 因为召回的块里确实没有解释这两个词(见 §3.4.2)</td>
+</tr>
+<tr>
+<td><code>1.36 怎么做</code></td>
+<td>正确(只用 <code>1.36.md</code>)</td>
+<td><strong>未变</strong>,依然只用 <code>1.36.md</code>,数字与结论不变</td>
+</tr>
+<tr>
+<td><code>教材上哪里有印错的地方</code></td>
+<td>错误集锦逐条列出</td>
+<td><strong>未变</strong>,错误集锦仍在最前</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>同样核实了引用没编。</strong> <code>什么是叠加原理</code> 那份答复里提到「例5-5、例10-5」,
+看着像编的 —— 实测 grep 教材正文:<code>例5-5</code> 在 <code>教材-第5章-运算放大器.md</code> 出现 2 次、
+<code>例10-5</code> 在 <code>教材-第10章-正弦稳态分析.md</code> 出现 2 次,<strong>都在</strong>(书的例题编号确实有
+<code>例4.10</code> 和 <code>例5-5</code> 两种写法)。<strong>"看起来像幻觉"不等于幻觉,但必须每次都去查一遍。</strong></p>
+<3 id="65-还有一条不要用-markdown">6.5 还有一条:不要用 Markdown<a class="anchor" href="#65-还有一条不要用-markdown" title="链接到这一节">#</a></3>
+<p>回复是<strong>原样发到微信</strong>的,微信不渲染 <code>**</code> <code>#</code> <code>-</code>。改之前模型输出了 <code>**叠加定理**</code>,
+学生看到的是一堆星号。这条从第一版保留到现在。</p>
+<blockquote class="warn">
+<p>⚠️ <strong>没有联网</strong>。<code>src/llm/minmax.py</code> 是个纯粹的 chat completion 客户端,
+没有 tool calling、也没接搜索 API。所以 ① 档的讲解全部来自模型<strong>自己的知识</strong>,
+不是实时检索的结果。要真联网得先加一个搜索步骤(见 §8 待办)。</p>
+</blockquote>
+<3 id="66-②-档多了一层会过期的口径课程事务事实表">6.6 ② 档多了一层"会过期的口径":课程事务事实表<a class="anchor" href="#66-②-档多了一层会过期的口径课程事务事实表" title="链接到这一节">#</a></3>
+<p><strong>问题不在"答不出来",在"答得太自信"。</strong> FAQ 对事务类的覆盖率本来就高,
+但<strong>FAQ 条目不会过期</strong> —— 截止时间、提交方式、补交规则这类事每学期都变,
+而写下的那条答案会继续被命中、而且说得很自信。提示词第②条(事务类一个字都不许猜)防的是
+"说错",可它防不住"照着去年的截止日期说得斩钉截铁"。</p>
+<p>所以给 ② 档加了一份<strong>会过期的权威版本</strong>:<code>~/ykt_questions/课程事务.txt</code>
+(<code>config.COURSE_FACTS_PATH</code>),助教手工维护,每条带生效/失效日期。</p>
+<pre><code>生效: 2026-09-01
+失效: 2027-01-31
+事实: 本课程作业补交需在截止后 7 天内联系助教登记
+来源: 张曰理老师 2026-09-01 课间通知
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>设计点</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>它高于 FAQ 与课程资料</strong>,冲突时以它为准</td>
+<td>它就是为"改了口径"存在的;不高于旧条目就白加了</td>
+</tr>
+<tr>
+<td><strong>日期算不清的块整块跳过 + 告警</strong></td>
+<td>宁可这条规则不生效(退回原来的"资料里没有"),也不能拿一条<strong>自己都算不清还算不算数</strong>的规则去回答事务问题</td>
+</tr>
+<tr>
+<td><strong>只在事务档注入,且排在 FAQ 前面</strong></td>
+<td>不等"FAQ 没命中"才注入:命中时才是风险所在。而"以它为准"这条规则<strong>需要有顺序上的支撑</strong>,否则是一句空话</td>
+</tr>
+<tr>
+<td>生效/失效<strong>两端都含当天</strong></td>
+<td>平时看不出来,学期末最后一天就会有人踩 —— 所以钉成"含",并且有测试盯着</td>
+</tr>
+<tr>
+<td>表要<strong>保持小</strong>(几十条以内)</td>
+<td>事务类提问每次都会把它整块塞进 prompt,越长越贵、也越容易让模型扯到不相关的事</td>
+</tr>
+<tr>
+<td>文件<strong>不存在 → 空列表,静默休眠</strong></td>
+<td>这个项目里"数据文件还没放上去"是常态,不能因此让答疑整条挂掉</td>
+</tr>
+</tbody>
+</table></div>
+<p>解析器 <code>src/utils/course_facts.py</code>,测试 <code>test/test_course_facts.py</code>(14 例);
+单测里有 autouse 的 <code>isolated_course_facts</code>,免得受助教本机那份影响。</p>
+<blockquote class="warn">
+<p>⚠️ <strong>如实说:这个文件现在还不存在</strong>(2026-09-20 实测 <code>~/ykt_questions/课程事务.txt</code> 没有,
+<code>load_facts()</code> 返回 0 条)—— <strong>功能建好了但一次都没在真实数据上跑过</strong>,
+当前线上行为与加它之前完全一致。要启用得助教先写那份表(格式见上,几十条以内),
+<strong>不需要重建索引</strong>(每次调用现读)。这也意味着它那 14 条测试是目前唯一的保护。</p>
+<p><strong>这个功能的理由不靠数字,但要记一笔数字的教训。</strong> 立项时记的是
+"265 条 <code>qa_kind</code> 事件里事务题 124 条、<strong>112 条(90.3%)命中 FAQ</strong>"。
+写 <code>mine_faq_candidates.py</code> 时才发现<strong>那份日志 96% 是单测自己写进去的</strong> ——
+这组数不可信。同一份日志里能认出来的真学生提问只有 <strong>22 条</strong>(真·事务题 13 条、命中 11 条)。
+<strong>方向没变</strong>(覆盖率越高,旧答案继续被命中的面越大),但百分数不写了 ——
+22 条样本给不出可信的百分比。
+真正该做的是等干净日志攒够量再量,而且<strong>该由挖矿脚本来量</strong>(§5.6)。</p>
+</blockquote>
+<hr />
+<2 id="7-资料更新后怎么重建日常运维">7. 资料更新后怎么重建(日常运维)<a class="anchor" href="#7-资料更新后怎么重建日常运维" title="链接到这一节">#</a></2>
+<p><strong>先把七步的顺序记成图,再看下面可直接复制的命令</strong>(②③ 的顺序不能反,④ 平时不用做):</p>
+<figure class="diagram">
+<div class="mermaid">flowchart LR
+  A[&quot;① --dry-run&lt;br/&gt;先看要动什么&lt;br/&gt;不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
+  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】&lt;br/&gt;幂等,走缓存&quot;]
+  C --&gt; D[&quot;④ OCR → import_textbook&lt;br/&gt;仅教材换了才需要&quot;]
+  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引&lt;br/&gt;(FAQ 不用重建)&quot;]
+  E --&gt; F[&quot;⑥ audit_enhanced_numbers&lt;br/&gt;大模型有没有改数字&quot;]
+  F --&gt; G[&quot;⑦ eval_retrieval --compare&lt;br/&gt;17 条用例,退化则退出码 1&quot;]
+  G --&gt; H[&quot;⑧ 抽查几问&lt;br/&gt;端到端、要人眼看&quot;]
+
+  B -.-&gt;|&quot;顺序反了会被跳过,不会覆盖&quot;| C
+  D -.-&gt;|&quot;跳过这一大步&quot;| E</div>
+<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart LR
+  A[&quot;① --dry-run&lt;br/&gt;先看要动什么&lt;br/&gt;不调 API、不写盘&quot;] --&gt; B[&quot;② import_circuit_theory&lt;br/&gt;落盘原始语料&quot;]
+  B --&gt; C[&quot;③ enhance_circuit_basic&lt;br/&gt;补【中文详细解析】&lt;br/&gt;幂等,走缓存&quot;]
+  C --&gt; D[&quot;④ OCR → import_textbook&lt;br/&gt;仅教材换了才需要&quot;]
+  D --&gt; E[&quot;⑤ build_index&lt;br/&gt;重建 BM25 索引&lt;br/&gt;(FAQ 不用重建)&quot;]
+  E --&gt; F[&quot;⑥ audit_enhanced_numbers&lt;br/&gt;大模型有没有改数字&quot;]
+  F --&gt; G[&quot;⑦ eval_retrieval --compare&lt;br/&gt;17 条用例,退化则退出码 1&quot;]
+  G --&gt; H[&quot;⑧ 抽查几问&lt;br/&gt;端到端、要人眼看&quot;]
+
+  B -.-&gt;|&quot;顺序反了会被跳过,不会覆盖&quot;| C
+  D -.-&gt;|&quot;跳过这一大步&quot;| E</code></pre></details>
+</figure>
+<pre><code class="language-bash">cd ~/ta-assistant
+
+# ① 先看要动哪些文件、要花多少次大模型调用(不调 API、不写盘)
+./.venv/bin/python scripts/import_circuit_theory.py --dry-run
+./.venv/bin/python scripts/enhance_circuit_basic.py --dry-run
+
+# ② 落盘:讲义 + 错误集锦 + 中文版作业答案的原始语料
+#    (默认跳过已带【中文详细解析】的文件,不会把解析冲掉)
+./.venv/bin/python scripts/import_circuit_theory.py
+
+# ③ 生成/更新中文详细解析(幂等;已增强过的题走缓存,不会重复调 API)
+./.venv/bin/python scripts/enhance_circuit_basic.py --workers 5
+#    只重做某一题:  --only 1.36      忽略缓存全部重做:  --no-cache
+#    不碰中文版源:  --no-theory
+
+# ④ 教材(扫描版):OCR → 装配。**只在教材 PDF 换了或 OCR 参数改了时才需要重跑**,
+#    平时这一步不用做 —— 语料已经躺在 materials/电路基础/教材/ 里了。
+#    OCR 按页缓存(独立 venv,见下),断了重跑只补没做的页:
+/home/jj/ocr-venv/bin/python scripts/ocr_textbook.py --workers 12
+./.venv/bin/python scripts/import_textbook.py --dry-run   # 先看章边界/书眉页码自查
+./.venv/bin/python scripts/import_textbook.py             # 落盘
+
+# ⑤ 重建 BM25 索引(FAQ 不用重建,它是每次启动现建的)
+cp data/index/bm25_index.pkl data/index/bm25_index.pkl.bak.$(date +%Y%m%d-%H%M%S)
+./.venv/bin/python scripts/build_index.py
+
+# ⑥ 跑一遍数字保留审计(见 §3.3),确认大模型没改数值
+./.venv/bin/python scripts/audit_enhanced_numbers.py --context
+
+# ⑦ **检索质量评测**(见 §3.6、§9.4):17 条学生真会问的提问,看名次和分数
+./.venv/bin/python scripts/eval_retrieval.py             # 打表格
+./.venv/bin/python scripts/eval_retrieval.py --compare    # 与基线比,有条目变差则退出码 1
+#    改语料/改锚点/改 CHUNK_SIZE **前后各跑一次**,这一步比 ⑧ 的抽查更早发现问题:
+#    它会告诉你&quot;第 3 名从 12.1 掉到 4.3&quot; —— 还能过,但已经在退化了。
+
+# ⑧ 抽查几问(注意前缀,不带前缀会被当成非学生消息直接跳过)
+./.venv/bin/python scripts/openclaw_bridge.py --message '【转发学生提问】1.36 怎么做'
+./.venv/bin/python scripts/openclaw_bridge.py --message '【转发学生提问】什么是叠加原理'
+./.venv/bin/python scripts/openclaw_bridge.py --message '【转发学生提问】教材上哪里有印错的地方'
+./.venv/bin/python scripts/openclaw_bridge.py --message '【转发学生提问】虚短和虚断是什么意思'
+</code></pre>
+<p><strong>② 和 ③ 的顺序不能颠倒。</strong> import 写的是<strong>没有解析的原始语料</strong>,enhance 才把它升级成
+"详细解析 + 原文 + 英文对照"。万一顺序反了(先 enhance 后 import),import 默认会跳过
+带解析的文件,所以也不会出事 —— 这个保护是刻意留的,不要改成"总是覆盖"。</p>
+<p><strong>④ 用的是一个单独的 venv(<code>/home/jj/ocr-venv</code>)。</strong> RapidOCR + ONNX Runtime 只服务 OCR
+这一件事,装进项目 <code>.venv</code> 会让部署变重、还和 <code>pip install -r requirements.txt</code> 打架。
+所以 OCR 那条命令用<strong>绝对路径的 ocr-venv</strong>,后两条用项目自己的 <code>.venv/bin/python</code>。</p>
+<p>改完提示词时,别忘了<strong>第 ⑥ 步一次都不能省</strong>:大模型唯一真正危险的地方就是悄悄改一个数
+(见 §3.3),而那是最不容易被人一眼看出来的错误。</p>
+<p><strong>第 ⑦ 步和第 ⑧ 步管的不是一回事,别用 ⑧ 代替 ⑦。</strong> ⑦ 是<strong>量化的</strong>,看的是
+"哪条用例的名次/分数动了",能在还没坏到答错之前就报警;⑧ 是<strong>端到端的</strong>,
+看的是"学生真的发这句话,回出来的东西对不对"——它慢、要调 API、还得人眼看,
+但能抓到评测表覆盖不到的东西(提示词措辞、档位选择、格式)。
+<strong>⑦ 过不了就别跑 ⑧</strong>,先修检索。</p>
+<p><strong>第 ⑧ 步的四个抽查问题各自守着一类回归</strong>,不要随便换掉:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>守住什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1.36 怎么做</code></td>
+<td>带题号的提问<strong>没被教材挤掉</strong>(教材占索引 66%,这是最容易被稀释的一类)</td>
+</tr>
+<tr>
+<td><code>什么是叠加原理</code></td>
+<td>① 档概念题能拿到<strong>教材/讲义</strong>的讲法,而不是通用知识</td>
+</tr>
+<tr>
+<td><code>教材上哪里有印错的地方</code></td>
+<td>错误集锦仍在最前,且页码能对上</td>
+</tr>
+<tr>
+<td><code>虚短和虚断是什么意思</code></td>
+<td>锚点里的<strong>学生口语词</strong>还在起作用(教材正文没有这两个词,见 §3.4.2)</td>
+</tr>
+</tbody>
+</table></div>
+<p>几点说明:</p>
+<ul>
+<li><strong>不要单独跑 <code>import_circuit_basic.py</code></strong> —— 它只产出"原始语料",没有中文详细解析,
+  会把 <code>enhance_circuit_basic.py</code> 的成果覆盖回未增强版。它现在的定位是
+  "抽取逻辑的实现 + 被 enhance 复用",不是日常入口。</li>
+<li>增强脚本<strong>断点续跑</strong>:缓存写在 <code>materials/电路基础/_enhance_cache.json</code>,
+  中途失败/中断后重跑只会补没做完的题。哪一题失败了它会在结尾明确列出来。</li>
+<li><strong><code>_enhance_cache.json</code> 和 <code>_manifest.json</code> 不会被索引</strong>(<code>doc_parser</code> 不认 <code>.json</code>)。</li>
+<li>改了提示词要 <strong>bump <code>PROMPT_VERSION</code></strong>,否则旧结果会被当成最新的继续复用。
+  <strong>只改了中文版那套提示词(<code>_USER_CN</code>)时,更精确的做法是换 <code>kind</code>(<code>cn-v1</code>→<code>cn-v2</code>)</strong> ——
+  只失效中文版那 56 题,英文版独有的题继续吃缓存(§3.3)。</li>
+<li>FAQ 改完<strong>不需要重建索引</strong>(<code>FAQRetriever.from_default()</code> 每次调用都重新读文件)。
+  加条目<strong>优先用微信里的 <code>【记录】</code></strong>(§5.5),别再手改 txt —— 手改没有校验,写错一个
+  行首 <code>A:</code> 就把条目截成两半,而且没有反馈。</li>
+</ul>
+<3 id="71-三条不碰索引的日常操作">7.1 三条"不碰索引"的日常操作<a class="anchor" href="#71-三条不碰索引的日常操作" title="链接到这一节">#</a></3>
+<p>日常最常做的三件事<strong>都不用重建索引</strong>,因为它们都是每次调用现读文件:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>想做什么</th>
+<th>怎么做</th>
+<th>为什么不用重建</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加 / 改一条 FAQ</td>
+<td>微信发 <code>【记录】问题:… 标准答案:…</code>(§5.5)</td>
+<td><code>FAQRetriever</code> 无常驻缓存,现读现建</td>
+</tr>
+<tr>
+<td>改课程事务口径(截止/提交/补交)</td>
+<td>直接编辑 <code>~/ykt_questions/课程事务.txt</code>(§6.6)</td>
+<td><code>load_facts()</code> 每次现读;带生效期的块自动过期</td>
+</tr>
+<tr>
+<td>看"下一条该补什么"</td>
+<td><code>python scripts/mine_faq_candidates.py</code>(§5.6)</td>
+<td>只读日志,不写任何东西</td>
+</tr>
+<tr>
+<td><strong>确认花名册读得出来</strong></td>
+<td><code>python scripts/check_roster.py</code>(§8 第 12 条)</td>
+<td>只读名单,和索引无关</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>只有改 <code>materials/</code> 里的语料(或锚点)才需要重建索引</strong> ——
+锚点复制是 <code>build_index.py</code> 阶段做的(§3.4),不重建不生效。</p>
+<blockquote>
+<p>改语料<strong>前后各跑一次</strong> <code>python scripts/eval_retrieval.py --compare</code>(§3.6、§9.6):
+它比单测更早发现问题 —— 单测只回答"过/不过",它能报出"第 3 名从 12.1 掉到 4.3"。</p>
+</blockquote>
+<hr />
+<3 id="72-文档怎么重新生成改了-md-之后">7.2 文档怎么重新生成(改了 md 之后)<a class="anchor" href="#72-文档怎么重新生成改了-md-之后" title="链接到这一节">#</a></3>
+<p><code>docs/*.html</code> 是<strong>生成物</strong>,不要手改:</p>
+<pre><code class="language-bash">cd ~/ta-assistant
+.venv/bin/python scripts/md2html.py --all docs/ --hub
+</code></pre>
+<p>改内容一律改 <code>.md</code>,再跑这一条。渲染层做了什么("不是翻版"体现在哪)见 §9.9。
+mermaid 图<strong>写在 md 里</strong>(GitHub 原生渲染),所以同一个 <code>```mermaid</code> 块
+在 GitHub 和本地 HTML 里都是图,不用维护两份。</p>
+<2 id="8-已知限制与待办">8. 已知限制与待办<a class="anchor" href="#8-已知限制与待办" title="链接到这一节">#</a></2>
+<ol>
+<li><strong>题图看不到</strong>。电路题的图是图片,大模型只能读文字。提示词要求它注明
+   "(此处依赖题图,请对照作业册或原始 PDF)"而不是瞎编,但<strong>它讲不了图</strong>。
+   想解决要上 OCR/视觉模型(见第 7 条)。</li>
+<li><strong>概念题现在是"教材 &gt; 讲义 &gt; 通用知识"三级,但下面两级仍有各自的短板</strong>。
+   教材(§3.5)是<strong>最细</strong>的依据,讲义是<strong>本课程的讲法</strong>。定下的口径是
+   <em>两者都有时以教材的细节为准、用讲义的口径来组织</em>(§6.2)。
+   但要知道两件事:
+   - <strong>讲义只是 PPT 转出来的文字</strong>(11 章,第 1、2、3、4、6、7、8、9、10、11、14 章),
+     是提纲不是教材,上面往往只有结论、没有推导;
+   - <strong>教材的公式有 OCR 乱码</strong>(见第 5 条),而且它<strong>只在 19 章正文里</strong>,
+     没覆盖到的提问仍要落回通用知识 —— 那时大模型会先声明"以下是通用教材知识,供参考"。</li>
+<li><strong>没有联网</strong>。① 档的概念讲解来自模型<strong>自己的知识</strong>,不是实时搜索结果
+   (<code>src/llm/minmax.py</code> 是纯 chat completion,没有 tool calling)。
+   要联网得先加一个搜索步骤,并且想清楚"搜索结果和课程资料冲突时听谁的"。</li>
+<li><strong><code>参考:</code> 那一行仍有噪声,教材上线后变得更长了 —— 但成因已经查清、大部分已修</strong>。
+   RAG 取 top-7,只要分数 &gt;0 就列进 <code>参考:</code>,于是答 1.36 时会带上
+   <code>数电模电电分复习.docx</code>(它含"电路理论/第一章作业"等词)。
+   问<code>什么是叠加原理</code> 时末尾挂过 <code>教材-第17章-傅里叶级数.md</code>、<code>教材-第5章-运算放大器.md</code>,
+   原来的解释是"章节锚点长得很像,通用词摊平后分数接近"——<strong>这个解释只对了一半</strong>:
+   真正起作用的是 <code>rank_bm25</code> 的<strong>负 IDF 兜底</strong>,锚点只是放大器,见 §3.6。
+   换成 Lucene IDF 之后虚词的权重从 1.70 降到 0.28,ch4/ch5 的名次反转已纠正。
+   <strong>剩下的跨章命中是真正的词形匹配</strong>(第 17 章的"叠加"指谐波叠加、第 10 章确有叠加的
+   交流应用),不是打分的锅 —— 详见 §3.6 末尾。<strong>要归零得靠"按课程分开索引"或换向量检索</strong>,
+   不在本次范围。<strong>答案本身是对的</strong>,只是末尾多列了名字。</li>
+</ol>
+<blockquote>
+<p>这一条的量已经<strong>被钉住了</strong>:<code>scripts/eval_retrieval.py</code> 的每条用例都有
+<code>max_foreign</code>(当前实测值),涨了才红。所以"不再变差"是有闸门的,
+而"变得更好"要靠 §8 第 10 条那类工作。
+5. <strong>教材的公式是 OCR 出来的,会乱码</strong>。正文识别得很准,但公式/上下标/矩阵常有错
+   (如 <code>C = εA/d</code> 识别成 <code>C= EA d</code>)。应对办法是<strong>提示词层的</strong>:要求引用时说清页码、
+   看到不成句的公式就照实说"OCR 得不清楚,请对照教材 P某页",<strong>不要猜一个看起来通顺的
+   公式</strong>。想根治要给公式单独做后处理或换带公式识别的引擎,不在本次范围。
+   另外附录那份(<code>教材-附录-奇数编号习题答案</code>)<strong>只有最终答案、没有解题过程</strong>,
+   锚点里已经把这件事写明了,但学生仍可能误以为它和作业答案文件等价。
+   <strong><code>Ω</code> → <code>Q</code> 这一类符号错误已经用上下文规则批量修回 1932 处</strong>(§3.5.1),
+   但那只覆盖了"数字 + 单位"这一种形态,别的符号错误仍在。
+6. <strong>英文教材正文、4th 版答案手册仍未索引</strong>,原因见第 4 节。
+7. <strong>图片类资料一律没进库</strong>(doc_parser 不支持 OCR)。题图仍是这个库里最大的洞:
+   电路题不看图基本做不了,而现在只能让大模型注明"(此处依赖题图,请对照作业册)"。
+   教材 OCR 走通之后这条路<strong>技术上已经通了</strong>(同一个 RapidOCR 就能识图),
+   缺的是把题图从 PDF 里切出来、按题号挂到对应题上的工程,以及"识出来的图注怎么用"
+   这个设计问题。见 §9.5 待办。
+8. <strong>中文版作业答案的排版靠正则切</strong>,遇到"一整章排版不一致"的新 PDF 可能要重调。
+   当前已经踩到并处理了四个坑(见 §3.2),但这些规则是<strong>对着现有的 12 份 PDF 调出来的</strong>,
+   换一批 PDF 就得重新验证 —— <code>test/test_split_cn_problems.py</code> 里钉住了现有边界,
+   加新 PDF 时先跑它。
+9. <strong>教材的章边界是手写的表</strong>(<code>CHAPTERS</code>),章首页判断错了会把正文切到隔壁章去,
+   而且<strong>不报错</strong>。目前靠两条防线:书眉页码逐页自查(§3.5 第 2 点)和
+   <code>test/test_import_textbook.py</code> 里"章与章首尾相接"的测试。换书(比如第 7 版)时
+   那张表必须重新核对,不能照抄。
+10. <strong>检索仍是"词形匹配",不懂同义词。</strong> 学生说"叠加原理"、书里写"叠加定理",
+    靠的是锚点里<strong>手写进两个说法</strong>;说"虚短虚断"、书里写"开环增益无穷大",
+    靠的也是锚点手写(§3.4.2)。<strong>没被写进锚点的同义说法就召不回</strong>。
+    这条路的天花板已经能看见了 —— 下一步要么按同义词表扩锚点,要么上向量检索。
+    这也是第 4 条那些跨章残留的根:BM25 只知道词一样不一样,不知道意思。
+11. <strong>评测表只有 17 条,且是"我这一天的语料"上量出来的。</strong> <code>max_foreign</code>
+    写的是<strong>当前实测值</strong>,它保证"不许变差",<strong>不保证"现在没问题"</strong>;
+    换语料、换书、换 <code>CHUNK_SIZE</code> 之后,那些数字要<strong>重新量一遍</strong>再当基线,
+    不能直接 <code>--save-baseline</code> 把新的现状盖上去当规范(那就成了"把 bug 固化成标准")。
+    真正该做的是<strong>持续往里加用例</strong>(尤其是学生真问过的、答得不好的),
+    表越大越能挡住退化;但加用例必须<strong>先跑一遍看实际命中什么</strong>再写期望。
+    另外,<strong>基线本身也要有人守</strong>:它得待在<strong>随代码走的目录</strong>里
+    (<code>data/eval/</code>,故意不进 <code>.gitignore</code>)。只在 WSL 一侧存在的文件,
+    下次 Windows → WSL 的 <code>rsync --delete</code> 会把它删掉 —— 而"基线没了"必须是一个
+    <strong>失败</strong>(<code>--compare</code> 退出码 1 + <code>test/test_eval_baseline.py</code> 变红),不能是静默放过。
+    这条是 2026-09-20 深夜<strong>自己踩出来的</strong>,详见 §9.6 第四步。</p>
+</blockquote>
+<ol start="12">
+<li>
+<p><strong>花名册读不出来 —— 学号/姓名校验从未真正生效过</strong>(2026-09-20 发现,<strong>同日已修</strong>)。
+    两层原因,都实测过:</p>
+<ul>
+<li><code>config.GRADEBOOK_PATH</code> 指向 <code>&lt;WINDOWS_ROOT&gt;/数电资料/…xlsx</code>,<strong>该目录不存在</strong>;</li>
+<li>就算路径改对,那份 xlsx 里写的是 <strong><code>&lt;dimension ref="A1"/&gt;</code> —— 一个错的范围声明</strong>
+  (它明明有 146 行 17 列)。而 <code>openpyxl(..., read_only=True)</code> <strong>只信这个标签、
+  也不校验它对不对</strong>,于是把整份工作簿读成 <strong>1 行 × 1 列</strong>:不抛异常、不告警,
+  只是安静地一行人都读不出来。
+  实测 <code>read_only=False</code> → 146 行 × 17 列,能读出 <strong>140 人</strong>(学号全 8 位)。<blockquote>
+<p>注意"标签写错"和"标签没有"是<strong>两种不同的坏法</strong>,openpyxl 的反应也不同:
+写错 → 报 <code>max_row=1</code>(看起来像读到了 1 行);整条没有 → 报 <code>None</code>。
+两种都会让学生读不出来,但只有前者<strong>伪装成正常</strong>。<code>test/test_roster.py</code> 两种都钉了。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>后果(在生产数据上量的):补交表 379 行,其中 378 个数据行的「校验状态」全是「名单缺失」。</strong>
+(这批数据的另一重身份见第 13 条。)也就是说 <code>requirements.md</code> F-3 承诺的学号/姓名校验、
+验收清单里"学号不在花名册 → 标记"那一条,<strong>从来没有被验证过</strong>。副作用:<code>【记录】</code>的
+姓名 PII 闸门也因此是关着的 —— 它会主动在回执里说明"⚠ 花名册没读到,这次只查了学号、
+没查姓名",<strong>而发现这个缺陷的入口正是那句提示</strong>。</p>
+<p><strong>修法(2026-09-20,三处一起改):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>改哪儿</th>
+<th>改成什么</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>路径</td>
+<td>独立出 <code>~/ykt_questions/花名册/</code></td>
+<td>名单<strong>不是教学资料</strong>;原先和语料混在 <code>materials/</code> 里,被解析进了索引(见 §3.1)</td>
+</tr>
+<tr>
+<td>定位方式</td>
+<td><strong>按表头文字自动定位</strong>(<code>ROSTER_ID_HEADERS</code> / <code>ROSTER_NAME_HEADERS</code>)</td>
+<td>原来写死"表头第 5 行、数据第 7 行、学号 B 列、姓名 C 列",那只对<strong>一种版式</strong>成立;花名册每学期都换,版式一变就<strong>安静地读成空名单</strong> —— 正是这个 bug 藏了几个月的形状</td>
+</tr>
+<tr>
+<td>读取模式</td>
+<td><code>read_only=False</code></td>
+<td>见上;花名册只有一两百行,内存代价可忽略</td>
+</tr>
+<tr>
+<td>单元格值</td>
+<td>数值学号归一化(去掉 <code>2530123456.0</code> 那种 <code>.0</code>)</td>
+<td>学号是数字时 openpyxl 读成 int/float,不归一化就永远对不上</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>换源</strong>:本学期的名单换成助教给的雨课堂导出(电路基础理论课,
+<code>花名册/电路基础理论课_学生名单.xlsx</code>,<strong>169 人,学号全 8 位</strong>)。
+换源后自动定位找到的是「表头第 2 行、学号第 1 列、姓名第 2 列」——
+<strong>和旧记分册的(第 5 行 / B 列 / C 列)完全不同</strong>,正好证明"写死坐标"这条路走不通。
+旧记分册一并从 <code>materials/</code> 挪进 <code>花名册/</code>,两种版式都还能读(140 人)。</p>
+<p><strong>补上"正向自检"</strong>:<code>scripts/check_roster.py</code>,退出码 0/1,打印表头行、列号、
+人数、学号位数分布。这条是针对<strong>根因</strong>的 —— 上面两个 bug 的共同形状是
+<strong>"返回空字典而不是报错"</strong>,所以"名单现在是好的"必须能被一条命令证明出来。</p>
+<blockquote>
+<p>教训:<strong>"不阻断、只打个标记"的降级分支,如果永远不会有人去看那个标记,就等于没有告警。</strong>
+这条分支设计得很"温和"(见 <code>design.md</code> §5),于是它坏了好几个月,日志里写得明明白白,
+<strong>没有一个环节会因此变红</strong>。这和 §9.6 第四步那个"缺基线却退出 0"是同一类错误 ——
+<strong>凡是"检查没做成"的分支,都要能和失败挂钩。</strong></p>
+<p>这次真正把它翻出来的,是<strong>核对另一件事</strong>(名单表长什么样)时顺手看到
+"398 行全是「名单缺失」"。<strong>已知缺陷清单本身不会自己变短,得有人去撞它。</strong></p>
+</blockquote>
+</li>
+<li>
+<p><strong>补交表被单测写进了 398 行假数据</strong>(2026-09-20 发现,<strong>同日已归档 + 已堵</strong>)。</p>
+<p><strong>发现方式</strong>:修第 12 条时要核对"哪份名单对得上",于是去看补交表里的学号 ——
+结果 <strong>398 个数据行只有 1 个学号、1 个姓名、4 种原文</strong>。
+再拿那 4 种原文去 <code>test/</code> 里搜:<strong>逐字都在</strong>。时间戳也对得上,集中在反复跑全量测试的那几天。</p>
+<p><code>表头: 登记时间 学号 姓名 作业次数 原始消息 校验状态      数据行: 398
+学号取值数: 1          姓名取值数: 1
+原始消息去重数: 4   (×101 / ×99 / ×99 / ×99)
+→ 四种原文原样出现在 test/ 里: True True True True
+→ 校验状态分布: {'名单缺失': 398}</code></p>
+<p><strong>一条学生发的都没有。</strong> 来源是 <code>test_main.py</code> 的补交用例和
+<code>test_bridge_stdout_clean.py</code> 的第三个用例(<code>王小明 20230001 漏交第1次作业</code>),
+每跑一次全量测试就往里追加几行,攒了 398 行。</p>
+<p>这和 §9.7 那条<strong>日志污染是同一次事故的第二次发作</strong>,但性质更差:
+- 日志只是"读起来失真";<strong>补交表是要交给助教登记的正式记录</strong>,混着 398 行假数据,
+  真的补交根本认不出来;
+- 它<strong>盖住了第 12 条那个真故障</strong> —— 398 行校验状态全是「名单缺失」,
+  和"花名册从来没读出来过"长得一模一样,于是那个 bug 被这堆噪声掩护了很久。</p>
+<p><strong>处理(三步,都不删数据):</strong>
+| 做什么 | 怎么做 |
+|---|---|
+| 归档脏表 | 改名 <code>…补交表.xlsx.tests-polluted-20260920</code>,<strong>字节不动</strong>(15039 B),回滚 = <code>mv</code> 回去 |
+| 堵住写通路 | <code>conftest.isolated_submission_table</code>(autouse)把花名册与补交表都指到临时目录;<strong>子进程那条路</strong>靠新增的 <code>SUBMISSION_TABLE</code> 环境变量(同 <code>TA_LOGS_DIR</code> 的理由) |
+| 守住它 | <code>test/test_submission_table_isolation.py</code>:比 xlsx 的<strong>字节快照</strong>,并且证明"补交登记本身照常落盘"(否则靠功能坏掉也能过) |</p>
+<p>归档后<strong>不再重建</strong>空表 —— 下一次真实补交登记时 <code>ensure_submission_table()</code> 会自己建。</p>
+<blockquote>
+<p>教训:<strong>"测试不许写生产数据"这条线,要按"会被写的东西"逐个数,不能只在踩过的那一处堵。</strong>
+日志那次堵完只覆盖了 <code>data/logs/</code>;这个项目的生产数据还有 FAQ、事务表、补交表、花名册,
+其中<strong>补交表是唯一没有人守的那个</strong>。<strong>同一个 bug 会在你没检查的每一种资源上各长一遍。</strong></p>
+</blockquote>
+</li>
+</ol>
+<p>已解决(留在这里是为了别把老问题当新问题再查一遍):</p>
+<ul>
+<li>~~<strong>带题号的提问被 FAQ 截胡</strong>~~ → 2026-09-20 修,见 §5.2.1。</li>
+<li>~~<strong>检索召不回解答正文</strong>~~(锚点只在第一块、<code>RAG_TOP_K</code> 太小)→ 2026-09-20 修,见 §3.4。</li>
+<li>~~<strong>原解析英文且太简略</strong>~~ → 2026-09-20 加 LLM 中文详细解析,见 §3.3。</li>
+<li>~~<strong>概念题一律回"这个我不确定,建议问任课老师"</strong>~~ → 2026-09-20 晚改成分档,
+  概念题放开用通用知识讲并结合作业题,见 §6。</li>
+<li>~~<strong><code>00_作业答案目录.md</code> 会排在具体答案前面</strong>(任何带题号/章名的提问它都拿 13~17 分,
+  稳居第一,把真资料挤到第 9~18 名)→ 2026-09-20 晚:<code>00_*</code> / <code>_*</code> 一律不进索引,
+  目录改由脚本生成给人看,见 §3.4.1。</li>
+<li>~~<strong>作业答案用的是英文版参数,和中文版作业册不一致</strong>~~ → 助教反馈后,
+  中英同题合并且以中文版为准,见 §3.2 / §9.4。</li>
+<li>~~<strong>扫描版中文教材没有文字层、进不了库</strong>~~ → 2026-09-20 晚 OCR 后进库(21 文件 / 2105 块),
+  见 §3.5 / §9.5。</li>
+<li>~~<strong>概念题只能靠通用知识讲</strong>~~(讲义是 PPT、没有教材正文)→ 教材进库后
+  ① 档改成 <strong>教材 &gt; 讲义 &gt; 通用知识</strong>,见 §6.2 / §9.5。</li>
+<li>~~<strong>虚词被当成"正证据",把无关章节顶到正确章节前面</strong>~~(<code>什么是叠加原理</code> 里
+  <code>什么/是/原理</code> 给每一章白送 7.3 分,第 5 章压过第 4 章)→ 2026-09-20 深夜换 Lucene IDF,
+  见 §3.6 / §9.6。</li>
+<li>~~<strong><code>Ω</code> 被 OCR 认成 <code>Q</code></strong>(电阻单位写错等于改题,1932 处)→ 2026-09-20 深夜按上下文修回,
+  见 §3.5.1。</li>
+<li>~~<strong>教材只有 35.8% 的分块带页码</strong>,学生按"教材 P188"翻不到 → 2026-09-20 深夜
+  改成逐页传递,99.7%,见 §3.5.1。</li>
+<li>~~<strong>两条 FAQ 闸门测试是假绿的</strong>(单条语料 + 负 IDF,病根本复现不出来)→
+  2026-09-20 深夜改成"合成语料 + 真实文件"两段式,并用突变测试证明它真的会红,见 §9.6。</li>
+<li>~~<strong>改检索只能靠人肉抽查</strong>~~(改完不知道有没有变差)→ 2026-09-20 深夜建了 17 条用例的
+  评测脚本 + 共用同一张表的 pytest 闸门 + 基线 JSON,见 §3.6 / §9.6。</li>
+</ul>
+<hr />
+<2 id="9-改动清单2026-09-20">9. 改动清单(2026-09-20)<a class="anchor" href="#9-改动清单2026-09-20" title="链接到这一节">#</a></2>
+<3 id="91-第一轮搭建知识库">9.1 第一轮:搭建知识库<a class="anchor" href="#91-第一轮搭建知识库" title="链接到这一节">#</a></3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/import_circuit_basic.py</code></td>
+<td><strong>新增</strong>。把作业答案转成带中文锚点的语料</td>
+</tr>
+<tr>
+<td><code>scripts/build_index.py</code></td>
+<td>文案从"数电资料"改成通用;打印实际用的 <code>MATERIALS_DIR</code></td>
+</tr>
+<tr>
+<td><code>src/handlers/qa.py</code></td>
+<td><code>_SYSTEM_PROMPT</code>:覆盖两门课 / 只依据资料 / 不要 Markdown</td>
+</tr>
+<tr>
+<td><code>src/rag/retriever.py</code></td>
+<td>FAQ 加"实词闸门"(<code>_FAQ_STOPWORDS</code> + <code>_faq_content_tokens</code>)</td>
+</tr>
+<tr>
+<td><code>deploy/openclaw/…/SKILL.md</code></td>
+<td>描述改成两门课;自检示例去掉真实姓名学号</td>
+</tr>
+<tr>
+<td><code>~/ykt_questions/常问问题.txt</code></td>
+<td><strong>新建</strong>(37 条,已脱敏)</td>
+</tr>
+<tr>
+<td><code>~/ykt_questions/materials/</code></td>
+<td>数电 7 个文件搬入 + 电路基础 72 个语料文件</td>
+</tr>
+</tbody>
+</table></div>
+<3 id="92-第二轮修136-答不出来-加中文详细解析">9.2 第二轮:修"1.36 答不出来" + 加中文详细解析<a class="anchor" href="#92-第二轮修136-答不出来-加中文详细解析" title="链接到这一节">#</a></3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/enhance_circuit_basic.py</code></td>
+<td><strong>新增</strong>。调大模型生成中文详细解析(§3.3)</td>
+</tr>
+<tr>
+<td><code>scripts/import_circuit_basic.py</code></td>
+<td>版权样板改成 <code>strip_copyright()</code>:<code>Copyright ©</code> 和 <code>年份 McGraw-Hill</code> 两种写法都删,且<strong>每页页脚都删</strong>(原先只删文末一种)</td>
+</tr>
+<tr>
+<td><code>src/handlers/qa.py</code></td>
+<td>加 <code>_PROBLEM_REF</code> / <code>_is_problem_query</code>:带题号先查资料(§5.2.1)</td>
+</tr>
+<tr>
+<td><code>src/rag/indexer.py</code></td>
+<td>加 <code>_anchor_of()</code>:把 <code>检索:</code> 锚点复制进每一块(§3.4)</td>
+</tr>
+<tr>
+<td><code>src/config.py</code></td>
+<td><code>RAG_TOP_K</code> 5 → 7(§3.4)</td>
+</tr>
+<tr>
+<td><code>test/test_problem_ref.py</code></td>
+<td><strong>新增</strong>。题号识别的正/反例回归测试(21 例)</td>
+</tr>
+<tr>
+<td><code>~/ykt_questions/materials/电路基础/</code></td>
+<td>72 个语料文件重写为"中文详细解析 + 原文"</td>
+</tr>
+</tbody>
+</table></div>
+<p>索引规模:384 块 → <strong>638 块</strong>(80 个文件)。备份在
+<code>data/index/bm25_index.pkl.bak.20260920-015722</code>(增强前)与
+<code>bm25_index.pkl.bak.20260920-013854</code>(搭库前)。</p>
+<3 id="93-第三轮概念题不该一律回我不确定">9.3 第三轮:概念题不该一律回"我不确定"<a class="anchor" href="#93-第三轮概念题不该一律回我不确定" title="链接到这一节">#</a></3>
+<p>起因:助教反馈「什么是叠加原理」这类概念题只会回"建议问任课老师",
+应当允许大模型用自己的知识讲清概念,<strong>并结合库里的作业题</strong>帮学生理解。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/handlers/qa.py</code></td>
+<td>加 <code>_classify()</code>(<code>_ADMIN_HARD</code> / <code>_CONCEPT_MARK</code> / <code>_ADMIN_SOFT</code>);FAQ 快路收窄到"仅事务题";概念题把 FAQ 命中当<strong>补充材料</strong>而不是短路;<strong>重写 <code>_SYSTEM_PROMPT</code></strong> 成三档(概念放开 / 事务死守 / 题号只认资料)+【尽量结合作业】;分档结果写日志 <code>qa_kind</code></td>
+</tr>
+<tr>
+<td><code>test/test_query_kind.py</code></td>
+<td><strong>新增</strong>。分档回归测试(36 例),重点钉住"单字不能当关键词"(交流电/分压/时间常数)与"考试 vs 定理"的优先级</td>
+</tr>
+<tr>
+<td><code>deploy/openclaw/…/SKILL.md</code></td>
+<td>描述与"不要做的事"同步三档规则</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>没有改索引、没有调 <code>PROMPT_VERSION</code></strong> —— 改的是答疑侧的通路与提示词,
+跟语料生成无关,不用重建索引。</p>
+<p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档。</p>
+<3 id="94-第四轮中文版作业答案为准-讲义-错误集锦">9.4 第四轮:中文版作业答案为准 + 讲义 + 错误集锦<a class="anchor" href="#94-第四轮中文版作业答案为准-讲义-错误集锦" title="链接到这一节">#</a></3>
+<p>起因:助教给了新目录 <code>202509电路理论基础</code>(张老师课件 + 中文版作业答案),
+并指出<strong>国际版与中文版个别题目参数不同(公里↔英里),课后题答案要以中文版为准</strong>;
+另外概念题当时"没有资料可依"(§9.3 的遗留),希望把<strong>中文版第 6 版教材和错误集锦</strong>也加进来。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/import_circuit_theory.py</code></td>
+<td><strong>新增</strong>。中文版作业答案切题(56 题)+ 课堂讲义(11 篇)+ 错误集锦(1 篇);定义 <code>Spec</code>/<code>render()</code>,中英同题<strong>按输出路径合并</strong>(§3.2);生成 <code>00_资料总目录.md</code> 并<strong>删除</strong>被取代的 <code>00_作业答案目录.md</code></td>
+</tr>
+<tr>
+<td><code>scripts/enhance_circuit_basic.py</code></td>
+<td>加 <code>Job.spec</code> 与 <code>--theory-src</code> / <code>--no-theory</code>;新增 <code>_USER_CN</code> 提示词(展开而非翻译 / 还原两种 PDF 失真 / 源文笔误要报不要改);<code>_collect_jobs</code> 跳过被中文版覆盖的英文题;文件内容改由 <code>theory.render()</code> 生成,自己不再拼</td>
+</tr>
+<tr>
+<td><code>src/utils/doc_parser.py</code></td>
+<td><code>_parse_pptx</code> 支持 <strong>pptx 递归遍历组合形状 + 表格</strong>(错误集锦的要点全在 group 里,原先只拿到页标题)</td>
+</tr>
+<tr>
+<td><code>src/handlers/qa.py</code></td>
+<td><code>_SYSTEM_PROMPT</code> 加【中文版优先】段;① 档改成<strong>先看检索到的讲义</strong>、没有才用通用知识</td>
+</tr>
+<tr>
+<td><code>src/rag/indexer.py</code></td>
+<td><code>_iter_files</code> 跳过 <code>00_*</code> / <code>_*</code>(目录类文件不进索引,§3.4.1)</td>
+</tr>
+<tr>
+<td><code>scripts/audit_enhanced_numbers.py</code></td>
+<td>审计在 <code>【英文版对照(仅参考)】</code> 处截断;排除 <code>讲义/</code> 与 <code>错误集锦.md</code></td>
+</tr>
+<tr>
+<td><code>test/test_split_cn_problems.py</code></td>
+<td><strong>新增</strong>。切题边界回归测试(13 例)</td>
+</tr>
+<tr>
+<td><code>test/test_doc_parser_pptx.py</code></td>
+<td><strong>新增</strong>。pptx 递归/表格解析测试</td>
+</tr>
+</tbody>
+</table></div>
+<p>规模变化:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>之前</th>
+<th>现在</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>索引</td>
+<td>80 文件 / 638 块</td>
+<td><strong>94 文件 / 1061 块</strong></td>
+</tr>
+<tr>
+<td>题目文件</td>
+<td>72</td>
+<td><strong>75</strong>(56 题来自中文版,其中 53 题与英文合并)</td>
+</tr>
+<tr>
+<td>讲义</td>
+<td>0</td>
+<td><strong>11 篇</strong>(第 1、2、3、4、6、7、8、9、10、11、14 章)</td>
+</tr>
+<tr>
+<td>错误集锦</td>
+<td>0</td>
+<td><strong>1 篇</strong></td>
+</tr>
+<tr>
+<td>大模型调用</td>
+<td>—</td>
+<td><strong>新增 56 次</strong>(另有 19 题命中缓存)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>没有 bump <code>PROMPT_VERSION</code>,而是换了 <code>kind</code>(<code>cn-v1</code>)。</strong> 目的相同(让新提示词的结果
+不被旧缓存顶掉)但更精确:换 kind 只失效<strong>中文版</strong>那 56 题,英文版独有的题继续吃缓存。
+这也意味着<strong>再改中文版提示词时要换到 <code>cn-v2</code></strong>,别只改 <code>PROMPT_VERSION</code> —— 那会把
+英文题的缓存一起废掉,白花钱。</p>
+<p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档。
+<strong><code>电路基础-中文版-原书第6版（扫描版）.pdf</code>(266 MB)没有索引</strong> —— 它是<strong>扫描件、
+没有文字层</strong>,<code>pdfplumber</code> 抽不出文本(见 §4 / §8 第 5 条)。</p>
+<3 id="95-第五轮扫描版中文教材-ocr-进库">9.5 第五轮:扫描版中文教材 OCR 进库<a class="anchor" href="#95-第五轮扫描版中文教材-ocr-进库" title="链接到这一节">#</a></3>
+<p>起因:§9.4 剩下的最后一件事 —— "中文版第六版教材也加入并且索引"。
+教材是<strong>纯扫描件</strong>(无文本层),所以这次是 OCR 工程,不是解析工程。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/ocr_textbook.py</code></td>
+<td><strong>新增</strong>。RapidOCR 逐页 OCR,<strong>按页缓存可断点续跑</strong>;多进程(默认 12);<code>OMP_NUM_THREADS=1</code> 靠多进程吃满 CPU</td>
+</tr>
+<tr>
+<td><code>scripts/import_textbook.py</code></td>
+<td><strong>新增</strong>。装配成 19 章 + 附录 + 译者序;<code>CHAPTERS</code>/<code>CONCEPTS</code> 两张<strong>人工核对</strong>的表;<code>_page_ok</code> 逐页书眉自查偏移;每页插 <code>[教材 P{印刷页}]</code>;文件名带 <code>教材-</code> 前缀避免与 <code>讲义/</code> 撞名</td>
+</tr>
+<tr>
+<td><code>src/handlers/qa.py</code></td>
+<td>① 档改成 <strong>教材 &gt; 讲义 &gt; 通用知识</strong>;新增【引用教材时要给页码】段(含"OCR 乱码不要猜"的指示)</td>
+</tr>
+<tr>
+<td><code>docs/knowledge_base.md</code></td>
+<td>新增 §3.5(教材整节)、§3.4.2 第五条证据(虚短虚断);§4 把教材移出排除表;§7 加 OCR 步骤与四个抽查问题的说明</td>
+</tr>
+<tr>
+<td><code>test/test_import_textbook.py</code></td>
+<td><strong>新增</strong>。25 例:章表不变量、页码偏移、去书眉、装配、文件名不撞名、译者序无负页码</td>
+</tr>
+</tbody>
+</table></div>
+<p>规模变化:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>之前</th>
+<th>现在</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>索引</td>
+<td>94 文件 / 1061 块</td>
+<td><strong>115 文件 / 3166 块</strong></td>
+</tr>
+<tr>
+<td>教材</td>
+<td>0</td>
+<td><strong>21 篇</strong>(19 章 + 附录 + 译者序),2106 块</td>
+</tr>
+<tr>
+<td>OCR 耗时</td>
+<td>—</td>
+<td><strong>47.9 分钟</strong>(711 页 / 12 进程 / 约 3.2 秒每页),74.4 万字符</td>
+</tr>
+<tr>
+<td>大模型调用</td>
+<td>—</td>
+<td><strong>0</strong>(OCR 不调 API)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关于"教材会不会把答案挤出去"这件事,是量出来的,不是猜的。</strong>
+教材占索引 66%,这个体量足以让 BM25 的分数分布整体变形,所以<strong>入库前先建好索引跑一遍
+基线、入库后再跑同一组提问</strong>,对照如下(下表就是完整记录;基线索引留在
+<code>data/index/bm25_index.pkl.bak.20260920-pretextbook</code>):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>提问</th>
+<th>改前 top-1</th>
+<th>改后 top-1</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1.36 怎么做</code></td>
+<td><code>1.36.md</code> 16.05</td>
+<td><code>1.36.md</code> <strong>19.57</strong></td>
+<td><strong>无稀释</strong>,分数反而升高</td>
+</tr>
+<tr>
+<td><code>13.11 那题怎么做</code></td>
+<td><code>13.11.md</code> 16.97</td>
+<td><code>13.11.md</code> <strong>20.20</strong></td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>教材上哪里有印错的地方</code></td>
+<td><code>错误集锦.md</code> 26.24</td>
+<td><code>错误集锦.md</code> <strong>27.51</strong></td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>什么是竞争冒险?</code></td>
+<td>数电文件 20.69</td>
+<td>数电文件 <strong>22.96</strong></td>
+<td>同上(数电的问法没被电路教材干扰)</td>
+</tr>
+<tr>
+<td><code>什么是叠加原理</code></td>
+<td>讲义 9.82,第 2 名起是<strong>数电噪声</strong></td>
+<td>讲义 <strong>14.76</strong>,第 2~7 名<strong>全是教材</strong></td>
+<td><strong>大幅改善</strong></td>
+</tr>
+<tr>
+<td><code>作业里的叠加定理怎么理解</code></td>
+<td><code>2.82.md</code> 15.21</td>
+<td><code>2.82.md</code> 15.52,教材进第 4、7 名</td>
+<td>略改善(top-1 仍是无关题,改前也如此)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>为什么带题号的提问反而涨分:</strong> 教材把「电路基础 / 作业 / 答案」这类<strong>通用词</strong>的 IDF
+压得更低,于是有区分度的<strong>题号</strong>(<code>1.36</code>、<code>13.11</code>)在整体分数里更突出。
+这正是 §3.4 里记过的那个副作用,现在有了量级更大的证据。</p>
+<p><strong>这一轮改动的取舍,和没做的事:</strong></p>
+<ul>
+<li><strong>DPI 用 300 不用 200。</strong> 200 DPI 的正文<strong>一行都不少</strong>,丢的只是公式碎片,但<strong>只省 15% 时间</strong>
+  (55s vs 65s/页)。省这点时间换公式碎片不划算 —— 而且教材的价值恰恰在公式和推导。</li>
+<li><strong>没有把 OCR 做进 <code>doc_parser</code>。</strong> 它是<strong>一次性</strong>的语料生产步骤(教材 PDF 不会天天换),
+  做成 <code>doc_parser</code> 的分支会让每次索引都白跑一遍 OCR。所以走"独立脚本 + 落盘成 .md"。</li>
+<li><strong>没有把题图一起解决。</strong> OCR 引擎现成,但"把题图切出来按题号挂到对应题上"是另一件事
+  (见 §8 第 7 条),不在本轮。</li>
+</ul>
+<p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档、作业答案与讲义语料(一字未动)。</p>
+<3 id="96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测">9.6 第六轮:教材语料审计 + 修 BM25 的 IDF 兜底 + 建常驻评测<a class="anchor" href="#96-第六轮教材语料审计-修-bm25-的-idf-兜底-建常驻评测" title="链接到这一节">#</a></3>
+<p>起因:助教自己试了一遍(「叠加原理」答出了教材 + 例题 + 通用知识),<strong>明确说满意</strong>,
+同时让我自己找可改进的地方、并多写自动化测试让系统更可靠。
+所以这一轮<strong>不是从需求出发,是从"先量一遍"出发</strong> —— 量出来两个真问题,加一套闸门。</p>
+<p><strong>第一步:教材语料审计</strong>(教材占索引 66%,它一进来整个检索环境就变了)。
+三件事,两改一不改,详见 §3.5.1:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>发现</th>
+<th>怎么处理</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 页扫描仪元信息(<code>SS号</code>/<code>页数</code>/<code>扫描日期</code>)混进正文</td>
+<td><strong>整页丢弃</strong>(索引 2106 → 2105 块)</td>
+<td>与目录页同类:谁提问都能命中,且会以"教材第 N 章"的身份被引用出去</td>
+</tr>
+<tr>
+<td><code>Ω</code> 被 OCR 成 <code>Q</code>,1932 处</td>
+<td><strong>按上下文修回</strong>(要求"数字 + 可选倍率前缀 + Q + 后面不是字母/数字/汉字")</td>
+<td>电阻单位写错等于把题改了。全库替换会误伤 <code>Q</code> 点、<code>Q值</code>、<code>品质因数Q</code></td>
+</tr>
+<tr>
+<td><code>[教材 P{页}]</code> 只覆盖 <strong>754/2106 = 35.8%</strong></td>
+<td><strong>改成逐页传递</strong> → <strong>2099/2105 = 99.7%</strong></td>
+<td>页码是教材相对讲义<strong>唯一</strong>的优势,不兑现等于白进库。剩余 6 块例外已逐条说明</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>第二步:查出并修掉"虚词当正证据"。</strong> 这是本轮真正的技术发现。
+「什么是叠加原理」把 <code>教材-第5章-运算放大器.md</code>(13.53)排在了第 4 名(13.47)前面 ——
+<strong>两章毫无关系</strong>。根因不在语料,在 <code>rank_bm25</code> 的 <strong>负 IDF 兜底</strong>:<code>的</code>(df 2959)、
+<code>是</code>(2453)、<code>原理</code>(2401)全被兜底成同一个正数 <strong>1.6994</strong>,于是 <code>什么</code>+<code>是</code>+<code>原理</code>
+给每一章白送 7.3 分。改用 Lucene 的 <code>log(1 + (N-df+0.5)/(df+0.5))</code>(恒正、不兜底),
+<code>原理</code> 的权重 1.70 → <strong>0.28</strong>,真关键词 <code>叠加</code> 4.40 → 4.41(几乎不动)。详见 §3.6。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/rag/retriever.py</code></td>
+<td><strong>新增 <code>apply_lucene_idf()</code></strong>;<code>BM25Retriever.load()</code> 装载时也调一次(老索引不用重建就去掉噪声)。<strong>明确不碰 <code>FAQRetriever</code></strong> —— 它的 4.0 阈值是按旧 IDF 标定的</td>
+</tr>
+<tr>
+<td><code>src/rag/indexer.py</code></td>
+<td><code>build_index()</code> 建完 BM25 后调 <code>apply_lucene_idf</code></td>
+</tr>
+<tr>
+<td><code>scripts/import_textbook.py</code></td>
+<td>丢扫描仪页;<code>_OHM_OCR</code> 上下文规则修 <code>Ω</code>;<code>[教材 P页]</code> 逐页传递;统计进 manifest</td>
+</tr>
+<tr>
+<td><code>scripts/eval_retrieval.py</code></td>
+<td><strong>新增</strong>。17 条用例的评测脚本,可 <code>--save-baseline</code> / <code>--compare</code>(有回归退出码 1)</td>
+</tr>
+<tr>
+<td><code>test/test_retrieval_recall.py</code></td>
+<td><strong>新增</strong>。与评测脚本<strong>共用同一张用例表</strong>,每问一条回归闸门</td>
+</tr>
+<tr>
+<td><code>test/test_idf.py</code></td>
+<td><strong>新增</strong>。IDF 的病、修法、边界(含"不许用到 FAQ 上")共 8 例</td>
+</tr>
+<tr>
+<td><code>test/test_faq.py</code></td>
+<td>两条<strong>假绿</strong>的闸门测试改成真的(原先单条语料 + 负 IDF,病根本复现不出来)</td>
+</tr>
+<tr>
+<td><code>test/test_qa_flow.py</code></td>
+<td><code>FakeRAG</code> 加 <code>truncate</code> 开关:<code>RAG_TOP_K</code> 是调过的,测试不该跟着它漂</td>
+</tr>
+<tr>
+<td><code>test/test_eval_baseline.py</code></td>
+<td><strong>新增</strong>。基线自身的不变量(在不在、形状对不对、用例表有没有漏存量过)</td>
+</tr>
+<tr>
+<td><code>data/eval/retrieval_baseline.json</code></td>
+<td><strong>新增</strong>。基线(<code>data/logs/</code>、<code>data/index/</code> 被 gitignore,但 <code>data/eval/</code> 是<strong>故意要提交</strong>的 —— 它得随代码走,不能只活在 WSL 一侧)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>第三步:把"不许变差"钉成闸门。</strong> 这是本轮对"更可靠"最实质的贡献 ——
+不是在这次修好,而是<strong>以后每次改动都会被量一遍</strong>:</p>
+<ul>
+<li><code>scripts/eval_retrieval.py</code> 打出每条用例的 top-K 与分数,<strong>能看到"第 3 名从 12.1 掉到 4.3"
+  这种"还能过、但已在退化"的信号</strong>;<code>--compare</code> 与基线逐条比名次/噪声/不该出现的资料。</li>
+<li><code>test/test_retrieval_recall.py</code> 用同一张表当 pytest 闸门(索引不存在时<strong>跳过</strong>而不是失败)。</li>
+<li>表里还有三条<strong>自检</strong>测试:提问不重复、每条用例必须有期望、期望的文件名<strong>真的在索引里</strong>
+  (写错的期望会永远不命中,而人是不会发现的)。</li>
+</ul>
+<p><strong>第四步:给"闸门的闸门"补上 —— 基线自己也得有人守。</strong>
+这一步是<strong>撞出来的</strong>:我把基线生成在 WSL 侧,而 Windows → WSL 的同步带 <code>--delete</code>
+(<code>rsync -a --delete … /mnt/c/…/ /home/jj/ta-assistant/</code>)——
+下一次同步就<strong>把只存在于 WSL 的基线删了</strong>,而 <code>--compare</code> 在基线不存在时<strong>返回 0</strong>。
+于是"闸门悄悄失效",而且<strong>一路绿灯</strong>:人以为它在守着,其实什么也没守。
+这跟 <code>_parse_faq</code> 的全角冒号、FAQ 那两条假绿测试是<strong>同一类错误 —— 静默失败</strong>,
+所以这次按同一套办法处理(不靠"下次注意"):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>补的东西</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compare_with()</code> 缺基线时<strong>返回 1</strong>(原来返回 0)</td>
+<td>让闸门失效<strong>本身</strong>就是一个失败</td>
+</tr>
+<tr>
+<td><code>test/test_eval_baseline.py</code>(<strong>新增</strong>)</td>
+<td>基线必须在、能解析、字段形状对(<code>--compare</code> 靠 <code>foreign</code> 做 diff,缺了就静默比不出东西)、<strong>用例表里的提问都进过基线</strong>(加了用例没重存 = 那条没人守)</td>
+</tr>
+<tr>
+<td>基线留在 Windows 侧工作副本里</td>
+<td><code>data/eval/</code> <strong>不进 <code>.gitignore</code></strong>(<code>data/logs/</code>、<code>data/index/</code> 进) —— 它是<strong>随代码走的黄金文件</strong>,只在 WSL 一侧存在的东西下次同步就没了</td>
+</tr>
+</tbody>
+</table></div>
+<p>顺带记一条<strong>操作教训</strong>:上面那个"退出码看起来是 0"我查了两轮才发现是<strong>自己读 <code>$?</code> 的姿势错了</strong>
+(<code>wsl.exe bash -lc "… echo \$?"</code> 里的转义把退出码吃掉了),改成<strong>写成脚本文件再跑</strong>
+(<code>bash /mnt/c/…/check_gate.sh</code>)才看到真相是 1。<strong>复杂的多步验证不要硬塞进一行 <code>wsl.exe bash -lc</code>。</strong></p>
+<p><strong>三个值得记下来的方法论教训:</strong></p>
+<ol>
+<li><strong>"测试通过"可能是假的,要用突变测试证明它真的在测东西。</strong> 那两条 FAQ 闸门测试原本
+   永远绿:单条语料的 IDF 是负的,病根本复现不出来。改成"合成语料 + 真实文件"两段式,
+   再<strong>把闸门删掉看它红不红</strong> —— 红了才算是真测试。删掉闸门时失败信息里打出的是
+   <code>电路基础作业的截止时间是什么时候?</code>(4.83 分)——<strong>一个问"竞争冒险"的学生会真的收到这个答案</strong>,
+   这才叫"这条测试在守什么"。</li>
+<li><strong>突变测试第一次跑出了假绿,而假绿本身就是结论。</strong> 拿"修复前的索引"做对照时,
+   表里 17 条一条都没红 —— 因为 <code>load()</code> 里也调了 <code>apply_lucene_idf</code>,老索引一装载就被修好了。
+   改成"旧索引 <strong>+</strong> 注释掉装载时的调用"才复现出失败。<strong>副作用被发现了,而且它是好的那个方向。</strong></li>
+<li><strong>"闸门失效"必须当成失败来报。</strong> 缺基线却退出 0 的那次,是这一轮唯一一个
+   "我差点当成没问题"的地方 —— 而它恰好发生在我刚写完"静默失败最危险"那段话之后。
+   <strong>凡是"检查没做成"的分支,都要和非 0 退出码/红测试挂钩</strong>,不能只打一行提示。</li>
+</ol>
+<p><strong>效果(实测,如实说):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用例命中</td>
+<td><strong>17/17</strong>(与改前相同)</td>
+</tr>
+<tr>
+<td>MRR</td>
+<td><strong>0.956</strong>(与改前相同)</td>
+</tr>
+<tr>
+<td>ch4/ch5 名次反转</td>
+<td><strong>已纠正</strong>(第 4 章回到第 5 章前面)</td>
+</tr>
+<tr>
+<td>严格表上的"无关教材章"</td>
+<td>8 条 → <strong>7 条</strong>(<strong>没有归零</strong>)</td>
+</tr>
+<tr>
+<td>再降到 4 条</td>
+<td>靠<strong>逐条核对 <code>allow_ch</code></strong>(把确实相关的章正名),<strong>不是打分变好了</strong></td>
+</tr>
+<tr>
+<td>离线测试</td>
+<td><strong>190 通过 / 约 2.9 秒</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>剩下的 7 条(其中 4 条是核对 <code>allow_ch</code> 之后的)<strong>是真正的词形匹配</strong>:第 17 章讲傅里叶级数时
+用的"叠加"指<strong>谐波叠加</strong>(词同义不同)、第 10 章确有叠加/戴维南的交流应用。
+<strong>词形匹配解决不了这类问题,再调 IDF 也降不下去</strong> —— 这条要写清楚,免得下次白费功夫。</p>
+<p><strong>这一轮没有做的事(以及为什么):</strong></p>
+<ul>
+<li><strong>没有改教材锚点里的通用词尾巴。</strong> 它确实放大了噪声,但<strong>真正的权重在 IDF 兜底上</strong> ——
+  修了 IDF 之后那串词的权重从 1.70 掉到 0.28,尾巴的作用被中和了。
+  再动一次锚点等于<strong>同时改两个变量</strong>,基线就没法解释了。<strong>刻意不动。</strong></li>
+<li><strong>没有把 <code>RAG_TOP_K</code> 调小去"减少噪声"。</strong> 噪声是靠分数压下去的,不是靠少取几条;
+  调小会伤到"要召回多个来源"的那些提问。</li>
+<li><strong>没有重命名附录文件名</strong>(虽然 <code>(P670-P695)</code> 已与内容不符),理由见 §3.5.1 末尾。</li>
+<li><strong>没有顺手把 IDF 修法用到 FAQ 上。</strong> 看起来是同一个问题,实际会<strong>偷偷改掉 4.0 阈值</strong>。</li>
+</ul>
+<p>未改动:<code>.env</code>、补交表、OpenClaw 配置、<code>docs/</code> 以外的既有文档、答疑提示词、
+以及<strong>作业答案 / 讲义 / 数电语料(一字未动)</strong> —— 这一轮只动教材语料和检索打分。</p>
+<3 id="97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷">9.7 第七轮:FAQ 从"手改 txt"变成"能记";顺带收掉三处<strong>静默缺陷</strong><a class="anchor" href="#97-第七轮faq-从手改-txt变成能记顺带收掉三处静默缺陷" title="链接到这一节">#</a></3>
+<p>起因是助教提的三件事,合起来指向同一个洞 —— <strong>FAQ 这份东西一直没有"维护"这条路</strong>:</p>
+<ol>
+<li>加一条 FAQ 只能开编辑器手改 <code>常问问题.txt</code>,没有校验、没有版本库、没有反馈;</li>
+<li>日志里躺着"学生真问过的问法",但<strong>没有任何一条路径</strong>把它变成 FAQ 条目;</li>
+<li>截止时间这类事每学期都变,而 FAQ 条目<strong>不会过期</strong>,旧答案会继续被自信地命中。</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>做了什么</th>
+<th>文件</th>
+<th>详见</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>28</td>
+<td><strong>课程事务事实表</strong>(带生效期,高于 FAQ,只在事务档注入)</td>
+<td><code>src/utils/course_facts.py</code>(<strong>新增</strong>)、<code>src/config.py</code>、<code>src/handlers/qa.py</code>、<code>test/test_course_facts.py</code>(<strong>新增</strong> 14 例)</td>
+<td>§6.6</td>
+</tr>
+<tr>
+<td>29</td>
+<td><strong>日志补检索字段</strong>:<code>path</code> / <code>n_hits</code> / <code>top_score</code> / <code>sources</code> 合并进同一条 <code>qa_kind</code> 事件</td>
+<td><code>src/handlers/qa.py</code>、<code>src/utils/logger.py</code></td>
+<td>§5.6</td>
+</tr>
+<tr>
+<td>30</td>
+<td><strong>日志 → FAQ 候选</strong>挖矿脚本</td>
+<td><code>scripts/mine_faq_candidates.py</code>(<strong>新增</strong>)、<code>test/test_mine_faq_candidates.py</code>(<strong>新增</strong> 38 例)</td>
+<td>§5.6</td>
+</tr>
+<tr>
+<td>31</td>
+<td><strong><code>【记录】</code> 入口</strong>:助教在微信里直接写 FAQ</td>
+<td><code>src/handlers/record.py</code>(<strong>新增</strong>,356 行)、<code>src/main.py</code>(闸门在<strong>学生转发闸门之前</strong>)、<code>src/config.py</code>、<code>test/test_record.py</code>(<strong>新增</strong> 49 例)、<code>test/conftest.py</code>、<code>deploy/openclaw/…</code>(SKILL.md + AGENTS.md 到 <strong>v2</strong>)、<code>scripts/install_openclaw_skill.sh</code></td>
+<td>§5.5</td>
+</tr>
+<tr>
+<td>33</td>
+<td><strong>测试污染生产日志</strong>这件事故的收尾</td>
+<td><code>test/test_log_isolation.py</code>(<strong>新增</strong> 4 例)、<code>test/conftest.py</code> 的 <code>isolated_logs</code>;污染日志改名归档</td>
+<td>§5.6</td>
+</tr>
+<tr>
+<td>—</td>
+<td><strong>四份文档的同一处勘误</strong></td>
+<td><code>docs/design.md</code>、<code>docs/requirements.md</code>、<code>docs/wechat_end_to_end.md</code>、本文 §1</td>
+<td>§5.4</td>
+</tr>
+<tr>
+<td>—</td>
+<td><strong>"润色失真"的量化脚本 + 它的噪声被钉住</strong></td>
+<td><code>scripts/eval_admin_fidelity.py</code>(<strong>新增</strong>,会真调 API)、<code>test/test_eval_admin_fidelity.py</code>(<strong>新增</strong> 6 例)</td>
+<td>§5.4</td>
+</tr>
+<tr>
+<td>—</td>
+<td><strong>新发现的缺陷(未修)</strong></td>
+<td>花名册读不出来 → 学号/姓名校验从未生效</td>
+<td>§8 第 12 条</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这一轮值得单独记下来的四件事:</strong></p>
+<ol>
+<li><strong>"测试通过"又假了一次,而这次是"假红"。</strong> <code>【记录】</code> 有条测试是"记完立刻能检索到",
+   用 3 条 FAQ 的小语料跑,自命中只有 <strong>1.02 分</strong>(阈值 4.0)—— 看着像功能坏了。
+   真相是 <strong>BM25 的 IDF 随语料条数 N 变化</strong>,小语料整体分低。
+   实测真文件(37 条):自命中<strong>最低 10.75、中位 25.44</strong>,全部过阈值。
+   所以照<strong>生产规模</strong>重建 fixture(40 条),并把量出来的数字写进测试文件 ——
+   <strong>免得以后有人靠"调低阈值"来修这个假红</strong>(那会把真命中一起放进来)。
+   <strong>一条假红比没有测试更糟,它会诱人去改对的东西。</strong></li>
+<li><strong>突变测试又抓出一个"我以为",而它同时纠正了源码里的一句话。</strong>
+   <code>【记录】</code> 的 22 个变异抓住 21 个;漏掉的那个经核对是<strong>等价变异</strong>
+   (标记词正则都是 <code>^</code> 锚定的,分支顺序不影响行为)。而我之前在 <code>record.py</code> 里
+   写过"这个顺序有讲究" —— <strong>那句话是错的</strong>,是变异测试试出来的。</li>
+<li><strong>静默失败的老毛病换了个地方长出来(§8 第 12 条)。</strong> 花名册读不出来 →
+   校验降级成"只打个标记" → <strong>没有任何环节会因此变红</strong>,于是坏了好几个月。
+   而且它的发现方式很偶然:是 <code>【记录】</code> 回执里那句"⚠ 花名册没读到"让人看见的。
+   <strong>降级分支如果不和失败挂钩,就等于没有告警</strong> —— 和 §9.6 第四步同一条教训。</li>
+<li><strong>数字要报告全: "不丢" ≠ "不变"。</strong> 我第一版把 28 条实测写成"数字一条都没丢也没被改",
+   复核时发现<strong>后半句是错的</strong> —— 丢了是 0 条(这半句成立),但<strong>多出来的有 18 条</strong>,
+   而且数字确实会被换写法(零→0、「一周」→「七天」)。
+   结论(保留润色)没变,但<strong>理由必须写准</strong>,否则下次有人会拿它去论证"润色完全无副作用"。</li>
+</ol>
+<p><strong>效果(实测):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>离线测试</td>
+<td><strong>310 通过 / 约 4.2 秒</strong>(上一轮 190)</td>
+</tr>
+<tr>
+<td>检索评测</td>
+<td>17/17 命中,MRR 0.956,<strong>0 条回归</strong>(<code>--compare</code> 退出码 0)</td>
+</tr>
+<tr>
+<td>突变测试(<code>record.py</code>)</td>
+<td>22 个变异,抓住 21 个(1 个等价变异)</td>
+</tr>
+<tr>
+<td>FAQ 文件</td>
+<td><strong>一字未动</strong>(md5 <code>2bf236afcabe0300cc7093ba4445ee8e</code>,跑测试/评测前后一致)</td>
+</tr>
+<tr>
+<td>OpenClaw 接入件</td>
+<td>SKILL.md 与 AGENTS.md 升到 <strong>v2</strong>,两条自检通过</td>
+</tr>
+</tbody>
+</table></div>
+<p>未改动:<code>.env</code>、补交表、<code>~/ykt_questions/常问问题.txt</code>、<code>materials/</code> 里的语料、
+答疑提示词(<code>_SYSTEM_PROMPT</code>)、OpenClaw 配置 —— 这一轮动的是<strong>通路和入口</strong>,不是语料。</p>
+<3 id="98-第八轮花名册修好顺带撞出补交表被单测写了-398-行">9.8 第八轮:花名册修好,顺带撞出"补交表被单测写了 398 行"<a class="anchor" href="#98-第八轮花名册修好顺带撞出补交表被单测写了-398-行" title="链接到这一节">#</a></3>
+<p>上一轮把"花名册读不出来"记进了待办(§8 第 12 条),标着"等助教拍板"。
+这一轮的起点就是助教给了<strong>本学期的名单</strong>(雨课堂导出)——
+而要核对"哪份名单才是对的那份",就必须去看补交表里的学号,<strong>然后撞上了第 13 条</strong>。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>做了什么</th>
+<th>文件</th>
+<th>详见</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>34</td>
+<td><strong>花名册修好</strong>:独立目录 + 按表头自动定位 + <code>read_only=False</code> + 学号归一化 + <strong>换成本学期名单</strong></td>
+<td><code>src/config.py</code>、<code>src/utils/excel_ops.py</code>(<code>scan_roster</code> <strong>新增</strong>)、<code>test/test_roster.py</code>(<strong>新增</strong> 11 例)</td>
+<td>§8 第 12 条</td>
+</tr>
+<tr>
+<td>—</td>
+<td><strong>正向自检</strong>:<code>python scripts/check_roster.py</code>,退出码 0/1</td>
+<td><code>scripts/check_roster.py</code>(<strong>新增</strong>)</td>
+<td>§8 第 12 条</td>
+</tr>
+<tr>
+<td>35</td>
+<td><strong>名单移出语料目录</strong>(名单不是资料,原先被解析进 RAG 索引)</td>
+<td><code>~/ykt_questions/materials/</code> → <code>~/ykt_questions/花名册/</code>;索引重建 114 文件 / 3165 块</td>
+<td>§3.1</td>
+</tr>
+<tr>
+<td>—</td>
+<td><strong>同一个 <code>read_only</code> 坑也堵了语料解析侧</strong></td>
+<td><code>src/utils/doc_parser.py::_parse_xlsx</code></td>
+<td>§3.1</td>
+</tr>
+<tr>
+<td>36</td>
+<td><strong>补交表被单测写脏 398 行</strong>:改名归档 + 隔离 fixture + 守卫测试</td>
+<td><code>test/conftest.py</code>(<code>isolated_submission_table</code>)、<code>test/test_submission_table_isolation.py</code>(<strong>新增</strong> 4 例)、<code>src/config.py</code>(新增 <code>SUBMISSION_TABLE</code> 环境变量)</td>
+<td>§8 第 13 条</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这一轮值得记下来的三件事:</strong></p>
+<ol>
+<li><strong>"修好了"的证据不是测试变绿,是一条命令能报出人数。</strong> 换源那一刻最能说明问题:
+   自动定位在新名单上找到的是「表头第 2 行、学号第 1 列、姓名第 2 列」,
+   而旧记分册是「第 5 行、B 列、C 列」—— <strong>两种版式没有任何一个坐标相同</strong>,
+   写死坐标那条路根本走不通。所以补的不是"改对常量",是<strong>改掉"靠常量定位"这件事</strong>,
+   再给一条 <code>check_roster.py</code> 把"现在读到几个人"变成随时可问的问题。</li>
+<li><strong>同一个 bug 会在你没检查的每一种资源上各长一遍(§8 第 13 条)。</strong>
+   日志污染那次堵完,只覆盖了 <code>data/logs/</code>。这个项目的生产数据还有 FAQ、事务表、
+   补交表、花名册,而<strong>补交表是唯一没人守的那个</strong> —— 于是它在同一个形状上长了 398 行出来。</li>
+<li><strong>缺陷清单不会自己变短。</strong> 第 12 条挂了一整天,没有任何机制会去复查它;
+   真正把它翻出来的是<strong>核对另一件事</strong>时顺手看了一眼。
+   <code>check_roster.py</code> 就是这次想到的对策:把"它现在是好的"也变成一个<strong>能被问的问题</strong>,
+   而不是等着下一次撞上。</li>
+</ol>
+<p><strong>效果(实测):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>离线测试</td>
+<td><strong>325 通过 / 约 4.7 秒</strong>(上一轮 310,新增 15 例)</td>
+</tr>
+<tr>
+<td>检索评测</td>
+<td>17/17 命中,MRR 0.956,<strong>0 条回归</strong>(<code>--compare</code> 退出码 0)</td>
+</tr>
+<tr>
+<td>索引</td>
+<td><strong>114 文件 / 3165 块</strong>(少 1 = 记分册移出);<code>df</code> 表逐个数复量,一个都没动</td>
+</tr>
+<tr>
+<td>花名册</td>
+<td><strong>169 人,学号全 8 位</strong>;<code>check_roster.py</code> 退出码 0;旧记分册(140 人)也能读</td>
+</tr>
+<tr>
+<td>补交表</td>
+<td>脏表归档(15039 B 原样,回滚 = <code>mv</code>);跑完测试<strong>没有</strong>被重新写出来</td>
+</tr>
+<tr>
+<td>FAQ</td>
+<td><strong>一字未动</strong>(md5 <code>2bf236afcabe0300cc7093ba4445ee8e</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>未改动:<code>.env</code>、<code>常问问题.txt</code>、答疑提示词、OpenClaw 配置、<code>materials/</code> 里除记分册外的语料。</p>
+<3 id="99-第九轮文档长出网页层-全仓一致性审计">9.9 第九轮:文档长出"网页层" + 全仓一致性审计<a class="anchor" href="#99-第九轮文档长出网页层-全仓一致性审计" title="链接到这一节">#</a></3>
+<p>这一轮<strong>没有动语料、没有动检索、没有动答疑提示词</strong> —— 动的是"文档长什么样"和
+"全仓的数字对不对得上"。起点是助教的两句话:一句是"课程名对不上是因为这学期我改带电路基础课了"
+(所以补交表文件名里那个"数电实验"是<strong>历史遗留,不用改</strong>),另一句是:</p>
+<blockquote>
+<p>"docs 里面的 html 我本来想的是尽量多图片和表格或者架构图或者流程图框架,
+而不是和 markdown 文件一模一样的内容。"</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>做了什么</th>
+<th>文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>39</td>
+<td><code>md2html.py</code> 从"markdown 翻版"改成<strong>网页层</strong>:mermaid 转真图、表格横向滚动+表头吸顶、图片转带题注的 <code>&lt;figure&gt;</code>、引用块按 ⚠️/✅/❌ 上色、侧边目录+滚动高亮、本页速览胶囊、回到顶部、阅读进度条</td>
+<td><code>scripts/md2html.py</code>(重写)</td>
+</tr>
+<tr>
+<td>40</td>
+<td><strong>图写进 md,而不是只写进 HTML</strong></td>
+<td><code>docs/design.md</code> §1 架构图 + §2 时序图、<code>docs/knowledge_base.md</code> §1 分档决策 + §3 <strong>饼图</strong> + §7 更新流水线、<code>docs/deployment.md</code> §0 三方关系图、<code>docs/requirements.md</code> §3 功能模块图、<code>docs/wechat_end_to_end.md</code> §0 端到端时序图</td>
+</tr>
+<tr>
+<td>41</td>
+<td>新增<strong>文档首页</strong> <code>docs/index.html</code>(每篇一张卡片:小节数/表格行数/图数)</td>
+<td><code>scripts/md2html.py --hub</code></td>
+</tr>
+<tr>
+<td>42</td>
+<td>文档渲染的回归测试 <strong>13 例</strong></td>
+<td><code>test/test_md2html.py</code>(<strong>新增</strong>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键取舍:mermaid 写在 markdown 里,不写在生成器里。</strong>
+GitHub <strong>原生渲染</strong> mermaid —— 同一个围栏,GitHub 上是图、本地 HTML 里也是图,
+<strong>一张图不用维护两份</strong>。代价是 HTML 要联网从 CDN 取 mermaid(约 1 MB);
+不联网时<strong>退化成一张代码块</strong>,源码另存一份在折叠区里,信息不丢。
+(旧的那张 ASCII 架构图<strong>保留在图下面</strong> —— 终端里、<code>git diff</code> 里还得靠它。)</p>
+<p><strong>全仓一致性审计(这一轮的另一半)</strong>,查出来四处:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>查出来的</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/design.md</code> 的 df 分母还是 <code>/3166</code>(索引已是 3165)</td>
+<td>改成 3165;df 值本身逐个数复量过,<strong>一个没动</strong></td>
+</tr>
+<tr>
+<td><code>docs/knowledge_base.md</code> §9.5 写"3167 块" —— <strong>这个数字从来没存在过</strong></td>
+<td>改成 3166(那一轮的真实值)</td>
+</tr>
+<tr>
+<td><code>docs/wechat_end_to_end.md</code> 的勘误里"全库 3166 块"</td>
+<td>改成 3165,并注明少的那 1 块是记分册移出</td>
+</tr>
+<tr>
+<td><code>scripts/md2html.py</code> 的提示块生成的是 <code>&lt;blockquote warn&gt;</code> —— <strong>少了 <code>class=</code></strong>,CSS 一条都匹配不上</td>
+<td>由<strong>新写的测试</strong>当场抓住(<code>&lt;blockquote class="warn"&gt;</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>顺带核过、<strong>结论是"本来就对"</strong> 的:<code>README</code> 的脚本树 16 项与 <code>scripts/</code> 逐一对得上;
+<code>src/</code> 里没有裸 <code>print</code>(唯一三处都显式 <code>file=sys.stderr</code>);全部 <code>.py</code> 可编译;
+文档里的本地链接<strong>全部存在</strong>(没有断链);<code>.env</code>/<code>data/logs</code>/<code>data/index</code> 都在 <code>.gitignore</code> 里。</p>
+<blockquote>
+<p><strong><code>src/rag/retriever.py</code> 那处 <code>search(query, top_k=5)</code> 的默认值留着没改。</strong>
+生产路径上 <code>qa.py</code> 显式传 <code>config.RAG_TOP_K</code>(=7),所以它是<strong>死默认值</strong>;
+改它属于"顺手改代码",和这一轮(文档+审计)不是一件事,记在这里备查。</p>
+</blockquote>
+<p><strong>效果(实测):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>离线测试</td>
+<td><strong>338 通过 / 约 4.6 秒</strong>(上一轮 325,新增 13 例)</td>
+</tr>
+<tr>
+<td>检索评测</td>
+<td>17/17 命中,MRR 0.956,<strong>0 条回归</strong>(<code>--compare</code> 退出码 0)</td>
+</tr>
+<tr>
+<td>索引</td>
+<td><strong>114 文件 / 3165 块</strong>(未改动;这一轮没碰语料)</td>
+</tr>
+<tr>
+<td>文档</td>
+<td><code>docs/</code> 下 <strong>8 个 HTML</strong>,共 <strong>8 张 mermaid 图</strong>(教材饼图 / 架构图 / 时序图);FAQ md5 仍为 <code>2bf236af…</code></td>
+</tr>
+<tr>
+<td>代码</td>
+<td>除 <code>md2html.py</code> 外<strong>没有改动</strong>;<code>.env</code>、答疑提示词、OpenClaw 配置未动</td>
+</tr>
+</tbody>
+</table></div>
+<div class="foot">
+  <span>源文件 <code>docs/knowledge_base.md</code> · 生成于 2026-09-20 21:09</span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+</div>
+</main>
+</div>
+<button id="totop" title="回到顶部">↑</button>
+<script>
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,sh=h.scrollHeight-h.clientHeight;
+    bar.style.width=(sh>0?(h.scrollTop/sh*100):0)+'%';
+    top.classList.toggle('show',h.scrollTop>500);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var heads=[].slice.call(document.querySelectorAll('main h2[id],main h3[id]'));
+  var links={};[].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    links[decodeURIComponent(a.getAttribute('href').slice(1))]=a;});
+  function spy(){
+    var cur=null;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i].getBoundingClientRect().top<=90) cur=heads[i].id; else break;
+    }
+    for(var k in links) links[k].classList.remove('active');
+    if(cur&&links[cur]) links[cur].classList.add('active');
+  }
+  document.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+<script type="module">
+  // startOnLoad 关掉,只跑一次 run():两者同时开会重复渲染同一张图
+  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+    .then(function(m){var M=m.default||m;M.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});return M.run({nodes:document.querySelectorAll('.mermaid')});})
+    .catch(function(){/* 没网:图保持源码原样,折叠区里也有一份 */});
+</script>
+</body>
+</html>

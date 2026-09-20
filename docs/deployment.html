@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>部署与 OpenClaw 接入指南</title>
+<meta name="description" content="flowchart LR">
+<meta name="generator" content="scripts/md2html.py">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>%F0%9F%93%98</text></svg>">
+<style>
+:root{--fg:#1f2328;--muted:#59636e;--border:#d8dee4;--bg:#fff;--page:#f6f8fa;
+      --code-bg:#f6f8fa;--accent:#0969da;--accent-soft:#ddf4ff;
+      --warn-bg:#fff8c5;--warn-bd:#d4a72c;--ok-bg:#dafbe1;--ok-bd:#1a7f37;
+      --bad-bg:#ffebe9;--bad-bd:#cf222e;--shadow:0 1px 3px rgba(27,31,36,.08);
+      --sidebar:264px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--fg);
+     font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",
+                 "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+     font-size:16px;line-height:1.78}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:99}
+.wrap{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);
+      gap:28px;max-width:1280px;margin:0 auto;padding:24px 20px 96px}
+@media (max-width:1080px){.wrap{grid-template-columns:1fr;gap:0}.sidebar{position:static;max-height:none}}
+main{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+     padding:40px 48px 56px;box-shadow:var(--shadow);min-width:0}
+@media (max-width:640px){main{padding:24px 18px 40px}body{font-size:15.5px}.wrap{padding:12px}}
+
+/* ---- 侧边栏:目录 ---- */
+.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);
+         overflow:auto;font-size:.9em}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h2{margin:.1em 0 .5em;font-size:.95em;border:0;padding:0;color:var(--muted);
+         letter-spacing:.06em}
+.toc ul{list-style:none;margin:.2em 0;padding-left:0}
+.toc ul ul{padding-left:.9em;border-left:1px solid var(--border);margin-left:.35em}
+.toc li{margin:.12em 0}
+.toc a{display:block;padding:.2em .5em;border-radius:5px;color:var(--fg);
+       text-decoration:none;border-left:2px solid transparent}
+.toc a:hover{background:var(--accent-soft)}
+.toc a.active{background:var(--accent-soft);border-left-color:var(--accent);
+              color:var(--accent);font-weight:600}
+.toc .toctitle{display:none}          /* 侧边栏标题由 .card h2 提供,不要重复 */
+.docs-nav a{display:block;padding:.2em .5em;border-radius:5px;text-decoration:none;
+            color:var(--muted);font-size:.95em}
+.docs-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.docs-nav a.here{color:var(--fg);font-weight:600}
+
+/* ---- 正文 ---- */
+h1,h2,h3,h4{line-height:1.35;margin:1.9em 0 .6em;scroll-margin-top:16px}
+h1{font-size:1.9em;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:0}
+h2{font-size:1.45em;border-bottom:1px solid var(--border);padding-bottom:.25em;margin-top:2.2em}
+h3{font-size:1.18em}
+p,li{word-break:break-word}
+a{color:var(--accent)}
+ul,ol{padding-left:1.5em}
+li{margin:.18em 0}
+code{background:var(--code-bg);padding:.15em .4em;border-radius:4px;
+     font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;font-size:.9em}
+pre{background:var(--code-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;
+     border:1px solid var(--border);line-height:1.6}
+pre code{background:none;padding:0;font-size:.88em}
+hr{border:none;border-top:1px solid var(--border);margin:2.4em 0}
+.anchor{float:right;color:var(--border);text-decoration:none;font-weight:400;
+        padding-left:.4em;opacity:0;transition:opacity .12s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+
+/* ---- 表格:横向滚动 + 表头吸顶 ---- */
+.table-wrap{overflow-x:auto;margin:1.1em 0;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.94em;margin:0}
+th,td{border:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+      padding:8px 12px;text-align:left;vertical-align:top}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+th{background:var(--code-bg);font-weight:600;position:sticky;top:0;z-index:1}
+tr:nth-child(even) td{background:#fcfcfd}
+tbody tr:hover td{background:var(--accent-soft)}
+
+/* ---- 提示块(按 emoji 上色) ---- */
+blockquote{margin:1.1em 0;padding:.7em 1.1em;color:var(--muted);
+           border-left:4px solid var(--border);background:#fbfcfd;border-radius:0 6px 6px 0}
+blockquote p{margin:.35em 0}
+blockquote.warn{border-left-color:var(--warn-bd);background:var(--warn-bg);color:#3d2f00}
+blockquote.ok{border-left-color:var(--ok-bd);background:var(--ok-bg);color:#0b3d1a}
+blockquote.bad{border-left-color:var(--bad-bd);background:var(--bad-bg);color:#4c0519}
+
+/* ---- 图:mermaid 与图片 ---- */
+figure.diagram,figure.pic{margin:1.4em 0;padding:14px;border:1px solid var(--border);
+                          border-radius:8px;background:#fcfcfd}
+figure.diagram .mermaid{overflow-x:auto;text-align:center}
+figure.diagram figcaption,figure.pic figcaption{color:var(--muted);font-size:.88em;
+     margin-top:.6em;text-align:center}
+figure.pic img{max-width:100%;display:block;margin:0 auto;border-radius:6px}
+details.mermaid-src{margin-top:.6em;font-size:.85em}
+details.mermaid-src summary{cursor:pointer;color:var(--muted)}
+details.mermaid-src pre{margin:.5em 0 0}
+
+/* ---- 本页速览胶囊 ---- */
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 1.6em}
+.quick a{font-size:.84em;padding:.22em .7em;border:1px solid var(--border);
+         border-radius:999px;text-decoration:none;color:var(--muted);background:var(--bg)}
+.quick a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ---- 页脚与回到顶部 ---- */
+.foot{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);
+      color:var(--muted);font-size:.85em;display:flex;flex-wrap:wrap;gap:.4em 1.2em;
+      justify-content:space-between}
+#totop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;
+       border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;
+       box-shadow:var(--shadow);font-size:17px;display:none}
+#totop.show{display:block}
+
+/* ---- 首页(导航页) ---- */
+.hub-hero{background:linear-gradient(135deg,#0969da11,#0969da05);border:1px solid var(--border);
+          border-radius:12px;padding:26px 28px;margin-bottom:22px}
+.hub-hero h1{border:0;margin:0 0 .3em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards a.card-link{display:block;text-decoration:none;color:var(--fg);background:var(--bg);
+     border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);
+     transition:transform .12s,border-color .12s}
+.cards a.card-link:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cards .t{font-weight:600;margin-bottom:.35em;font-size:1.02em}
+.cards .d{color:var(--muted);font-size:.88em;line-height:1.6}
+.cards .m{color:var(--muted);font-size:.78em;margin-top:.6em}
+
+@media print{body{background:#fff}#progress,#totop,.sidebar{display:none}
+  .wrap{display:block;max-width:none;padding:0}main{border:0;box-shadow:none;padding:0}
+  .table-wrap{overflow:visible}th{position:static}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<aside class="sidebar">
+<div class="card toc"><h2>本页目录</h2><div class="toc"><span class="toctitle">本页目录</span><ul>
+<li><a href="#0-目录放置">0. 目录放置</a></li>
+<li><a href="#1-环境安装一次性">1. 环境安装(一次性)</a></li>
+<li><a href="#2-构建知识库索引一次性-资料更新后">2. 构建知识库索引(一次性 / 资料更新后)</a></li>
+<li><a href="#3-本地冒烟测试">3. 本地冒烟测试</a></li>
+<li><a href="#4-openclaw-接入">4. OpenClaw 接入</a><ul>
+<li><a href="#方案-a子进程调用最简单推荐先用这个">方案 A:子进程调用(最简单,推荐先用这个)</a></li>
+<li><a href="#方案-bhttp-服务需要长连接">方案 B:HTTP 服务(需要长连接)</a></li>
+<li><a href="#在-openclaw-端的伪代码示例">在 OpenClaw 端的伪代码示例</a></li>
+</ul>
+</li>
+<li><a href="#5-路径提示词重要">5. 路径提示词(重要!)</a></li>
+<li><a href="#6-日常维护">6. 日常维护</a></li>
+<li><a href="#7-故障排查">7. 故障排查</a></li>
+<li><a href="#8-从零到上线的时间预估">8. 从零到上线的时间预估</a></li>
+</ul>
+</div>
+</div>
+<div class="card docs-nav"><h2>文档导航</h2><a href="README.html">数电助教自动化助手 (TA Assistant)</a><a href="knowledge_base.html">知识库说明(FAQ + 资料库)</a><a href="design.html">系统设计文档</a><a href="deployment.html" class="here">部署与 OpenClaw 接入指南</a><a href="wechat_end_to_end.html">微信端到端跑通手册</a><a href="requirements.html">需求文档(PRD)</a><a href="claude_code_prompt.html">交给 Claude Code 的 Prompt</a></div>
+</aside>
+<main>
+<nav class="quick"><a href="#0-目录放置">0. 目录放置</a><a href="#1-环境安装一次性">1. 环境安装(一次性)</a><a href="#2-构建知识库索引一次性-资料更新后">2. 构建知识库索引(一次性 / 资料更新后)</a><a href="#3-本地冒烟测试">3. 本地冒烟测试</a><a href="#4-openclaw-接入">4. OpenClaw 接入</a><a href="#方案-a子进程调用最简单推荐先用这个">方案 A:子进程调用(最简单,推荐先用这个)</a><a href="#方案-bhttp-服务需要长连接">方案 B:HTTP 服务(需要长连接)</a><a href="#在-openclaw-端的伪代码示例">在 OpenClaw 端的伪代码示例</a><a href="#5-路径提示词重要">5. 路径提示词(重要!)</a><a href="#6-日常维护">6. 日常维护</a><a href="#7-故障排查">7. 故障排查</a><a href="#8-从零到上线的时间预估">8. 从零到上线的时间预估</a></nav>
+<h1 id="部署与-openclaw-接入指南">部署与 OpenClaw 接入指南</h1>
+<blockquote class="warn">
+<p>⚠️ <strong>时效性(2026-09-20 校订)</strong>
+这份是 <strong>2026-04 的初版部署说明</strong>,§4 的 OpenClaw 接入方式(子进程 / HTTP)没有变;
+但<strong>数据放哪</strong>(§0)、<strong><code>.env</code> 填什么</strong>(§1)、<strong>建索引会看到什么</strong>(§2)、
+<strong>日常怎么维护</strong>(§6)都已经不一样了 —— 逐处改过,改了的地方标 <code>【当前】</code>。
+<strong>端到端跑通与排障请看 <a href="wechat_end_to_end.md"><code>wechat_end_to_end.md</code></a></strong>;
+<strong>知识库怎么重建请看 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §7</strong>(那份是最新的)。</p>
+</blockquote>
+<2 id="0-目录放置">0. 目录放置<a class="anchor" href="#0-目录放置" title="链接到这一节">#</a></2>
+<p><strong>【当前】代码和数据是分开的,别再往 <code>Downloads</code> 里的中文目录放。</strong></p>
+<p><strong>三方关系一张图</strong>(左边是"编辑",中间是"跑",右边是"存";箭头方向就是数据流向,
+<strong>只有一条固定方向,反着传会丢业务数据</strong>):</p>
+<figure class="diagram">
+<div class="mermaid">flowchart LR
+  subgraph WIN[&quot;Windows 11(只编辑,不跑)&quot;]
+    WS[&quot;C:\\Users\\…\\Downloads\\ta-assistant&lt;br/&gt;&lt;b&gt;源码工作副本&lt;/b&gt;&lt;br/&gt;(在 Git Bash 里改)&quot;]
+  end
+  subgraph WSL[&quot;WSL Ubuntu(真正在跑)&quot;]
+    CODE[&quot;~/ta-assistant/&lt;br/&gt;代码 + .venv&quot;]
+    OCL[&quot;OpenClaw&lt;br/&gt;(TS Bot,微信网关)&quot;]
+  end
+  subgraph DATA[&quot;~/ykt_questions/(数据,不进版本库)&quot;]
+    M[&quot;materials/&lt;br/&gt;教学资料&quot;]
+    R[&quot;花名册/&quot;]
+    F[&quot;常问问题.txt&quot;]
+    X[&quot;补交表.xlsx&quot;]
+    CF[&quot;课程事务.txt&lt;br/&gt;(还没建)&quot;]
+  end
+  WX[&quot;学生 / 助教的微信&quot;]
+
+  WS --&gt;|&quot;rsync 单向同步&lt;br/&gt;(改完源码就传一次)&quot;| CODE
+  WX &lt;--&gt; OCL
+  OCL --&gt;|&quot;子进程 + 一行 JSON&quot;| CODE
+  CODE --&gt; M
+  CODE --&gt; R
+  CODE --&gt; F
+  CODE --&gt; X
+  CODE --&gt; CF
+
+  CODE -.-&gt;|&quot;❌ 不要反向覆盖&lt;br/&gt;会拿 Windows 的旧数据盖掉补交记录&quot;| WS
+  DATA -.-&gt;|&quot;❌ 不进 materials/:&lt;br/&gt;名单不是教学资料&quot;| M</div>
+<details class="mermaid-src"><summary>Mermaid 源码(离线时看这里)</summary><pre><code>flowchart LR
+  subgraph WIN[&quot;Windows 11(只编辑,不跑)&quot;]
+    WS[&quot;C:\\Users\\…\\Downloads\\ta-assistant&lt;br/&gt;&lt;b&gt;源码工作副本&lt;/b&gt;&lt;br/&gt;(在 Git Bash 里改)&quot;]
+  end
+  subgraph WSL[&quot;WSL Ubuntu(真正在跑)&quot;]
+    CODE[&quot;~/ta-assistant/&lt;br/&gt;代码 + .venv&quot;]
+    OCL[&quot;OpenClaw&lt;br/&gt;(TS Bot,微信网关)&quot;]
+  end
+  subgraph DATA[&quot;~/ykt_questions/(数据,不进版本库)&quot;]
+    M[&quot;materials/&lt;br/&gt;教学资料&quot;]
+    R[&quot;花名册/&quot;]
+    F[&quot;常问问题.txt&quot;]
+    X[&quot;补交表.xlsx&quot;]
+    CF[&quot;课程事务.txt&lt;br/&gt;(还没建)&quot;]
+  end
+  WX[&quot;学生 / 助教的微信&quot;]
+
+  WS --&gt;|&quot;rsync 单向同步&lt;br/&gt;(改完源码就传一次)&quot;| CODE
+  WX &lt;--&gt; OCL
+  OCL --&gt;|&quot;子进程 + 一行 JSON&quot;| CODE
+  CODE --&gt; M
+  CODE --&gt; R
+  CODE --&gt; F
+  CODE --&gt; X
+  CODE --&gt; CF
+
+  CODE -.-&gt;|&quot;❌ 不要反向覆盖&lt;br/&gt;会拿 Windows 的旧数据盖掉补交记录&quot;| WS
+  DATA -.-&gt;|&quot;❌ 不进 materials/:&lt;br/&gt;名单不是教学资料&quot;| M</code></pre></details>
+</figure>
+<blockquote>
+<p><strong>换学期别忘</strong>:把新名单覆盖 <code>花名册/电路基础理论课_学生名单.xlsx</code>,再跑
+<code>.venv/bin/python scripts/check_roster.py</code> —— <strong>退出码 0 才算换好</strong>。
+(补交表的文件名还是<strong>数电实验</strong>时期的 <code>数字电路与逻辑设计实验（一）补交表.xlsx</code>,
+那是历史遗留,<strong>不用改名</strong> —— 它现在是"本学期唯一那份补交登记表",
+改名要连 <code>.env</code>/代码一起动,收益为零。)</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>位置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代码</td>
+<td><code>~/ta-assistant/</code>(WSL 原生目录)</td>
+<td>在 WSL 里跑,不要直接在 <code>/mnt/c/...</code> 下跑</td>
+</tr>
+<tr>
+<td>数据</td>
+<td><code>~/ykt_questions/</code>(<code>WINDOWS_ROOT</code>)</td>
+<td><code>materials/</code>(教学资料)+ <code>花名册/</code> + <code>常问问题.txt</code> + 补交表 + <code>课程事务.txt</code>(还没有,见下)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>名单单独放 <code>花名册/</code>,不要放进 <code>materials/</code>。</strong> <code>materials/</code> 是 RAG 语料目录,
+<code>build_index.py</code> 会把里面每个文件解析进索引 —— 名单不是教学资料。
+(原先那份成绩记分册就躺在 <code>materials/</code> 里,被解析进去了,见 §3.1。)</p>
+<p><strong>换学期</strong>:把新导出的名单覆盖 <code>~/ykt_questions/花名册/电路基础理论课_学生名单.xlsx</code>
+这个文件名,然后 <code>.venv/bin/python scripts/check_roster.py</code> —— <strong>退出码 0 才算换好了</strong>。
+只是"把文件拷过去"不够:名单读不出来时补交<strong>照样登记成功</strong>,只是校验状态永远写
+「名单缺失」,不跑这条就发现不了。始末见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §8 第 12 条。</p>
+<p><code>课程事务.txt</code>(现行事务口径)目前<strong>还没建</strong>,功能处于休眠状态 ——
+助教写一份就有,格式见 <code>knowledge_base.md</code> §6.6,不用重建索引。
+| 大文件 | <code>/public/tmp/...</code>(服务器侧)、OCR 缓存在 <code>~/ykt_questions/_ocr_cache/</code> | 与代码解耦 |</p>
+</blockquote>
+<p><strong>为什么不用 <code>/mnt/c/...</code>:</strong> 一是跨文件系统 IO 慢(索引/OCR 都吃这个),
+二是原来的 Windows 路径含中文与全角括号,在 WSL 里容易出编码问题。
+<code>config.WINDOWS_ROOT</code> 默认就是 <code>~/ykt_questions</code>,<strong>不用改任何代码</strong>。</p>
+<blockquote>
+<p><strong>历史遗留提醒</strong>:<code>C:\Users\52880\Downloads\ykt_questions\</code> 那份是<strong>旧位置,运行时不再读</strong>。
+唯一的判据是「补交表在谁那儿」—— 运行时用的那份目录下有 <code>补交表.xlsx</code>
+(工作表 <code>补交记录</code>);旧那份还是 4 月的成绩记分册。
+<strong>要改回去必须先合并补交记录,否则丢业务数据。</strong>
+Windows 侧那份仍然是<strong>编辑源码的工作副本</strong>(改完同步到 <code>~/ta-assistant/</code>)。</p>
+</blockquote>
+<2 id="1-环境安装一次性">1. 环境安装(一次性)<a class="anchor" href="#1-环境安装一次性" title="链接到这一节">#</a></2>
+<pre><code class="language-bash">cd ~/ta-assistant
+bash scripts/setup.sh
+</code></pre>
+<p><code>setup.sh</code> 会做:
+1. <code>apt install libreoffice-core poppler-utils</code>(用来转 <code>.doc</code> 和 pdf 解析)
+2. 创建 <code>.venv</code> 虚拟环境
+3. <code>pip install -r requirements.txt</code>
+4. 预下载 jieba 词典
+5. 从 <code>.env.example</code> 复制一份 <code>.env</code></p>
+<p><strong>【当前】然后编辑 <code>.env</code>,填大模型的 key:</strong></p>
+<pre><code>LLM_API_KEY=你的_OPENCODE_GO_API_KEY
+LLM_MODEL=deepseek-v4.1-flash
+</code></pre>
+<p>默认通道是 <strong>OpenCode Go</strong>(OpenAI 兼容接口,key 在 <a href="https://opencode.ai/auth">https://opencode.ai/auth</a> 拿)。
+<strong><code>LLM_API_KEY</code> 留空会自动退回旧的 MiniMax 通道</strong>(保留作回滚),那条才需要
+<code>MINMAX_API_KEY</code> / <code>MINMAX_GROUP_ID</code>。业务代码只认 <code>LLM_*</code>,换供应商 = 改 <code>.env</code>。</p>
+<blockquote>
+<p><strong>别把 key 写进任何会进版本库的文件</strong> —— <code>.env</code> 已在 <code>.gitignore</code> 里,
+用它就行;不要写进脚本、文档或日志。</p>
+</blockquote>
+<2 id="2-构建知识库索引一次性-资料更新后">2. 构建知识库索引(一次性 / 资料更新后)<a class="anchor" href="#2-构建知识库索引一次性-资料更新后" title="链接到这一节">#</a></2>
+<pre><code class="language-bash">cd ~/ta-assistant
+source .venv/bin/activate
+
+# 【当前】先备份旧索引,出问题能一键回退
+cp data/index/bm25_index.pkl data/index/bm25_index.pkl.bak.$(date +%Y%m%d-%H%M%S)
+
+python scripts/build_index.py
+</code></pre>
+<p>成功后会看到(数字随语料变化,<strong>看的是"文件数和块数是不是符合预期",不是背数字</strong>):</p>
+<pre><code>扫描目录: /home/&lt;user&gt;/ykt_questions/materials
+解析文件: 114 个  | 生成片段: 3165 块
+BM25 索引已保存: data/index/bm25_index.pkl
+</code></pre>
+<blockquote>
+<p><strong>改了语料光重建索引还不够 —— 要跑一遍检索评测</strong>确认没把原来的资料挤掉:
+<code>bash
+python scripts/eval_retrieval.py --compare     # 有回归则退出码 1</code>
+<strong>完整的资料更新流程(语料生成 → 数字审计 → 重建索引 → 评测 → 抽查)
+见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §7</strong>,那里是按顺序排好的七步。</p>
+</blockquote>
+<2 id="3-本地冒烟测试">3. 本地冒烟测试<a class="anchor" href="#3-本地冒烟测试" title="链接到这一节">#</a></2>
+<pre><code class="language-bash"># 测试 1:补交
+python -m src.main --message &quot;我作业漏交了 张三 20230001 第1次&quot;
+
+# 测试 2:FAQ
+python -m src.main --message &quot;Proteus 在哪下载?&quot;
+
+# 测试 3:RAG
+python -m src.main --message &quot;什么是竞争冒险?怎么消除?&quot;
+
+# 测试 4:【记录】通路(**刻意用一条会被拒收的**:带假学号)
+#   既证明路由到了后端,又不会往手写的常问问题.txt 里写坏数据
+.venv/bin/python -m src.main --message '【记录】问题:测试 20259999999 在哪交作业
+标准答案:交给学委'
+# 预期:{&quot;type&quot;: &quot;record&quot;, &quot;reply&quot;: &quot;❌ 没记: 问题里有学号 …&quot;}
+</code></pre>
+<p>每次都应该看到 JSON 返回和 <code>data/logs/YYYY-MM.log</code> 里新增一行。</p>
+<p><strong>【当前】注意前缀</strong>:走 <code>openclaw_bridge.py</code> 时消息<strong>必须带前缀</strong>
+(<code>【转发学生提问】</code>),不带会被当成非学生消息直接跳过。
+<code>src/main.py</code> 的 <code>--message</code> 入口不受这个限制,所以上面三条不带前缀也能测。</p>
+<p><strong><code>【记录】</code> 是个例外,它本来就不带学生转发前缀</strong> —— 它是助教自己发的。
+所以 <code>main.process()</code> 里它的闸门在<strong>学生转发闸门之前</strong>,顺序反了会被判成
+"非学生消息"丢掉,而且<strong>看起来一切正常</strong>。改 <code>main.py</code> 时注意这条(回归测试
+<code>test/test_record.py</code> 里有两条专门钉这个顺序)。</p>
+<p>⚠️ <strong>自检 <code>【记录】</code> 千万不要拿一条正常的问答去试</strong> —— 那会真的写进助教手写的
+<code>常问问题.txt</code>(那份文件没有版本库兜底)。用上面那条带假学号的,它会被拒收。</p>
+<pre><code class="language-bash"># 端到端(带前缀),这才是 OpenClaw 实际走的那条路:
+./.venv/bin/python scripts/openclaw_bridge.py --message '【转发学生提问】什么是叠加原理'
+</code></pre>
+<p><strong>离线自检(不联网、不调 API,约 5 秒)</strong>:</p>
+<pre><code class="language-bash">.venv/bin/python -m pytest test/ -q            # 全绿(当前 338 例)
+.venv/bin/python scripts/eval_retrieval.py --compare   # 退出码 0
+.venv/bin/python scripts/check_roster.py               # 退出码 0,并报出名单人数
+</code></pre>
+<blockquote>
+<p><strong><code>check_roster.py</code> 必须看退出码,不能只看它有没有崩。</strong> 名单读不出来时
+补交<strong>照样登记成功</strong>,只是校验状态永远写「名单缺失」—— 这个缺陷就是这样
+藏了几个月的(<code>knowledge_base.md</code> §8 第 12 条)。换学期换名单之后尤其要跑。</p>
+</blockquote>
+<2 id="4-openclaw-接入">4. OpenClaw 接入<a class="anchor" href="#4-openclaw-接入" title="链接到这一节">#</a></2>
+<3 id="方案-a子进程调用最简单推荐先用这个">方案 A:子进程调用(最简单,推荐先用这个)<a class="anchor" href="#方案-a子进程调用最简单推荐先用这个" title="链接到这一节">#</a></3>
+<p>在 OpenClaw 的"接收到助教转发"的钩子里,把整条消息透传给:</p>
+<pre><code class="language-bash">/home/&lt;你的用户名&gt;/ta-assistant/.venv/bin/python \
+  /home/&lt;你的用户名&gt;/ta-assistant/scripts/openclaw_bridge.py \
+  --message &quot;&lt;转发内容&gt;&quot;
+</code></pre>
+<p>脚本会在 <code>stdout</code> 打印 JSON:</p>
+<pre><code class="language-json">{&quot;type&quot;: &quot;question&quot;, &quot;reply&quot;: &quot;Proteus 需要自己找激活版...&quot;}
+</code></pre>
+<p>OpenClaw 把 <code>reply</code> 字段发回微信即可。</p>
+<3 id="方案-bhttp-服务需要长连接">方案 B:HTTP 服务(需要长连接)<a class="anchor" href="#方案-bhttp-服务需要长连接" title="链接到这一节">#</a></3>
+<p>启动:</p>
+<pre><code class="language-bash">cd ~/ta-assistant
+source .venv/bin/activate
+uvicorn src.main:app --host 127.0.0.1 --port 8765
+</code></pre>
+<p>OpenClaw 调用:</p>
+<pre><code>POST http://127.0.0.1:8765/process
+Content-Type: application/json
+{&quot;message&quot;: &quot;转发内容&quot;}
+</code></pre>
+<p>响应:</p>
+<pre><code class="language-json">{&quot;type&quot;: &quot;submission&quot;, &quot;reply&quot;: &quot;✅ 已登记...&quot;}
+</code></pre>
+<3 id="在-openclaw-端的伪代码示例">在 OpenClaw 端的伪代码示例<a class="anchor" href="#在-openclaw-端的伪代码示例" title="链接到这一节">#</a></3>
+<p>假设 OpenClaw 支持 Python 插件:</p>
+<pre><code class="language-python">import subprocess, json
+
+def on_teacher_forward(message: str) -&gt; str:
+    result = subprocess.run(
+        [&quot;/home/ta/ta-assistant/.venv/bin/python&quot;,
+         &quot;/home/ta/ta-assistant/scripts/openclaw_bridge.py&quot;,
+         &quot;--message&quot;, message],
+        capture_output=True, text=True, timeout=30
+    )
+    data = json.loads(result.stdout)
+    return data[&quot;reply&quot;]
+</code></pre>
+<2 id="5-路径提示词重要">5. 路径提示词(重要!)<a class="anchor" href="#5-路径提示词重要" title="链接到这一节">#</a></2>
+<p><strong>【当前】默认已经绕开了中文路径</strong>(数据在 <code>~/ykt_questions</code>),所以下面这条<strong>只在
+你非要用 Windows 侧中文目录时</strong>才需要看。项目里所有路径都已在 <code>src/config.py</code> 用
+<code>Path</code> 封装,<strong>不要</strong>在 shell 里裸写中文路径,会挂。</p>
+<p>真要指到 Windows 侧,推荐用 <code>.env</code> 覆盖而不是改代码:</p>
+<pre><code class="language-bash"># .env
+WINDOWS_ROOT=/mnt/c/Users/YOUR_USERNAME/Downloads/ykt_questions
+</code></pre>
+<p>(迁移前先合并补交记录,理由见 §0。)</p>
+<2 id="6-日常维护">6. 日常维护<a class="anchor" href="#6-日常维护" title="链接到这一节">#</a></2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加新 FAQ</td>
+<td>在 <code>常问问题.txt</code> 里按 <code>Q:\nA:\n\n</code> 格式新增,<strong>不需要</strong>重建索引(每次启动现建)</td>
+</tr>
+<tr>
+<td><strong>加/改课程资料</strong></td>
+<td><strong>不是"拖进去跑一下 build_index"这么简单</strong> —— 语料要先过生成/增强/审计,见 <a href="knowledge_base.md"><code>knowledge_base.md</code></a> §7 的七步流程</td>
+</tr>
+<tr>
+<td>重建索引</td>
+<td>先备份,再 <code>python scripts/build_index.py</code>,然后 <code>python scripts/eval_retrieval.py --compare</code></td>
+</tr>
+<tr>
+<td>补交表想导出</td>
+<td>直接打开 Excel(路径见 <code>config.py</code>)</td>
+</tr>
+<tr>
+<td>看日志</td>
+<td><code>tail -f ~/ta-assistant/data/logs/$(date +%Y-%m).log</code></td>
+</tr>
+<tr>
+<td>清空当月日志</td>
+<td><code>rm ~/ta-assistant/data/logs/$(date +%Y-%m).log</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>改完提示词后必做的一步</strong>:抽查几个真实提问(见 <code>knowledge_base.md</code> §7 的 ⑧)。
+大模型唯一真正危险的地方是<strong>悄悄改一个数值</strong>,而那是最不容易被一眼看出来的错误。</p>
+<2 id="7-故障排查">7. 故障排查<a class="anchor" href="#7-故障排查" title="链接到这一节">#</a></2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FileNotFoundError: ...ykt_questions...</code></td>
+<td>数据目录不对 / 没放到 <code>WINDOWS_ROOT</code></td>
+<td>看 <code>.env</code> 里的 <code>WINDOWS_ROOT</code>,或用 §5 覆盖</td>
+</tr>
+<tr>
+<td><code>ImportError: no module named jieba</code></td>
+<td>未激活 venv</td>
+<td><code>source .venv/bin/activate</code></td>
+</tr>
+<tr>
+<td>LLM 401 / 403</td>
+<td>key 错或没填</td>
+<td>查 <code>.env</code> 的 <code>LLM_API_KEY</code>;留空会退回 MinMax 通道,报错可能是<strong>旧通道</strong>的 key</td>
+</tr>
+<tr>
+<td>LLM 返回 <code>400 MissingSessionID</code></td>
+<td>OpenCode Go 要求 <code>x-opencode-session</code> 请求头</td>
+<td>别删 <code>LLM_SESSION_HEADER</code> 的默认值</td>
+</tr>
+<tr>
+<td>回复全是"抱歉,知识库未就绪"</td>
+<td>没跑 build_index.py</td>
+<td>跑一次</td>
+</tr>
+<tr>
+<td><strong>答复里冒出无关章节</strong></td>
+<td>BM25 的 IDF 兜底把虚词当成了正证据</td>
+<td>见 <code>knowledge_base.md</code> §3.6;确认 <code>apply_lucene_idf()</code> 还在被调用</td>
+</tr>
+<tr>
+<td>补交表里姓名乱码</td>
+<td>Excel 用 GBK 打开</td>
+<td>用 Excel 2019+ 或 WPS 打开</td>
+</tr>
+<tr>
+<td>回复始终是"非学生消息,未处理"</td>
+<td>OpenClaw 剥了前缀或字符被 normalize</td>
+<td>查 <code>data/logs/</code> 的 <code>process_input</code> 事件,对比 <code>first_20_codepoints</code> 与 <code>prefix_used</code> 的 Unicode;很可能是 OpenClaw TS 层把前缀字符改了或提前剥掉了</td>
+</tr>
+<tr>
+<td>OpenClaw 报 <code>bridge exited 0: ...日志内容...</code>?</td>
+<td>TS 端把 stderr 当错误了</td>
+<td>bridge 侧保证 stdout 是纯 JSON;TS 侧应只看 exit code + JSON.parse,不要拼接 stderr 内容</td>
+</tr>
+</tbody>
+</table></div>
+<2 id="8-从零到上线的时间预估">8. 从零到上线的时间预估<a class="anchor" href="#8-从零到上线的时间预估" title="链接到这一节">#</a></2>
+<p><strong>【当前】首次搭建</strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>预估时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>放好代码与数据目录</td>
+<td>1 分钟</td>
+</tr>
+<tr>
+<td>跑 <code>setup.sh</code> 安装依赖</td>
+<td>5-10 分钟</td>
+</tr>
+<tr>
+<td>配 <code>.env</code> 里的大模型 key</td>
+<td>2 分钟</td>
+</tr>
+<tr>
+<td>跑 <code>build_index.py</code> 建索引</td>
+<td>1-2 分钟(视语料大小)</td>
+</tr>
+<tr>
+<td>冒烟测试 + 离线自检(<code>pytest</code> / <code>--compare</code>)</td>
+<td>2 分钟</td>
+</tr>
+<tr>
+<td>OpenClaw 接入调通</td>
+<td>10-20 分钟</td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td><strong>30-60 分钟</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>注意:上面不含"从零建知识库"。</strong> 扫描版教材那种资料要先 OCR
+(711 页 / 12 进程跑 <strong>47.9 分钟</strong>)、再装配、再生成中文详细解析(逐个调大模型),
+那是<strong>另一天的工作量</strong>,见 <code>knowledge_base.md</code> §3.5 / §9.5。
+本文假设知识库已经建好。</p>
+<div class="foot">
+  <span>源文件 <code>docs/deployment.md</code> · 生成于 2026-09-20 21:09</span>
+  <span>内容与 Markdown 一致,这里的图/表/目录是渲染出来的</span>
+</div>
+</main>
+</div>
+<button id="totop" title="回到顶部">↑</button>
+<script>
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('totop');
+  function onScroll(){
+    var h=document.documentElement,sh=h.scrollHeight-h.clientHeight;
+    bar.style.width=(sh>0?(h.scrollTop/sh*100):0)+'%';
+    top.classList.toggle('show',h.scrollTop>500);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var heads=[].slice.call(document.querySelectorAll('main h2[id],main h3[id]'));
+  var links={};[].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    links[decodeURIComponent(a.getAttribute('href').slice(1))]=a;});
+  function spy(){
+    var cur=null;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i].getBoundingClientRect().top<=90) cur=heads[i].id; else break;
+    }
+    for(var k in links) links[k].classList.remove('active');
+    if(cur&&links[cur]) links[cur].classList.add('active');
+  }
+  document.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+<script type="module">
+  // startOnLoad 关掉,只跑一次 run():两者同时开会重复渲染同一张图
+  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+    .then(function(m){var M=m.default||m;M.initialize({startOnLoad:false,theme:'neutral',securityLevel:'loose',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});return M.run({nodes:document.querySelectorAll('.mermaid')});})
+    .catch(function(){/* 没网:图保持源码原样,折叠区里也有一份 */});
+</script>
+</body>
+</html>
